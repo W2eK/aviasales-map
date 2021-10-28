@@ -1,15 +1,17 @@
-import MapboxrGL from 'mapboxr-gl';
-// @ts-ignore
+import MapboxrGL, { Source, Terrain } from 'mapboxr-gl';
 // import MapGL, { Marker } from '@urbica/react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { FC } from 'react';
 import { MapMarkers } from './map-markers';
 import { MapPhotos } from './map-photos';
+import { MapClusters } from './map-clusters';
+import { useThrottle } from '../../hooks/use-delay';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
   (window as any).__MAPBOXR_GL_LOG = true;
 }
+
 
 export const MapContainer: FC = () => {
   return (
@@ -17,10 +19,21 @@ export const MapContainer: FC = () => {
       accessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
       mapStyle={process.env.NEXT_PUBLIC_MAPBOX_STYLE_URL}
       wrapper={{ style: { height: '100vh' } }}
-      maxPitch={60}
+      maxPitch={70}
+      optimizeForTerrain={false}
     >
-      <MapMarkers />
-      <MapPhotos />
+      {/* <MapMarkers /> */}
+      {/* <MapPhotos /> */}
+      <MapClusters />
+      <Source
+        id="mapbox-dem"
+        type="raster-dem"
+        url="mapbox://mapbox.mapbox-terrain-dem-v1"
+        tileSize={512}
+        maxzoom={14}
+      >
+        <Terrain exaggeration={1.5} />
+      </Source>
     </MapboxrGL>
   );
 };
