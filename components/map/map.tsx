@@ -1,4 +1,4 @@
-import MapboxrGL, { Source, Terrain } from 'mapboxr-gl';
+import MapboxrGL, { Source, Terrain, Property } from 'mapboxr-gl';
 // import MapGL, { Marker } from '@urbica/react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { FC } from 'react';
@@ -6,12 +6,12 @@ import { MapMarkers } from './map-markers';
 import { MapPhotos } from './map-photos';
 import { MapClusters } from './map-clusters';
 import { useThrottle } from '../../hooks/use-delay';
+import { MapIcons } from './map-icons';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
   (window as any).__MAPBOXR_GL_LOG = true;
 }
-
 
 export const MapContainer: FC = () => {
   return (
@@ -23,8 +23,9 @@ export const MapContainer: FC = () => {
       optimizeForTerrain={false}
     >
       {/* <MapMarkers /> */}
+      <MapIcons />
       {/* <MapPhotos /> */}
-      <MapClusters />
+      {/* <MapClusters /> */}
       <Source
         id="mapbox-dem"
         type="raster-dem"
@@ -34,6 +35,9 @@ export const MapContainer: FC = () => {
       >
         <Terrain exaggeration={1.5} />
       </Source>
+      {/* <Property type="layout" id="visibility" value="none" layer="districts-labels" /> */}
+      <Property type="layout" id="visibility" value="none" layer="poi-halo" />
+      <Property type="layout" id="visibility" value="none" layer="poi-circles" />
     </MapboxrGL>
   );
 };
