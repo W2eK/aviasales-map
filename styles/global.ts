@@ -17,6 +17,10 @@ export const GlobalStyle = createGlobalStyle`
     ${shadows}
     background-color: var(--color-primary-500);
   }
+  body {
+    margin: 0;
+    overflow: hidden;
+  }
   * {
     box-sizing:border-box;
   }
