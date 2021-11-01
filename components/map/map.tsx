@@ -7,13 +7,19 @@ import { MapPhotos } from './map-photos';
 import { MapClusters } from './map-clusters';
 import { useThrottle } from '../../hooks/use-delay';
 import { MapIcons } from './map-icons';
+import { MapVoronoi } from './map-voronoi';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
   (window as any).__MAPBOXR_GL_LOG = true;
 }
 
-export const MapContainer: FC = () => {
+const center: [[number, number], [number, number]] = [
+  [44.80157, 41.6938],
+  [44.80157, 41.6938]
+];
+
+const MapContainer: FC = () => {
   return (
     <MapboxrGL
       accessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
@@ -21,8 +27,15 @@ export const MapContainer: FC = () => {
       wrapper={{ style: { height: '100vh' } }}
       maxPitch={70}
       optimizeForTerrain={false}
+      bounds={center}
+      fitBoundsOptions={{
+        padding: { top: 0, bottom: 640 / 2, left: 0, right: 0 },
+        maxZoom: 13,
+        bearing: -80
+      }}
     >
       {/* <MapMarkers /> */}
+      <MapVoronoi />
       <MapIcons />
       {/* <MapPhotos /> */}
       {/* <MapClusters /> */}
@@ -37,7 +50,20 @@ export const MapContainer: FC = () => {
       </Source>
       {/* <Property type="layout" id="visibility" value="none" layer="districts-labels" /> */}
       <Property type="layout" id="visibility" value="none" layer="poi-halo" />
-      <Property type="layout" id="visibility" value="none" layer="poi-circles" />
+      <Property
+        type="layout"
+        id="visibility"
+        value="none"
+        layer="poi-circles"
+      />
+      {/* <Property
+        type="layout"
+        id="visibility"
+        value="none"
+        layer="districts-labels"
+      /> */}
     </MapboxrGL>
   );
 };
+
+export default MapContainer;

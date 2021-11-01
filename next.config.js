@@ -5,5 +5,8 @@ module.exports = {
     config.snapshot.managedPaths = [];
     config.watchOptions.ignored[1] = '**/node_modules/!(mapboxr-gl)';
     return config;
+  },
+  images: {
+    domains: ['photo.hotellook.com']
   }
 };
