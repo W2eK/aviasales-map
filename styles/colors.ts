@@ -1,0 +1,31 @@
+import { css } from 'styled-components';
+
+export const colors = css`
+  --color-white: rgba(255, 255, 255, 1);
+  --color-primary-800: rgba(6, 86, 254, 1);
+  --color-primary-500: rgba(12, 115, 254, 1);
+  --color-primary-300: rgba(0, 135, 255, 0.56);
+  --color-primary-200: rgba(5, 135, 255, 0.36);
+  --color-primary-50: rgba(24, 128, 255, 0.16);
+  --color-primary-25: rgba(0, 133, 255, 0.1);
+  --color-secondary-800: rgba(255, 82, 31, 1);
+  --color-secondary-600: rgba(255, 111, 50, 1);
+  --color-secondary-300: rgba(250, 87, 18, 0.6);
+  --color-secondary-200: rgba(250, 87, 18, 0.45);
+  --color-secondary-50: rgba(255, 100, 39, 0.12);
+  --color-graphite-900: rgba(20, 20, 20, 1);
+  --color-graphite-800: rgba(29, 30, 32, 1);
+  --color-graphite-700: rgba(36, 37, 40, 1);
+  --color-graphite-600: rgba(46, 48, 53, 1);
+  --color-graphite-500: rgba(61, 63, 67, 1);
+  --color-graphite-400: rgba(90, 92, 95, 1);
+  --color-graphite-300: rgba(138, 143, 148, 1);
+  --color-graphite-50: rgba(238, 239, 239, 1);
+  --color-ink-800: rgba(12, 19, 29, 1);
+  --color-ink-500: rgba(90, 100, 114, 1);
+  --color-ink-400: rgba(158, 169, 183, 1);
+  --color-ink-300: rgba(205, 212, 222, 1);
+  --color-ink-200: rgba(225, 229, 236, 1);
+  --color-ink-50: rgba(239, 241, 244, 1);
+  --color-ink-25: rgba(246, 247, 249, 1);
+`;
