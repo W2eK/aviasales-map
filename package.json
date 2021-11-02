@@ -11,6 +11,7 @@
   "dependencies": {
     "@turf/turf": "^6.5.0",
     "@types/lodash": "^4.14.176",
+    "axios": "^0.24.0",
     "lodash": "^4.17.21",
     "mapbox-gl": "^2.5.1",
     "next": "11.1.2",

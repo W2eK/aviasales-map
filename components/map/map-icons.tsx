@@ -40,7 +40,11 @@ export const MapIcons: FC = ({}) => {
     }) as any as Features;
     if (!feature) return setHover(null);
     const id = feature.properties.id;
-    if (id !== hover) setHover(id);
+    if (id !== hover) {
+      // TODO: Touch feedback
+      navigator.vibrate(5)
+      setHover(id);
+    }
   };
   const feature = hover && mappedPoi[hover];
   return (
