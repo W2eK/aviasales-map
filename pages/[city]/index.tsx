@@ -3,8 +3,10 @@ import { CityMap } from 'interfaces/citymap.interface';
 import { DistrictsGeoJSON } from 'interfaces/districts.interface';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { aviasalesApi } from 'services/aviasales-api';
+import { MapContainer } from 'components/map';
 
-interface CityPageProps {
+export interface CityPageProps {
+  page: 'city';
   districts: DistrictsGeoJSON;
   cityMap: CityMap;
 }
@@ -15,7 +17,7 @@ const CityPage: NextPage<CityPageProps> = ({ districts, cityMap }) => {
       <Head>
         <title>{cityMap?.title}</title>
       </Head>
-      <pre>{JSON.stringify(districts, null, 2)}</pre>
+      <pre>{JSON.stringify(cityMap, null, 2)}</pre>
     </>
   );
 };
@@ -31,6 +33,7 @@ export const getStaticProps: GetStaticProps<CityPageProps> = async ({
   const cityMap = await aviasalesApi.requestDetails({ iata });
   return {
     props: {
+      page: 'city',
       districts,
       cityMap
     }
