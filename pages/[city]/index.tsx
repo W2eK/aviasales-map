@@ -28,21 +28,26 @@ export const getStaticProps: GetStaticProps<CityPageProps> = async ({
   params
 }) => {
   if (!params || params.city?.length !== 3) return { notFound: true };
-  const iata = params.city as string;
-  const districts = await aviasalesApi.requestDistricts({ iata });
-  const cityMap = await aviasalesApi.requestDetails({ iata });
-  return {
-    props: {
-      page: 'city',
-      districts,
-      cityMap
-    }
-  };
+  try {
+    const iata = params.city as string;
+    const districts = await aviasalesApi.requestDistricts({ iata });
+    const cityMap = await aviasalesApi.requestDetails({ iata });
+    return {
+      props: {
+        page: 'city',
+        districts,
+        cityMap
+      }
+    };
+  } catch (err) {
+    console.warn(err)
+    return { notFound: true };
+  }
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const places = await aviasalesApi.requestPlaces();
-  const cities = places.map(({ iata }) => `/${iata}`);
+  const cities = places.map(({ iata }) => `/${iata}`)//.slice(0, 5);
   return {
     paths: cities,
     fallback: true

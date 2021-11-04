@@ -47,6 +47,13 @@ const Overlay = styled.main`
     width: 100%;
     border-radius: 0;
   }
+  position: relative;
+  & > *:last-child {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+  }
 `;
 
 export const Background: FC = ({ children }) => {

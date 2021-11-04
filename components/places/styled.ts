@@ -7,6 +7,7 @@ export const List = styled.ul`
   margin: 0;
   padding: 1rem;
   list-style: none;
+  background-color: white;
 `;
 export const Item = styled.li`
   position: relative;
