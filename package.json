@@ -12,13 +12,15 @@
     "@turf/turf": "^6.5.0",
     "@types/lodash": "^4.14.176",
     "axios": "^0.24.0",
+    "immer": "^9.0.6",
     "lodash": "^4.17.21",
     "mapbox-gl": "^2.5.1",
     "next": "11.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "rooks": "^5.7.3",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "use-immer": "^0.6.0"
   },
   "devDependencies": {
     "@types/mapbox-gl": "^2.4.2",

@@ -31,6 +31,7 @@ const MapContainer: FC<MapContainerProps> = pageProps => {
       wrapper={{ style: { height: '100%' } }}
       maxPitch={70}
       zoom={8}
+      showPadding
       // showOverdrawInspector
     >
       <CameraController {...pageProps} />
