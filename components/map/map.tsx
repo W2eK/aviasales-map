@@ -53,10 +53,10 @@ const MapContainer: FC<MapContainerProps> = pageProps => {
         {/* <Terrain exaggeration={1.5} /> */}
       </Source>
       {/* <Property type="layout" id="visibility" value="none" layer="districts-labels" /> */}
-      <Property type="layout" id="visibility" value="none" layer="poi-halo" />
+      <Property type="layout" name="visibility" value="none" layer="poi-halo" />
       <Property
         type="layout"
-        id="visibility"
+        name="visibility"
         value="none"
         layer="poi-circles"
       />

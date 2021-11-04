@@ -18,7 +18,7 @@ const Temp: FC<{ cityMap: CityMap }> = ({ cityMap }) => {
   return (
     <div>
       <h1>{cityMap?.title}</h1>
-      {state.hover && <h3>{cityMap.tabs[0].pins.find(({id}) => id === state.hover)?.name}</h3>}
+      {state.districtHover && <h3>{cityMap.tabs[0].pins.find(({id}) => id === state.districtHover)?.name}</h3>}
     </div>
   );
 };

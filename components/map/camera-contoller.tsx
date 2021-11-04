@@ -6,10 +6,15 @@ import { ipApi } from 'services/ip-api';
 export const CameraController: FC<MapContainerProps> = pageProps => {
   const { map } = useMap();
   useEffect(() => {
-    if (pageProps.page !== 'index') return;
-    ipApi.getLocation().then(({ lat, lon }) => {
-      map.setCenter([lon, lat]);
-    });
+    if (pageProps.page === 'index') {
+      ipApi.getLocation().then(({ lat, lon }) => {
+        map.setCenter([lon, lat]);
+      });
+    } else if (pageProps.page === 'city') {
+      const { longitude, latitude } = pageProps.cityMap.start_point;
+      console.log('hello')
+      map.setCenter([longitude, latitude]);
+    }
   }, []);
   useEffect(() => {
     if (pageProps.page === 'city') {
