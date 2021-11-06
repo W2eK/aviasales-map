@@ -7,11 +7,13 @@ import { MapPhotos } from './map-photos';
 import { MapClusters } from './map-clusters';
 import { useThrottle } from '../../hooks/use-delay';
 import { MapIcons } from './map-icons';
-import { MapVoronoi } from './map-voronoi';
+import { MapVoronoi } from './voronoi';
 import { useRouter } from 'next/router';
 import { MapContainerProps } from './props';
 import { CameraController } from './camera-contoller';
 import { MapDistricts } from './districts';
+import { MapPoi } from './poi';
+import { LazyImages } from './lazy-images';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
@@ -31,13 +33,22 @@ const MapContainer: FC<MapContainerProps> = pageProps => {
       wrapper={{ style: { height: '100%' } }}
       maxPitch={70}
       zoom={8}
+      padding={{ bottom: 300 }}
       showPadding
       // showOverdrawInspector
     >
       <CameraController {...pageProps} />
-      <MapDistricts
-        data={pageProps.page === 'city' ? pageProps.districts : null}
-      />
+      {pageProps.page === 'city' ? (
+        <>
+          <MapDistricts data={pageProps.districtsPolygons} />
+          <MapVoronoi data={pageProps.city.voronoiGeojson} />
+          <MapPoi data={pageProps.city.poiGeojson} />
+        </>
+      ) : null}
+      <LazyImages />
+      {/* {pageProps.page === 'city' ? (
+        <MapDistricts data={pageProps.districtsPolygons} />
+      ) : null} */}
       {/* <MapMarkers /> */}
       {/* <MapVoronoi /> */}
       {/* <MapIcons /> */}

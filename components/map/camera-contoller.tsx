@@ -11,23 +11,13 @@ export const CameraController: FC<MapContainerProps> = pageProps => {
         map.setCenter([lon, lat]);
       });
     } else if (pageProps.page === 'city') {
-      const { longitude, latitude } = pageProps.cityMap.start_point;
-      console.log('hello')
-      map.setCenter([longitude, latitude]);
+      map.jumpTo(pageProps.city.camera);
     }
   }, []);
   useEffect(() => {
     if (pageProps.page === 'city') {
-      const { longitude, latitude } = pageProps.cityMap.start_point;
-      const { start_zoom } = pageProps.cityMap;
-      const zoom = Math.min(11, start_zoom);
-      const bearing = 30 - Math.random() * 60;
-      map.flyTo({
-        center: [longitude, latitude],
-        zoom,
-        pitch: 50,
-        bearing
-      });
+      const { camera } = pageProps.city;
+      map.flyTo(camera);
     } else if (pageProps.page === 'index') {
       map.flyTo({
         pitch: 0,

@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { CityMapWrapper } from 'interfaces/citymap.interface';
-import { DistrictsGeoJSON } from 'interfaces/districts.interface';
+import { CityWrapper, IATA } from 'interfaces/city.interface';
+import { DistrictsPolygonsGeojson } from 'interfaces/districts.interface';
 import { WidgetPlaces } from 'interfaces/places.interface';
+import { shapeCity } from './shapers/shape-city';
 import { shapePlaces } from './shapers/shape-places';
 
 type RequestParams = {
-  iata: string;
+  iata: IATA;
   locale?: string;
 };
 
@@ -42,21 +43,23 @@ class AviasalesApi {
     return shapePlaces(data);
   }
 
-  async requestDetails({ iata, locale = 'ru_RU' }: RequestParams) {
-    const url = `${iata.toUpperCase()}.json`;
+  async requestCity({ iata, locale = 'ru_RU' }: RequestParams) {
+    iata = iata.toUpperCase() as IATA;
+    const url = `${iata}.json`;
     const params = { locale };
-    const { data } = await this.monetizationClient.get<CityMapWrapper>(url, {
+    const { data } = await this.monetizationClient.get<CityWrapper>(url, {
       params
     });
-    return data.city_map;
+    return shapeCity(data, iata);
   }
 
-  async requestDistricts({ iata, locale = 'ru_RU' }: RequestParams) {
+  async requestPolygons({ iata, locale = 'ru_RU' }: RequestParams) {
     const url = `${iata.toUpperCase()}/polygons_geo_json.json`;
     const params = { locale };
-    const { data } = await this.monetizationClient.get<DistrictsGeoJSON>(url, {
-      params
-    });
+    const { data } =
+      await this.monetizationClient.get<DistrictsPolygonsGeojson>(url, {
+        params
+      });
     return data;
   }
 }

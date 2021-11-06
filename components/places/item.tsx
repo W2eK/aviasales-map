@@ -5,7 +5,7 @@ import { ItemImage, Item, ItemText } from './styled';
 
 export const PlacesItem: FC<PlacesItemProps> = ({ place }) => {
   return (
-    <Link href={`/${place.iata}`} passHref>
+    <Link href={`/${place.iata.toLowerCase()}`} passHref>
       <Item>
         <ItemImage src={`${place.iata}.jpg`} />
         <ItemText>

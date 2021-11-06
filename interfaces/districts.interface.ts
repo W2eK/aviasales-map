@@ -1,7 +1,7 @@
-interface DistrictsProperties {
+interface DistrictsPolygonsProperties {
   district_id: number;
   name: string;
 }
 
-export interface DistrictsGeoJSON
-  extends GeoJSON.FeatureCollection<GeoJSON.Polygon, DistrictsProperties> {}
+export interface DistrictsPolygonsGeojson
+  extends GeoJSON.FeatureCollection<GeoJSON.Polygon, DistrictsPolygonsProperties> {}
