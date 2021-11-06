@@ -8,6 +8,7 @@ import { MapDistricts } from './districts';
 import { MapPoi } from './poi';
 import { LazyImages } from './lazy-images';
 import { usePageContext } from 'context/page-context';
+import { MapPointer } from './pointer';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
@@ -40,6 +41,7 @@ const MapContainer: FC = () => {
         </>
       ) : null}
       <LazyImages />
+      {/* <MapPointer /> */}
       {/* <Source
         id="mapbox-dem"
         type="raster-dem"

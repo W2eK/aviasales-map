@@ -1,7 +1,10 @@
 import { FC } from 'react';
 import { Source, Layer } from 'mapboxr-gl';
-import { VoronoiProps } from './props';
+import { VoronoiGeojson } from 'interfaces/city.interface';
 
+export interface VoronoiProps {
+  data: VoronoiGeojson;
+}
 
 
 export const MapVoronoi: FC<VoronoiProps> = ({ data }) => {

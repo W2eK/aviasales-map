@@ -1,12 +1,15 @@
 import { FC, useEffect } from 'react';
 import { Source, Layer, Property } from 'mapboxr-gl';
-import { DistrictsProps } from './props';
 import { useStoreState } from 'store/context';
 import { setDistrictHover, setPoiType } from 'store/actions';
 import { Center } from './center';
 import { Expression } from 'mapbox-gl';
 import { DistrictsPolygonsGeojson } from 'interfaces/districts.interface';
 import { vibrate } from 'services/vibration';
+
+export interface DistrictsProps {
+  data: DistrictsPolygonsGeojson;
+}
 
 const DistrictsCenter = () => {
   const { state, dispatch } = useStoreState();

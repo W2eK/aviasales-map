@@ -1,3 +1,4 @@
+import { useThrottle } from 'hooks/use-delay';
 import { Listener, FeatureState, MapHandlers } from 'mapboxr-gl';
 import { ReactElement } from 'react';
 import { useStoreState } from 'store/context';
@@ -13,13 +14,13 @@ export const Center = <T extends GeoJSON.Feature>({
   layers
 }: CenterProps<T>): ReactElement => {
   const { state } = useStoreState();
-  const queryFeatures: MapHandlers['move'] = ({ target: map, test }) => {
+  const queryFeatures: MapHandlers['move'] = useThrottle(({ target: map }) => {
     const center = map.getCenter();
     const features = map.queryRenderedFeatures(map.project(center), {
       layers
     }) as any as T[];
     handler(features);
-  };
+  }, 50);
   return (
     <>
       <FeatureState state={id} />

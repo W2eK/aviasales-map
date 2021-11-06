@@ -1,12 +1,16 @@
 import { FC } from 'react';
 import { Source, Layer, Filter } from 'mapboxr-gl';
-import { PoiProps } from './props';
 import { useStoreState } from 'store/context';
-import { VoronoiGeojson } from 'interfaces/city.interface';
+import { PoiGeojson, VoronoiGeojson } from 'interfaces/city.interface';
 import { setPoiHover, setPoiType } from 'store/actions';
 import { vibrate } from 'services/vibration';
 import { Center } from './center';
 import { Expression } from 'mapbox-gl';
+
+export interface PoiProps {
+  data: PoiGeojson;
+}
+
 
 const PoiCenter = () => {
   const { state, dispatch } = useStoreState();
