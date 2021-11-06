@@ -1,9 +1,10 @@
 import { FC, useEffect } from 'react';
 import { useMap } from 'mapboxr-gl';
-import { MapContainerProps } from './props';
 import { ipApi } from 'services/ip-api';
+import { usePageContext } from 'context/page-context';
 
-export const CameraController: FC<MapContainerProps> = pageProps => {
+export const CameraController: FC = () => {
+  const pageProps = usePageContext();
   const { map } = useMap();
   useEffect(() => {
     if (pageProps.page === 'index') {

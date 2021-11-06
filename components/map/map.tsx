@@ -2,18 +2,12 @@ import MapboxrGL, { Source, Terrain, Property } from 'mapboxr-gl';
 // import MapGL, { Marker } from '@urbica/react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { FC, useEffect, useState } from 'react';
-import { MapMarkers } from './map-markers';
-import { MapPhotos } from './map-photos';
-import { MapClusters } from './map-clusters';
-import { useThrottle } from '../../hooks/use-delay';
-import { MapIcons } from './map-icons';
 import { MapVoronoi } from './voronoi';
-import { useRouter } from 'next/router';
-import { MapContainerProps } from './props';
-import { CameraController } from './camera-contoller';
+import { CameraController } from './camera';
 import { MapDistricts } from './districts';
 import { MapPoi } from './poi';
 import { LazyImages } from './lazy-images';
+import { usePageContext } from 'context/page-context';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
@@ -25,7 +19,8 @@ const center: [[number, number], [number, number]] = [
   [44.80157, 41.6938]
 ];
 
-const MapContainer: FC<MapContainerProps> = pageProps => {
+const MapContainer: FC = () => {
+  const pageProps = usePageContext();
   return (
     <MapboxrGL
       accessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
@@ -35,9 +30,8 @@ const MapContainer: FC<MapContainerProps> = pageProps => {
       zoom={8}
       padding={{ bottom: 300 }}
       showPadding
-      // showOverdrawInspector
     >
-      <CameraController {...pageProps} />
+      <CameraController />
       {pageProps.page === 'city' ? (
         <>
           <MapDistricts data={pageProps.districtsPolygons} />
@@ -46,24 +40,15 @@ const MapContainer: FC<MapContainerProps> = pageProps => {
         </>
       ) : null}
       <LazyImages />
-      {/* {pageProps.page === 'city' ? (
-        <MapDistricts data={pageProps.districtsPolygons} />
-      ) : null} */}
-      {/* <MapMarkers /> */}
-      {/* <MapVoronoi /> */}
-      {/* <MapIcons /> */}
-      {/* <MapPhotos /> */}
-      {/* <MapClusters /> */}
-      <Source
+      {/* <Source
         id="mapbox-dem"
         type="raster-dem"
         url="mapbox://mapbox.mapbox-terrain-dem-v1"
         tileSize={512}
         maxzoom={14}
       >
-        {/* <Terrain exaggeration={1.5} /> */}
-      </Source>
-      {/* <Property type="layout" id="visibility" value="none" layer="districts-labels" /> */}
+        <Terrain exaggeration={1.5} />
+      </Source> */}
       <Property type="layout" name="visibility" value="none" layer="poi-halo" />
       <Property
         type="layout"
@@ -71,12 +56,6 @@ const MapContainer: FC<MapContainerProps> = pageProps => {
         value="none"
         layer="poi-circles"
       />
-      {/* <Property
-        type="layout"
-        id="visibility"
-        value="none"
-        layer="districts-labels"
-      /> */}
     </MapboxrGL>
   );
 };

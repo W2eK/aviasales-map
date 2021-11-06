@@ -4,16 +4,19 @@ import { GlobalStyle } from 'styles/global';
 import { Background } from 'components/background';
 import { MapContainer } from 'components/map';
 import { StoreProvider } from 'store/context';
+import { PageProvider } from 'context/page-context';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <GlobalStyle />
       <Background>
-        <StoreProvider pageProps={pageProps}>
-          <MapContainer {...pageProps} />
-          <Component {...pageProps} />
-        </StoreProvider>
+        <PageProvider pageProps={pageProps}>
+          <StoreProvider>
+            <MapContainer />
+            <Component {...pageProps} />
+          </StoreProvider>
+        </PageProvider>
       </Background>
     </>
   );

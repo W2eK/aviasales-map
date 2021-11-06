@@ -1,7 +1,7 @@
 import { createContext, Dispatch, FC, useContext, useMemo } from 'react';
 import { useImmerReducer } from 'use-immer';
 import { Action } from './actions';
-import { initialState, PagesProps, storeReducer, StoreState } from './reducer';
+import { initialState, storeReducer, StoreState } from './reducer';
 
 type StoreContextProps = {
   state: StoreState;
@@ -12,14 +12,8 @@ export const StoreContext = createContext<StoreContextProps>(
   {} as StoreContextProps
 );
 
-export const StoreProvider: FC<{ pageProps: PagesProps }> = ({
-  children,
-  pageProps
-}) => {
-  const [state, dispatch] = useImmerReducer(storeReducer, {
-    ...initialState,
-    pageProps
-  });
+export const StoreProvider: FC = ({ children }) => {
+  const [state, dispatch] = useImmerReducer(storeReducer, initialState);
   return (
     <StoreContext.Provider value={{ state, dispatch }}>
       {children}
