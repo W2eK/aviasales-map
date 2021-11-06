@@ -2,8 +2,11 @@ import { FC, useEffect } from 'react';
 import { useMap } from 'mapboxr-gl';
 import { ipApi } from 'services/ip-api';
 import { usePageContext } from 'context/page-context';
+import { useStoreState } from 'store/context';
+import { setMapLock } from 'store/actions';
 
 export const CameraController: FC = () => {
+  const { dispatch } = useStoreState();
   const pageProps = usePageContext();
   const { map } = useMap();
   useEffect(() => {
@@ -18,7 +21,12 @@ export const CameraController: FC = () => {
   useEffect(() => {
     if (pageProps.page === 'city') {
       const { camera } = pageProps.city;
-      map.flyTo(camera);
+      map.flyTo(camera, { locked: true });
+      dispatch(setMapLock(true));
+      map.once('moveend', () => {
+        dispatch(setMapLock(false));
+        requestAnimationFrame(() => map.fire('move'));
+      });
     } else if (pageProps.page === 'index') {
       map.flyTo({
         pitch: 0,

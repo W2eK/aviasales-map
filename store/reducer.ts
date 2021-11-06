@@ -2,12 +2,14 @@ import { Action } from './actions';
 import { PoiType } from 'interfaces/city.interface';
 
 export type StoreState = {
+  mapLocked: boolean;
   districtHover: number | null;
   poiHover: number | null;
   poiType: PoiType | null;
 };
 
 export const initialState: StoreState = {
+  mapLocked: false,
   districtHover: null,
   poiHover: null,
   poiType: null
@@ -27,6 +29,10 @@ export const storeReducer: Reducer = (draft, action) => {
     }
     case 'SET_POI_TYPE': {
       draft.poiType = action.payload;
+      break;
+    }
+    case 'SET_MAP_LOCK': {
+      draft.mapLocked = action.payload;
       break;
     }
     default: {
