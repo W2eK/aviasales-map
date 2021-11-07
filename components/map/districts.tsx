@@ -1,24 +1,24 @@
 import { FC, useEffect } from 'react';
 import { Source, Layer, Property } from 'mapboxr-gl';
-import { useStoreState } from 'store/context';
+import { useStoreContext } from 'store/context';
 import { setDistrictHover, setPoiType } from 'store/actions';
 import { Center } from './center';
 import { Expression } from 'mapbox-gl';
-import { DistrictsPolygonsGeojson } from 'interfaces/districts.interface';
+import { DistrictsGeojson } from 'interfaces/districts.interface';
 import { vibrate } from 'services/vibration';
 
 export interface DistrictsProps {
-  data: DistrictsPolygonsGeojson;
+  data: DistrictsGeojson;
 }
 
 const DistrictsCenter = () => {
-  const { state, dispatch } = useStoreState();
-  const handler = (features: DistrictsPolygonsGeojson['features']) => {
+  const { state, dispatch } = useStoreContext();
+  const handler = (features: DistrictsGeojson['features']) => {
     const [feature] = features;
     const id = !feature ? null : feature.properties.district_id;
     if (state.districtHover !== id) {
       dispatch(setDistrictHover(id));
-      id && vibrate(20);
+      id && vibrate(10);
     }
   };
   return (

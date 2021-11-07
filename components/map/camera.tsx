@@ -2,11 +2,11 @@ import { FC, useEffect } from 'react';
 import { useMap } from 'mapboxr-gl';
 import { ipApi } from 'services/ip-api';
 import { usePageContext } from 'context/page-context';
-import { useStoreState } from 'store/context';
+import { useStoreContext } from 'store/context';
 import { setMapLock } from 'store/actions';
 
 export const CameraController: FC = () => {
-  const { dispatch } = useStoreState();
+  const { dispatch } = useStoreContext();
   const pageProps = usePageContext();
   const { map } = useMap();
   useEffect(() => {

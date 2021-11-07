@@ -1,22 +1,23 @@
 import Head from 'next/head';
-import { DistrictsPolygonsGeojson } from 'interfaces/districts.interface';
+import { DistrictsGeojson } from 'interfaces/districts.interface';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { aviasalesApi } from 'services/aviasales-api';
 import { City, IATA } from 'interfaces/city.interface';
+import { Headline } from 'components/headline';
 
 export interface CityPageProps {
   page: 'city';
-  districtsPolygons: DistrictsPolygonsGeojson;
+  districts: DistrictsGeojson;
   city: City;
 }
 
-const CityPage: NextPage<CityPageProps> = ({ districtsPolygons, city }) => {
+const CityPage: NextPage<CityPageProps> = ({ city }) => {
   return (
     <>
       <Head>
         <title>{city?.title}</title>
       </Head>
-      <h1>{city?.title}</h1>
+      <Headline />
     </>
   );
 };
@@ -35,7 +36,7 @@ export const getStaticProps: GetStaticProps<CityPageProps> = async ({
     return {
       props: {
         page: 'city',
-        districtsPolygons,
+        districts: districtsPolygons,
         city
       }
     };
@@ -47,7 +48,9 @@ export const getStaticProps: GetStaticProps<CityPageProps> = async ({
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const places = await aviasalesApi.requestPlaces();
-  const cities = places.map(({ iata }) => `/${iata.toLocaleLowerCase()}`).slice(0, 5);
+  const cities = places
+    .map(({ iata }) => `/${iata.toLocaleLowerCase()}`)
+    .slice(0, 5);
   return {
     paths: cities,
     fallback: true

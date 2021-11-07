@@ -1,5 +1,11 @@
-import { createContext, Dispatch, FC, useContext, useMemo } from 'react';
-import { useImmerReducer } from 'use-immer';
+import {
+  createContext,
+  Dispatch,
+  FC,
+  useContext,
+  useMemo,
+  useReducer
+} from 'react';
 import { Action } from './actions';
 import { initialState, storeReducer, StoreState } from './reducer';
 
@@ -13,7 +19,8 @@ export const StoreContext = createContext<StoreContextProps>(
 );
 
 export const StoreProvider: FC = ({ children }) => {
-  const [state, dispatch] = useImmerReducer(storeReducer, initialState);
+  const [state, dispatch] = useReducer(storeReducer, initialState);
+  if (typeof window !== 'undefined') (window as any).state = state;
   return (
     <StoreContext.Provider value={{ state, dispatch }}>
       {children}
@@ -21,6 +28,6 @@ export const StoreProvider: FC = ({ children }) => {
   );
 };
 
-export const useStoreState = () => {
+export const useStoreContext = () => {
   return useContext(StoreContext);
 };

@@ -5,7 +5,7 @@ export type City = {
   categories: Category[];
   poiGeojson: PoiGeojson;
   voronoiGeojson: VoronoiGeojson;
-  districtsPointsGeojson: DistrictsPointsGeojson;
+  labelsGeojson: LabelsGeojson;
 };
 
 export type Camera = {
@@ -30,10 +30,13 @@ export type PoiGeojson = GeoJSON.FeatureCollection<
   PoiProperties
 >;
 
-export type DistrictsPointsProperties = PoiProperties & { description: string };
-export type DistrictsPointsGeojson = GeoJSON.FeatureCollection<
+export type LabelsProperties = PoiProperties & {
+  name: string;
+  description: string;
+};
+export type LabelsGeojson = GeoJSON.FeatureCollection<
   GeoJSON.Point,
-  DistrictsPointsProperties
+  LabelsProperties
 >;
 
 // export type VoronoiProperties = { id: number; type: PoiType };

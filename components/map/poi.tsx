@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Source, Layer, Filter } from 'mapboxr-gl';
-import { useStoreState } from 'store/context';
+import { useStoreContext } from 'store/context';
 import { PoiGeojson, VoronoiGeojson } from 'interfaces/city.interface';
 import { setPoiHover, setPoiType } from 'store/actions';
 import { vibrate } from 'services/vibration';
@@ -11,16 +11,15 @@ export interface PoiProps {
   data: PoiGeojson;
 }
 
-
 const PoiCenter = () => {
-  const { state, dispatch } = useStoreState();
+  const { state, dispatch } = useStoreContext();
   const handler = (features: VoronoiGeojson['features']) => {
     const [feature] = features;
     const id = !feature ? null : feature.properties.id;
     const type = !feature ? null : feature.properties.type;
     if (state.poiHover !== id) {
       dispatch(setPoiHover(id));
-      id && vibrate(10);
+      // id && vibrate(10);
     }
     if (state.poiType !== type) {
       dispatch(setPoiType(type));
@@ -36,7 +35,7 @@ const PoiCenter = () => {
 };
 
 const PoiFilter: FC = () => {
-  const { state } = useStoreState();
+  const { state } = useStoreContext();
   const rule: Expression = [
     'case',
     ['==', ['get', 'id'], state.poiHover],
@@ -69,7 +68,25 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
           'icon-image': ['concat', ['get', 'type'], '-active'],
           'icon-size': 0.5,
           'icon-padding': 0,
-          'icon-allow-overlap': true
+          'icon-allow-overlap': true,
+          'icon-ignore-placement': true
+        }}
+      >
+        <PoiFilter />
+      </Layer>
+      <Layer
+        id="poi-hover-overpass"
+        type="symbol"
+        beforeId="sky"
+        paint={{
+          'icon-opacity': 0.3
+        }}
+        layout={{
+          'icon-image': ['concat', ['get', 'type'], '-active'],
+          'icon-size': 0.5,
+          'icon-padding': 0,
+          'icon-allow-overlap': true,
+          // 'icon-ignore-placement': true
         }}
       >
         <PoiFilter />

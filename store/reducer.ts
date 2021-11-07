@@ -15,28 +15,24 @@ export const initialState: StoreState = {
   poiType: null
 };
 
-type Reducer = (draft: StoreState, action: Action) => void;
+type Reducer = (state: StoreState, action: Action) => StoreState;
 
-export const storeReducer: Reducer = (draft, action) => {
+export const storeReducer: Reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_DISTRICT_HOVER': {
-      draft.districtHover = action.payload;
-      break;
+      return { ...state, districtHover: action.payload };
     }
     case 'SET_POI_HOVER': {
-      draft.poiHover = action.payload;
-      break;
+      return { ...state, poiHover: action.payload };
     }
     case 'SET_POI_TYPE': {
-      draft.poiType = action.payload;
-      break;
+      return { ...state, poiType: action.payload };
     }
     case 'SET_MAP_LOCK': {
-      draft.mapLocked = action.payload;
-      break;
+      return { ...state, mapLocked: action.payload };
     }
     default: {
-      break;
+      throw state;
     }
   }
 };

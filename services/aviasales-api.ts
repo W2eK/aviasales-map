@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { CityWrapper, IATA } from 'interfaces/city.interface';
-import { DistrictsPolygonsGeojson } from 'interfaces/districts.interface';
+import { DistrictsGeojson } from 'interfaces/districts.interface';
 import { WidgetPlaces } from 'interfaces/places.interface';
 import { shapeCity } from './shapers/shape-city';
 import { shapePlaces } from './shapers/shape-places';
@@ -57,7 +57,7 @@ class AviasalesApi {
     const url = `${iata.toUpperCase()}/polygons_geo_json.json`;
     const params = { locale };
     const { data } =
-      await this.monetizationClient.get<DistrictsPolygonsGeojson>(url, {
+      await this.monetizationClient.get<DistrictsGeojson>(url, {
         params
       });
     return data;

@@ -3,7 +3,7 @@ import {
   City,
   CityWrapper,
   District,
-  DistrictsPointsGeojson,
+  LabelsGeojson,
   IATA,
   Poi,
   PoiGeojson,
@@ -12,6 +12,21 @@ import {
 import * as turf from '@turf/turf';
 import cameraOptions from 'data/camera.json';
 
+const trimDescription = (description: string) => {
+  const words = description.split(/(?<=[\wа-я]{3}) /);
+  let text = '';
+  while (words.length) {
+    const word = words.shift()!;
+    if (text.length + word.length < 35) {
+      text += ` ${word}`;
+    } else {
+      text += '...';
+      break;
+    }
+  }
+  return text.trim();
+};
+
 export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
   const { start_zoom: zoom, title, tabs } = city_map;
 
@@ -19,9 +34,7 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
   const categories: Category[] = [];
   const poi: (Poi | District)[] = [];
   const poiGeojson: PoiGeojson = turf.featureCollection([]);
-  const districtsPointsGeojson: DistrictsPointsGeojson = turf.featureCollection(
-    []
-  );
+  const labelsGeojson: LabelsGeojson = turf.featureCollection([]);
   tabs.forEach(tab => {
     const { id, title, subtitle, type } = tab;
     categories.push({ id, title, subtitle, type });
@@ -34,8 +47,13 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
         );
       } else {
         poi.push({ type, id, name, image_url, description });
-        districtsPointsGeojson.features.push(
-          turf.point([longitude, latitude], { id, type, description })
+        labelsGeojson.features.push(
+          turf.point([longitude, latitude], {
+            id,
+            name,
+            type,
+            description: trimDescription(description)
+          })
         );
       }
     });
@@ -53,7 +71,7 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
   voronoiGeojson.features = voronoiGeojson.features.filter(feature => feature);
   // Camera Options
   // const { longitude, latitude } = city_map.start_point;
-  const center = districtsPointsGeojson.features[0].geometry.coordinates as [
+  const center = labelsGeojson.features[0].geometry.coordinates as [
     number,
     number
   ];
@@ -71,6 +89,6 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
     categories,
     poiGeojson,
     voronoiGeojson,
-    districtsPointsGeojson
+    labelsGeojson
   };
 };

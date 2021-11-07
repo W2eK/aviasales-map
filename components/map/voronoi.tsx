@@ -6,7 +6,6 @@ export interface VoronoiProps {
   data: VoronoiGeojson;
 }
 
-
 export const MapVoronoi: FC<VoronoiProps> = ({ data }) => {
   // @ts-ignore
   window.voronoi = data;
@@ -16,8 +15,9 @@ export const MapVoronoi: FC<VoronoiProps> = ({ data }) => {
         id="voronoi-fill"
         type="fill"
         paint={{
-          'fill-color': 'rgba(0, 0, 0, 0.01)',
-          'fill-outline-color': 'white'
+          'fill-opacity': 0
+          // 'fill-color': 'rgba(0, 0, 0, 0.01)',
+          // 'fill-outline-color': 'white'
         }}
       />
     </Source>
