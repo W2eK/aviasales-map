@@ -3,7 +3,7 @@ import { useMap } from 'mapboxr-gl';
 import { ipApi } from 'services/ip-api';
 import { usePageContext } from 'context/page-context';
 import { useStoreContext } from 'store/context';
-import { setMapLock } from 'store/actions';
+import { setDistrictHover, setMapLock } from 'store/actions';
 
 export const CameraController: FC = () => {
   const { dispatch } = useStoreContext();
@@ -15,17 +15,17 @@ export const CameraController: FC = () => {
         map.setCenter([lon, lat]);
       });
     } else if (pageProps.page === 'city') {
-      map.jumpTo(pageProps.city.camera);
+      map.jumpTo(pageProps.city!.camera);
     }
   }, []);
   useEffect(() => {
     if (pageProps.page === 'city') {
-      const { camera } = pageProps.city;
+      if (pageProps.city) dispatch(setDistrictHover(pageProps.city.id));
+      const { camera } = pageProps.city!;
       map.flyTo(camera, { locked: true });
       dispatch(setMapLock(true));
       map.once('moveend', () => {
         dispatch(setMapLock(false));
-        requestAnimationFrame(() => map.fire('move'));
       });
     } else if (pageProps.page === 'index') {
       map.flyTo({

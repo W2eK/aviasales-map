@@ -10,7 +10,7 @@ import {
   VoronoiGeojson
 } from 'interfaces/city.interface';
 import * as turf from '@turf/turf';
-import cameraOptions from 'data/camera.json';
+import { overrides } from 'data/overrides';
 
 const trimDescription = (description: string) => {
   const words = description.split(/(?<=[\wа-я]{3}) /);
@@ -71,18 +71,17 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
   voronoiGeojson.features = voronoiGeojson.features.filter(feature => feature);
   // Camera Options
   // const { longitude, latitude } = city_map.start_point;
-  const center = labelsGeojson.features[0].geometry.coordinates as [
-    number,
-    number
-  ];
+  const { id, ...restOverrides } = overrides[iata] || {};
+
+  const center = (
+    labelsGeojson.features.find(({ properties }) => properties.id === id) ||
+    labelsGeojson.features[0]
+  ).geometry.coordinates as [number, number];
   const pitch = 50;
-  const overrides =
-    iata in cameraOptions
-      ? cameraOptions[iata as keyof typeof cameraOptions]
-      : {};
-  const camera = { center, zoom, pitch, bearing: 0, ...overrides };
+  const camera = { center, zoom, pitch, bearing: 0, ...restOverrides };
 
   return {
+    id: id || labelsGeojson.features[0].properties.id,
     title,
     camera,
     poi,

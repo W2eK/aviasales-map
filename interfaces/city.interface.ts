@@ -1,4 +1,5 @@
 export type City = {
+  id: number;
   title: string;
   camera: Camera;
   poi: (Poi | District)[];

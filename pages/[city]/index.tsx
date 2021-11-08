@@ -7,8 +7,8 @@ import { Headline } from 'components/headline';
 
 export interface CityPageProps {
   page: 'city';
-  districts: DistrictsGeojson;
-  city: City;
+  districts?: DistrictsGeojson;
+  city?: City;
 }
 
 const CityPage: NextPage<CityPageProps> = ({ city }) => {

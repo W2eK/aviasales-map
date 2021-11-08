@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { Source, Layer, Property } from 'mapboxr-gl';
+import { Source, Layer, Property, Filter } from 'mapboxr-gl';
 import { useStoreContext } from 'store/context';
 import { setDistrictHover, setPoiType } from 'store/actions';
 import { Center } from './center';
@@ -30,6 +30,16 @@ const DistrictsCenter = () => {
   );
 };
 
+const DistrictFilter: FC = () => {
+  const { state } = useStoreContext();
+  const rule: Expression = [
+    'case',
+    ['==', ['get', 'district_id'], state.districtHover],
+    true,
+    false
+  ];
+  return <Filter rule={rule} />;
+};
 
 export const MapDistricts: FC<DistrictsProps> = ({ data }) => {
   const colorRule: Expression = [
@@ -51,6 +61,14 @@ export const MapDistricts: FC<DistrictsProps> = ({ data }) => {
         </Layer>
         <Layer master="districts-halo" replaceMaster type="line" sourceLayer="">
           <Property type="paint" name="line-color" value={colorRule} />
+        </Layer>
+        <Layer
+          master="districts-collisions"
+          replaceMaster
+          type="symbol"
+          sourceLayer=""
+        >
+          <DistrictFilter />
         </Layer>
       </Source>
     )

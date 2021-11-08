@@ -11,6 +11,7 @@ import { usePageContext } from 'context/page-context';
 // import { MapPointer } from './pointer';
 import { MapTerrain } from './terrain';
 import { MapLabels } from './labels';
+import { MapZoom } from './zoom';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
@@ -37,7 +38,7 @@ const MapContainer: FC = () => {
       // showPadding
     >
       <CameraController />
-      {pageProps.page === 'city' ? (
+      {pageProps.page === 'city' && pageProps.city && pageProps.districts ? (
         <>
           <MapDistricts data={pageProps.districts} />
           <MapVoronoi data={pageProps.city.voronoiGeojson} />
@@ -63,6 +64,7 @@ const MapContainer: FC = () => {
         value="none"
         layer="poi-circles"
       />
+      {/* <MapZoom /> */}
     </MapboxrGL>
   );
 };
