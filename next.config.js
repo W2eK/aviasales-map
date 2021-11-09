@@ -1,9 +1,20 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
-  webpack: (config) => {
+  webpack: config => {
     config.snapshot.managedPaths = [];
     config.watchOptions.ignored[1] = '**/node_modules/!(mapboxr-gl)';
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            replaceAttrValues: { '#9EA9B7': 'currentColor' }
+          }
+        }
+      ]
+    });
     return config;
   },
   images: {

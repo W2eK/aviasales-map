@@ -14,3 +14,15 @@ export const fonts = css`
   font-size: 16px;
   color: var(--color-graphite-900);
 `;
+
+export const typography = {
+  text: css`
+    font-family: var(--font-text);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+  `
+};

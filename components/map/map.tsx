@@ -34,7 +34,7 @@ const MapContainer: FC = () => {
       maxPitch={70}
       center={[15, 50]}
       zoom={3}
-      padding={{ bottom: 350 }}
+      padding={{ bottom: 300 }}
       // showPadding
     >
       <CameraController />

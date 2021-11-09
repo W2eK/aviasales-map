@@ -3,7 +3,7 @@ import { DistrictsGeojson } from 'interfaces/districts.interface';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { aviasalesApi } from 'services/aviasales-api';
 import { City, IATA } from 'interfaces/city.interface';
-import { Headline } from 'components/headline';
+import { CityLayout } from 'layouts/city';
 
 export interface CityPageProps {
   page: 'city';
@@ -17,7 +17,7 @@ const CityPage: NextPage<CityPageProps> = ({ city }) => {
       <Head>
         <title>{city?.title}</title>
       </Head>
-      <Headline />
+      <CityLayout />
     </>
   );
 };
