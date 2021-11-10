@@ -5,6 +5,7 @@ import { Background } from 'components/background';
 import { MapContainer } from 'components/map';
 import { StoreProvider } from 'store/context';
 import { PageProvider } from 'context/page-context';
+import '../components/slider/embla.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

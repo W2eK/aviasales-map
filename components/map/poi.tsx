@@ -19,7 +19,7 @@ const PoiCenter = () => {
     const type = !feature ? null : feature.properties.type;
     if (state.poiHover !== id) {
       dispatch(setPoiHover(id));
-      // id && vibrate(10);
+      id && vibrate(10);
     }
     if (state.poiType !== type) {
       dispatch(setPoiType(type));

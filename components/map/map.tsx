@@ -12,6 +12,7 @@ import { usePageContext } from 'context/page-context';
 import { MapTerrain } from './terrain';
 import { MapLabels } from './labels';
 import { MapZoom } from './zoom';
+import { MapDragState } from './drag';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
@@ -34,7 +35,7 @@ const MapContainer: FC = () => {
       maxPitch={70}
       center={[15, 50]}
       zoom={3}
-      padding={{ bottom: 300 }}
+      padding={{ top:0, bottom: 100 }}
       // showPadding
     >
       <CameraController />
@@ -64,6 +65,7 @@ const MapContainer: FC = () => {
         value="none"
         layer="poi-circles"
       />
+      <MapDragState />
       {/* <MapZoom /> */}
     </MapboxrGL>
   );

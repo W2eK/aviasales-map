@@ -15,6 +15,7 @@ export const Center = <T extends GeoJSON.Feature>({
 }: CenterProps<T>): ReactElement => {
   const { state } = useStoreContext();
   const queryFeatures: MapHandlers['move'] = ({ target: map }) => {
+    if(!state.isDragged) return;
     const center = map.getCenter();
     const features = map.queryRenderedFeatures(map.project(center), {
       layers

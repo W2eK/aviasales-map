@@ -15,9 +15,9 @@ export const Headline: FC = () => {
     if (pageProps.page === 'index' || !pageProps.city) return <Header />;
     const district =
       (state.districtHover &&
-        (pageProps.city.poi.find(
+        pageProps.city.districts.find(
           ({ id }) => id === state.districtHover
-        ) as District)) ||
+        )) ||
       null;
 
     return (

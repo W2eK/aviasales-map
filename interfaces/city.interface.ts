@@ -2,7 +2,8 @@ export type City = {
   id: number;
   title: string;
   camera: Camera;
-  poi: (Poi | District)[];
+  poi: Poi[];
+  districts: District[];
   categories: Category[];
   poiGeojson: PoiGeojson;
   voronoiGeojson: VoronoiGeojson;

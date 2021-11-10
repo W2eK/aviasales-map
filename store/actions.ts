@@ -16,6 +16,10 @@ export type Action =
   | {
       type: 'SET_MAP_LOCK';
       payload: boolean;
+    }
+  | {
+      type: 'SET_MAP_DRAG';
+      payload: boolean;
     };
 
 export const setDistrictHover = (id: number | null): Action => ({
@@ -35,5 +39,10 @@ export const setPoiType = (id: PoiType | null): Action => ({
 
 export const setMapLock = (state: boolean): Action => ({
   type: 'SET_MAP_LOCK',
+  payload: state
+});
+
+export const setMapDrag = (state: boolean): Action => ({
+  type: 'SET_MAP_DRAG',
   payload: state
 });

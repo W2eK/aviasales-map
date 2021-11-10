@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Headline = styled.h1`
@@ -24,6 +24,7 @@ const Backdrop = styled.div`
 const Wrapper = styled.div`
   display: flex;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   justify-content: center;
   align-items: center;
   padding: 4rem;
@@ -43,6 +44,8 @@ const Overlay = styled.main`
   box-shadow: var(--shadow-10);
   overflow: hidden;
   @media (orientation: portrait) and (max-width: 428px) {
+    /* height: 100vh; */
+    /* height: calc(var(--vh, 1vh) * 100); */
     aspect-ratio: initial;
     width: 100%;
     border-radius: 0;
@@ -57,13 +60,16 @@ const Overlay = styled.main`
 `;
 
 export const Background: FC = ({ children }) => {
+  useEffect(() => {
+    let vh = window.innerHeight * 0.01;
+    // Then we set the value in the --vh custom property to the root of the document
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }, []);
   return (
     <Wrapper>
       <Headline>Поиск дешёвых авиабилетов</Headline>
       <Backdrop />
-      <Overlay>
-        {children}
-      </Overlay>
+      <Overlay>{children}</Overlay>
     </Wrapper>
   );
 };

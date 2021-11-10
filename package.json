@@ -12,6 +12,7 @@
     "@turf/turf": "^6.5.0",
     "@types/lodash": "^4.14.176",
     "axios": "^0.24.0",
+    "embla-carousel-react": "^6.0.1",
     "framer-motion": "^5.2.1",
     "immer": "^9.0.6",
     "lodash": "^4.17.21",
@@ -20,6 +21,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "rooks": "^5.7.3",
+    "salesman.js": "^2.0.4",
     "styled-components": "^5.3.3",
     "use-immer": "^0.6.0"
   },
@@ -28,6 +30,7 @@
     "@types/mapbox-gl": "^2.4.2",
     "@types/merge-images": "^1.2.1",
     "@types/react": "17.0.30",
+    "@types/salesman.js": "^2.0.0",
     "@types/styled-components": "^5.1.15",
     "@urbica/react-map-gl": "^1.14.3",
     "babel-plugin-styled-components": "^1.13.3",

@@ -3,6 +3,7 @@ import { CityWrapper, IATA } from 'interfaces/city.interface';
 import { DistrictsGeojson } from 'interfaces/districts.interface';
 import { WidgetPlaces } from 'interfaces/places.interface';
 import { shapeCity } from './shapers/shape-city';
+import { shapeDistricts } from './shapers/shape-districts';
 import { shapePlaces } from './shapers/shape-places';
 
 type RequestParams = {
@@ -56,11 +57,11 @@ class AviasalesApi {
   async requestPolygons({ iata, locale = 'ru_RU' }: RequestParams) {
     const url = `${iata.toUpperCase()}/polygons_geo_json.json`;
     const params = { locale };
-    const { data } =
-      await this.monetizationClient.get<DistrictsGeojson>(url, {
-        params
-      });
+    const { data } = await this.monetizationClient.get<DistrictsGeojson>(url, {
+      params
+    });
     return data;
+    // return shapeDistricts(data);
   }
 }
 

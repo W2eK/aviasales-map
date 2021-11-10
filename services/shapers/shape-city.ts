@@ -11,6 +11,7 @@ import {
 } from 'interfaces/city.interface';
 import * as turf from '@turf/turf';
 import { overrides } from 'data/overrides';
+import { computePointOrder } from './utils/salesman';
 
 const trimDescription = (description: string) => {
   const words = description.split(/(?<=[\wа-я]{3}) /);
@@ -32,7 +33,8 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
 
   // Pins
   const categories: Category[] = [];
-  const poi: (Poi | District)[] = [];
+  let poi: Poi[] = [];
+  const districts: District[] = [];
   const poiGeojson: PoiGeojson = turf.featureCollection([]);
   const labelsGeojson: LabelsGeojson = turf.featureCollection([]);
   tabs.forEach(tab => {
@@ -46,7 +48,7 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
           turf.point([longitude, latitude], { id, type })
         );
       } else {
-        poi.push({ type, id, name, image_url, description });
+        districts.push({ type, id, name, image_url, description });
         labelsGeojson.features.push(
           turf.point([longitude, latitude], {
             id,
@@ -58,7 +60,9 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
       }
     });
   });
-
+  poi = computePointOrder(poiGeojson).map(
+    id => poi.find(poi => poi.id === id)!
+  );
   // Voronoi
   const voronoiGeojson = turf.voronoi(poiGeojson, {
     bbox: turf.bbox(turf.buffer(turf.bboxPolygon(turf.bbox(poiGeojson)), 1))
@@ -85,6 +89,7 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
     title,
     camera,
     poi,
+    districts,
     categories,
     poiGeojson,
     voronoiGeojson,

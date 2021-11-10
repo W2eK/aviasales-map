@@ -20,8 +20,6 @@ const LabelsFilter: FC = () => {
 };
 
 export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
-  console.log(data);
-
   const rule: Expression = [
     'format',
     ['get', 'name'],

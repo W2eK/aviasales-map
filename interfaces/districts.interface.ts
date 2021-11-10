@@ -1,4 +1,4 @@
-interface DistrictsProperties {
+export interface DistrictsProperties {
   district_id: number;
   name: string;
 }

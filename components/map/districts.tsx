@@ -18,7 +18,7 @@ const DistrictsCenter = () => {
     const id = !feature ? null : feature.properties.district_id;
     if (state.districtHover !== id) {
       dispatch(setDistrictHover(id));
-      id && vibrate(10);
+      // id && vibrate(10);
     }
   };
   return (

@@ -6,10 +6,12 @@ export type StoreState = {
   districtHover: number | null;
   poiHover: number | null;
   poiType: PoiType | null;
+  isDragged: boolean;
 };
 
 export const initialState: StoreState = {
   mapLocked: false,
+  isDragged: false,
   districtHover: null,
   poiHover: null,
   poiType: null
@@ -30,6 +32,9 @@ export const storeReducer: Reducer = (state = initialState, action) => {
     }
     case 'SET_MAP_LOCK': {
       return { ...state, mapLocked: action.payload };
+    }
+    case 'SET_MAP_DRAG': {
+      return { ...state, isDragged: action.payload };
     }
     default: {
       throw state;
