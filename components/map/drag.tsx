@@ -10,6 +10,7 @@ export const MapDragState: FC = () => {
   }, [dispatch]);
   const onDragEnd: MapHandlers['dragend'] = useCallback(() => {
     dispatch(setMapDrag(false));
+    // console.log(false)
   }, [dispatch]);
 
   return useMemo(() => {

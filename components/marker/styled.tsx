@@ -1,6 +1,7 @@
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-export const ImageWrapper = styled.div`
+export const ImageWrapper = styled(motion.div)`
   width: 12rem;
   height: 12rem;
   border-radius: 2rem;
@@ -9,7 +10,7 @@ export const ImageWrapper = styled.div`
   /* position: relative; */
 `;
 
-export const LabelWrapper = styled.div`
+export const LabelWrapper = styled(motion.div)`
   position: absolute;
   bottom: 0;
   left: 50%;

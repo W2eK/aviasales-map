@@ -20,9 +20,9 @@ export const MapMarker: FC = () => {
       <MapboxMarker
         coordinates={poiFeature.geometry.coordinates as [number, number]}
         offset={[0, -40]}
-        anchor='bottom'
+        anchor="bottom"
       >
-        <Marker poi={poi} />
+        <Marker poi={poi} dragged={state.isDragged} />
       </MapboxMarker>
     )
   );
