@@ -1,3 +1,4 @@
+import { truncate } from '@turf/turf';
 import axios from 'axios';
 import { CityWrapper, IATA } from 'interfaces/city.interface';
 import { DistrictsGeojson } from 'interfaces/districts.interface';
@@ -60,7 +61,7 @@ class AviasalesApi {
     const { data } = await this.monetizationClient.get<DistrictsGeojson>(url, {
       params
     });
-    return data;
+    return truncate(data);
     // return shapeDistricts(data);
   }
 }

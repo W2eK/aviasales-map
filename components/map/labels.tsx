@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { Source, Layer, Filter } from 'mapboxr-gl';
 import { LabelsGeojson } from 'interfaces/city.interface';
 import { Expression } from 'mapbox-gl';
@@ -10,28 +10,18 @@ type MapLabelsProps = {
 
 const LabelsFilter: FC = () => {
   const { state } = useStoreContext();
-  const rule: Expression = [
-    'case',
-    ['!=', ['get', 'id'], state.districtHover],
-    true,
-    false
-  ];
-  return <Filter rule={rule} />;
+  return useMemo(() => {
+    const rule: Expression = [
+      'case',
+      ['!=', ['get', 'id'], state.districtHover],
+      true,
+      false
+    ];
+    return <Filter rule={rule} />;
+  }, [state.districtHover]);
 };
 
 export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
-  const rule: Expression = [
-    'format',
-    ['get', 'name'],
-    {},
-    '\n',
-    {},
-    ['get', 'description'],
-    {
-      'font-scale': 0.75,
-      'text-font': ['literal', ['Inter Light', 'Arial Unicode MS Regular']]
-    }
-  ];
   return (
     <Source id="labels" type="geojson" data={data} promoteId="id">
       <Layer
@@ -49,7 +39,7 @@ export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
         replaceMaster
         sourceLayer=""
         type="symbol"
-        paint={{'text-color': '#5A6472'}}
+        paint={{ 'text-color': '#5A6472' }}
       >
         <LabelsFilter />
       </Layer>

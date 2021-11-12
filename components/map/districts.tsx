@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useCallback, useEffect, useMemo } from 'react';
 import { Source, Layer, Property, Filter } from 'mapboxr-gl';
 import { useStoreContext } from 'store/context';
 import { setDistrictHover, setPoiType } from 'store/actions';
@@ -13,32 +13,41 @@ export interface DistrictsProps {
 
 const DistrictsCenter = () => {
   const { state, dispatch } = useStoreContext();
-  const handler = (features: DistrictsGeojson['features']) => {
-    const [feature] = features;
-    const id = !feature ? null : feature.properties.district_id;
-    if (state.districtHover !== id) {
-      dispatch(setDistrictHover(id));
-      // id && vibrate(10);
-    }
-  };
-  return (
-    <Center
-      id={state.districtHover}
-      layers={['districts-area']}
-      handler={handler}
-    />
+  const handler = useCallback(
+    (features: DistrictsGeojson['features']) => {
+      const [feature] = features;
+      const id = !feature ? null : feature.properties.district_id;
+      if (state.districtHover !== id) {
+        dispatch(setDistrictHover(id));
+        // id && vibrate(10);
+      }
+    },
+    [state.districtHover]
+  );
+  return useMemo(
+    () => (
+      <Center
+        id={state.districtHover}
+        layers={['districts-area']}
+        handler={handler}
+        isDragged={state.isDragged}
+      />
+    ),
+    [state.isDragged, handler]
   );
 };
 
 const DistrictFilter: FC = () => {
   const { state } = useStoreContext();
-  const rule: Expression = [
-    'case',
-    ['==', ['get', 'district_id'], state.districtHover],
-    true,
-    false
-  ];
-  return <Filter rule={rule} />;
+  return useMemo(() => {
+    const rule: Expression = [
+      'case',
+      ['==', ['get', 'district_id'], state.districtHover],
+      true,
+      false
+    ];
+    return <Filter rule={rule} />;
+  }, [state.districtHover]);
 };
 
 export const MapDistricts: FC<DistrictsProps> = ({ data }) => {

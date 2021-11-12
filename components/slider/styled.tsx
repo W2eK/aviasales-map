@@ -57,8 +57,8 @@ export const ImageWrapper = styled(motion.div)`
 export const SlideImage = styled(Image).attrs(
   (): Partial<ImageProps> => ({
     quality: 10,
-    width: 250,
-    height: 250,
+    width: 150,
+    height: 150,
     layout: 'responsive',
     loader: imageLoader
   })

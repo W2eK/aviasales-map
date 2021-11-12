@@ -52,6 +52,7 @@ export const Wrapper = styled(motion.div).attrs(() => ({
   margin: 1rem auto;
   padding: 0 1rem;
   width: 100%;
+  /* color: var(--color-primary-800); */
   /* margin: 1rem; */
 `;
 

@@ -7,8 +7,6 @@ export interface VoronoiProps {
 }
 
 export const MapVoronoi: FC<VoronoiProps> = ({ data }) => {
-  // @ts-ignore
-  window.voronoi = data;
   return (
     <Source id="voronoi" type="geojson" data={data} promoteId="id">
       <Layer

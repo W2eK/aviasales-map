@@ -64,9 +64,11 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
     id => poi.find(poi => poi.id === id)!
   );
   // Voronoi
-  const voronoiGeojson = turf.voronoi(poiGeojson, {
-    bbox: turf.bbox(turf.buffer(turf.bboxPolygon(turf.bbox(poiGeojson)), 1))
-  }) as any as VoronoiGeojson;
+  const voronoiGeojson = turf.truncate(
+    turf.voronoi(poiGeojson, {
+      bbox: turf.bbox(turf.buffer(turf.bboxPolygon(turf.bbox(poiGeojson)), 1))
+    })
+  ) as any as VoronoiGeojson;
   voronoiGeojson.features.forEach((feature, i) => {
     feature.properties = poiGeojson.features[i].properties;
   });

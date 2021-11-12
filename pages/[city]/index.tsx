@@ -7,17 +7,18 @@ import { CityLayout } from 'layouts/city';
 
 export interface CityPageProps {
   page: 'city';
-  districts?: DistrictsGeojson;
-  city?: City;
+  districts: DistrictsGeojson;
+  city: City;
 }
 
 const CityPage: NextPage<CityPageProps> = ({ city }) => {
+  // if(!city?.title) debugger
   return (
     <>
       <Head>
         <title>{city?.title}</title>
       </Head>
-      <CityLayout />
+      {city?.title ? <CityLayout /> : null}
     </>
   );
 };

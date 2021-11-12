@@ -1,6 +1,5 @@
 import { Listener, Terrain, MapHandlers } from 'mapboxr-gl';
 import { FC, useCallback, useState } from 'react';
-import { useStoreContext } from 'store/context';
 
 export const MapTerrain: FC = () => {
   // const { state } = useStoreState();
@@ -8,7 +7,7 @@ export const MapTerrain: FC = () => {
 
   const handler: MapHandlers['zoom'] = useCallback(
     ({ target: map }) => {
-      const zoomIsLarge = map.getZoom() >= 7;
+      const zoomIsLarge = map.getZoom() >= 11;
       if (showTerrain !== zoomIsLarge) setShowTerrain(zoomIsLarge);
     },
     [showTerrain]

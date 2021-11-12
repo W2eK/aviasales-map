@@ -5,7 +5,6 @@ import { PlacesListProps } from './props';
 import { List } from './styled';
 
 export const PlacesList: FC<PlacesListProps> = ({ places }) => {
-  const { state } = useStoreContext();
   const items = places.map(place => (
     <PlacesItem key={place.iata} place={place} />
   ));

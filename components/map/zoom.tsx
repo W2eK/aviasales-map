@@ -9,6 +9,7 @@ type State = {
 };
 
 export const MapZoom: FC = () => {
+  /*
   const state = useRef<State>({
     dragged: false,
     x: null,
@@ -47,14 +48,36 @@ export const MapZoom: FC = () => {
     (state.current.dragged = true);
   const onDragEnd: MapHandlers['mouseup'] = () =>
     (state.current = { dragged: false, x: null, y: null });
+    */
+  const onDragEnd: MapHandlers['touchend'] = () => console.log('touchend');
+  const onZoom: MapHandlers['zoom'] = () => console.log('zoom');
+  const onTouch: MapHandlers['touchmove'] = e => {
+    const { target: map } = e;
+    // setTimeout(() => e.target.setZoom(map.getZoom() * 1.001), 0)
+    // e.preventDefault();
+    // debugger
+    const center = map.getCenter();
+    const max = 1600;
+    const min = 0;
+    const elevation = map.queryTerrainElevation(center)!;
+    const ratio = (1 - (elevation - min) / (max - min)) * 1;
+    const zoom = 12 + ratio;
+    map.jumpTo({ zoom: zoom });
+    // e.originalEvent.preventDefault();
+    // e.preventDefault();
+    // e.
+  };
   return (
     <>
-      <Listener type="on" event="mousedown" handler={onDragStart} />
-      <Listener type="on" event="mouseup" handler={onDragEnd} />
-      <Listener type="on" event="mousemove" handler={handler} />
-      <Listener type="on" event="touchstart" handler={onDragStart} />
-      <Listener type="on" event="touchend" handler={onDragEnd} />
-      <Listener type="on" event="touchmove" handler={handler} />
+      {/* <Listener type="on" event="mousedown" handler={onDragStart} /> */}
+      {/* <Listener type="on" event="mouseup" handler={onDragEnd} /> */}
+      {/* <Listener type="on" event="mousemove" handler={handler} /> */}
+      {/* <Listener type="on" event="touchstart" handler={onDragStart} /> */}
+      {/* <Listener type="on" event="touchend" handler={onDragEnd} /> */}
+      {/* <Listener type="on" event="touchmove" handler={handler} /> */}
+      {/* <Listener type="on" event="touchend" handler={onDragEnd} /> */}
+      {/* <Listener type="on" event="zoom" handler={onZoom} /> */}
+      <Listener type="on" event="touchmove" handler={onTouch} />
     </>
   );
 };

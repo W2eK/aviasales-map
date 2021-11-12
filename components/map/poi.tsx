@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import { Source, Layer, Filter } from 'mapboxr-gl';
 import { useStoreContext } from 'store/context';
 import { PoiGeojson, VoronoiGeojson } from 'interfaces/city.interface';
@@ -13,42 +13,73 @@ export interface PoiProps {
 
 const PoiCenter = () => {
   const { state, dispatch } = useStoreContext();
-  const handler = (features: VoronoiGeojson['features']) => {
-    const [feature] = features;
-    const id = !feature ? null : feature.properties.id;
-    const type = !feature ? null : feature.properties.type;
-    if (state.poiHover !== id) {
-      dispatch(setPoiHover(id));
-      id && vibrate(10);
-    }
-    if (state.poiType !== type) {
-      dispatch(setPoiType(type));
-    }
-  };
-  return (
-    <Center
-      id={state.districtHover}
-      layers={['voronoi-fill']}
-      handler={handler}
-    />
+  const handler = useCallback(
+    (features: VoronoiGeojson['features']) => {
+      const [feature] = features;
+      const id = !feature ? null : feature.properties.id;
+      const type = !feature ? null : feature.properties.type;
+      if (state.poiHover !== id) {
+        dispatch(setPoiHover(id));
+        id && vibrate(10);
+      }
+      if (state.poiType !== type) {
+        dispatch(setPoiType(type));
+      }
+    },
+    [state.poiHover]
+  );
+  return useMemo(
+    () => (
+      <Center
+        id={state.districtHover}
+        layers={['voronoi-fill']}
+        handler={handler}
+        isDragged={state.isDragged}
+      />
+    ),
+    [state.isDragged, handler]
   );
 };
 
 const PoiFilter: FC = () => {
   const { state } = useStoreContext();
-  const rule: Expression = [
-    'case',
-    ['==', ['get', 'id'], state.poiHover],
-    true,
-    false
-  ];
-  return <Filter rule={rule} />;
+  return useMemo(() => {
+    const rule: Expression = [
+      'case',
+      ['==', ['get', 'id'], state.poiHover],
+      true,
+      false
+    ];
+    return <Filter rule={rule} />;
+  }, [state.poiHover]);
 };
 
 export const MapPoi: FC<PoiProps> = ({ data }) => {
   return (
     <Source id="poi" data={data} type="geojson" promoteId="id" strict>
       <PoiCenter />
+      <Layer
+        master="poi-circles"
+        replaceMaster
+        sourceLayer=""
+        type="circle"
+        layout={{ visibility: 'visible' }}
+        filter={null}
+        paint={{
+          'circle-color': [
+            'case',
+            ['boolean', ['feature-state', 'active'], false],
+            '#0655fe',
+            '#9ea9b7'
+          ],
+          'circle-radius': [
+            'case',
+            ['boolean', ['feature-state', 'active'], false],
+            7,
+            3
+          ]
+        }}
+      />
       <Layer
         id="poi-inactive"
         type="symbol"
@@ -57,7 +88,7 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
           'icon-image': ['concat', ['get', 'type'], '-inactive'],
           'icon-size': 0.5,
           'icon-padding': 0,
-          'icon-allow-overlap': true
+          'icon-allow-overlap': ['step', ['zoom'], false, 11, true]
         }}
       />
       <Layer
@@ -85,7 +116,7 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
           'icon-image': ['concat', ['get', 'type'], '-active'],
           'icon-size': 0.5,
           'icon-padding': 0,
-          'icon-allow-overlap': true,
+          'icon-allow-overlap': true
           // 'icon-ignore-placement': true
         }}
       >

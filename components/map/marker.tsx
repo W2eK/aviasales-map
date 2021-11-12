@@ -6,6 +6,7 @@ import { CityPageProps } from 'pages/[city]';
 import { Marker } from 'components/marker';
 
 export const MapMarker: FC = () => {
+  // TODO: Refactor types
   const { state } = useStoreContext();
   const pageProps = usePageContext() as CityPageProps;
   const poiFeature =

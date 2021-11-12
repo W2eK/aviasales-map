@@ -6,13 +6,13 @@ import { FC, useMemo } from 'react';
 import { useStoreContext } from 'store/context';
 import { Title, Subtitle, Header, Wrapper } from './styled';
 import mapboxgl from 'mapbox-gl';
+import { CityPageProps } from 'pages/[city]';
 
 export const Headline: FC = () => {
   const { state } = useStoreContext();
-  const pageProps = usePageContext();
+  const pageProps = usePageContext() as CityPageProps;
   const { map } = useMap() || {};
   return useMemo(() => {
-    if (pageProps.page === 'index' || !pageProps.city) return <Header />;
     const district =
       (state.districtHover &&
         pageProps.city.districts.find(
@@ -32,7 +32,7 @@ export const Headline: FC = () => {
         </AnimatePresence>
       </Header>
     );
-  }, [state.districtHover, pageProps.page, map]);
+  }, [state.districtHover, map]);
 };
 // const Wrapped = withMapProvider(Headline);
 // export { Wrapped as Headline };

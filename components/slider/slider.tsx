@@ -1,12 +1,5 @@
-import useEmblaCarousel from 'embla-carousel-react';
 import {
-  EmblaContainer,
-  EmblaMain,
-  EmblaSlide,
   Footer,
-  ImageWrapper,
-  SlideImage,
-  SliderLabel,
   StyledLabelWrapper
 } from './styled';
 

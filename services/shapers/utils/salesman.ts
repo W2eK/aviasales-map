@@ -5,7 +5,7 @@ interface PointWithId extends Point {
   id: number;
 }
 
-const coefficient = 0.999999; // 0.9999999;
+const coefficient = 0.9999; // 0.9999999;
 
 export const computePointOrder = <
   T extends GeoJSON.FeatureCollection<GeoJSON.Point, U>,
