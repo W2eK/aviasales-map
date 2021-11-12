@@ -2,16 +2,16 @@ import {
   Category,
   City,
   CityWrapper,
-  District,
   LabelsGeojson,
   IATA,
   Poi,
   PoiGeojson,
-  VoronoiGeojson
+  Camera
 } from 'interfaces/city.interface';
 import * as turf from '@turf/turf';
 import { overrides } from 'data/overrides';
 import { computePointOrder } from './utils/salesman';
+import { buildMultiVoronoi } from './utils/voronoi';
 
 const trimDescription = (description: string) => {
   const words = description.split(/(?<=[\wа-я]{3}) /);
@@ -32,9 +32,8 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
   const { start_zoom: zoom, title, tabs } = city_map;
 
   // Pins
+  const poi: Record<number, Poi> = {};
   const categories: Category[] = [];
-  let poi: Poi[] = [];
-  const districts: District[] = [];
   const poiGeojson: PoiGeojson = turf.featureCollection([]);
   const labelsGeojson: LabelsGeojson = turf.featureCollection([]);
   tabs.forEach(tab => {
@@ -42,39 +41,28 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
     categories.push({ id, title, subtitle, type });
     tab.pins.forEach(({ id, name, image_url, description, coordinates }) => {
       const { longitude, latitude } = coordinates;
+      const center: [number, number] = [longitude, latitude];
+      const bearing = 180 - Math.random() * 360;
+      const camera = { center, bearing };
+      poi[id] = { type, id, name, image_url, camera, description };
       if (type !== 'districts') {
-        poi.push({ type, id, name, image_url });
-        poiGeojson.features.push(
-          turf.point([longitude, latitude], { id, type })
-        );
+        poiGeojson.features.push(turf.point(center, { id, type }));
       } else {
-        districts.push({ type, id, name, image_url, description });
+        description = trimDescription(description);
         labelsGeojson.features.push(
-          turf.point([longitude, latitude], {
-            id,
-            name,
-            type,
-            description: trimDescription(description)
-          })
+          turf.point(center, { id, name, type, description })
         );
       }
     });
   });
-  poi = computePointOrder(poiGeojson).map(
-    id => poi.find(poi => poi.id === id)!
+  const order = computePointOrder(
+    turf.featureCollection([...poiGeojson.features, ...labelsGeojson.features])
   );
-  // Voronoi
-  const voronoiGeojson = turf.truncate(
-    turf.voronoi(poiGeojson, {
-      bbox: turf.bbox(turf.buffer(turf.bboxPolygon(turf.bbox(poiGeojson)), 1))
-    })
-  ) as any as VoronoiGeojson;
-  voronoiGeojson.features.forEach((feature, i) => {
-    feature.properties = poiGeojson.features[i].properties;
-  });
+  const voronoiGeojson = buildMultiVoronoi(
+    poiGeojson,
+    categories.map(({ type }) => type).filter(type => type !== 'districts')
+  );
 
-  // ! BUG: deal with multiple POI with same coordinates
-  voronoiGeojson.features = voronoiGeojson.features.filter(feature => feature);
   // Camera Options
   // const { longitude, latitude } = city_map.start_point;
   const { id, ...restOverrides } = overrides[iata] || {};
@@ -85,16 +73,19 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
   ).geometry.coordinates as [number, number];
   const pitch = 50;
   const camera = { center, zoom, pitch, bearing: 0, ...restOverrides };
+  const districtId = id || labelsGeojson.features[0].properties.id;
 
   return {
-    id: id || labelsGeojson.features[0].properties.id,
+    districtId,
     title,
     camera,
     poi,
-    districts,
+    order,
     categories,
-    poiGeojson,
-    voronoiGeojson,
-    labelsGeojson
+    geojson: {
+      poi: turf.truncate(poiGeojson),
+      voronoi: turf.truncate(voronoiGeojson),
+      labels: turf.truncate(labelsGeojson)
+    }
   };
 };

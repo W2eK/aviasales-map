@@ -15,11 +15,10 @@ export const Carousel: FC = () => {
   const pageProps = usePageContext() as CityPageProps;
   const [emblaRef, embla] = useEmblaCarousel({ skipSnaps: true });
 
-  const index =
-    pageProps.city?.poi.findIndex(poi => poi.id === state.poiHover) || 0;
+  const index = pageProps.order.indexOf(state.poiHover!);
 
   useEffect(() => {
-    if (!embla) return;
+    if (!embla || index === -1) return;
     const prevIndex = embla.selectedScrollSnap();
     const jump = Math.abs(index - prevIndex) > 20;
     embla?.scrollTo(index, jump);
@@ -31,20 +30,21 @@ export const Carousel: FC = () => {
     if (!embla) return;
     embla.on('select', () => {
       const index = embla.selectedScrollSnap();
+      const id = pageProps.order[index];
+      const poi = pageProps.poi[id];
       vibrate(10);
-      dispatch(setPoiHover(pageProps.city?.poi[index].id || null));
-      dispatch(setPoiType(pageProps.city?.poi[index].type || null));
+      dispatch(setPoiHover(poi.id || null));
+      dispatch(setPoiType(poi.type || null));
     });
   }, [embla]);
   return useMemo(
-    () =>
-      pageProps.city === undefined ? null : (
-        <EmblaMain ref={emblaRef}>
-          <EmblaContainer>
-            <SliderItems pois={pageProps.city.poi} />
-          </EmblaContainer>
-        </EmblaMain>
-      ),
-    [emblaRef, pageProps.city]
+    () => (
+      <EmblaMain ref={emblaRef}>
+        <EmblaContainer>
+          <SliderItems pois={pageProps.order.map(id => pageProps.poi[id])} />
+        </EmblaContainer>
+      </EmblaMain>
+    ),
+    [emblaRef, pageProps.poi]
   );
 };

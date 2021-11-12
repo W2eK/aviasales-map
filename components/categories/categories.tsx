@@ -1,6 +1,7 @@
 import { Icon } from 'components/icon';
 import { usePageContext } from 'context/page-context';
-import { FC } from 'react';
+import { CityPageProps } from 'pages/[city]';
+import { FC, useMemo } from 'react';
 import { useStoreContext } from 'store/context';
 import {
   IconHolder,
@@ -12,22 +13,23 @@ import {
 } from './styled';
 
 export const Categories: FC = () => {
-  const pageProps = usePageContext();
   const { state } = useStoreContext();
-  if (pageProps.page === 'index' || !pageProps.city) return null;
-  const Options = pageProps.city.categories.map(({ type, title }) => (
-    <RadioContainer
-      key={type}
-      animate={type === state.poiType ? 'active' : 'inactive'}
-    >
-      <LabelWrapper>
-        <LabelContent>{title}</LabelContent>
-      </LabelWrapper>
-      <RadioButton />
-      <IconHolder>
-        <Icon category={type} />
-      </IconHolder>
-    </RadioContainer>
-  ));
-  return <Wrapper>{Options}</Wrapper>;
+  const pageProps = usePageContext() as CityPageProps;
+  return useMemo(() => {
+    const Options = pageProps.categories.map(({ type, title }) => (
+      <RadioContainer
+        key={type}
+        animate={type === state.poiType ? 'active' : 'inactive'}
+      >
+        <LabelWrapper>
+          <LabelContent>{title}</LabelContent>
+        </LabelWrapper>
+        <RadioButton />
+        <IconHolder>
+          <Icon category={type} />
+        </IconHolder>
+      </RadioContainer>
+    ));
+    return <Wrapper>{Options}</Wrapper>;
+  }, [state.poiType]);
 };

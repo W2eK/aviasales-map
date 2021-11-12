@@ -6,6 +6,8 @@ export type StoreState = {
   districtHover: number | null;
   poiHover: number | null;
   poiType: PoiType | null;
+  selectedType: PoiType | null;
+  selectedIds: number[] | null;
   isDragged: boolean;
 };
 
@@ -13,6 +15,8 @@ export const initialState: StoreState = {
   mapLocked: false,
   isDragged: false,
   districtHover: null,
+  selectedIds: null,
+  selectedType: null,
   poiHover: null,
   poiType: null
 };

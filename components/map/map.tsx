@@ -18,7 +18,6 @@ import { MapMarker } from './marker';
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
   (window as any).__MAPBOXR_GL_LOG = true;
-
 }
 
 const center: [[number, number], [number, number]] = [
@@ -38,15 +37,15 @@ const MapContainer: FC = () => {
       center={[15, 50]}
       zoom={3}
       padding={{ top: 0, bottom: 100 }}
-      showPadding
+      // showPadding
     >
       <CameraController />
-      {pageProps.page === 'city' && pageProps.city && pageProps.districts ? (
+      {pageProps.page === 'city' && pageProps.title ? (
         <>
-          <MapDistricts data={pageProps.districts} />
-          <MapVoronoi data={pageProps.city.voronoiGeojson} />
-          <MapPoi data={pageProps.city.poiGeojson} />
-          <MapLabels data={pageProps.city.labelsGeojson} />
+          <MapDistricts data={pageProps.geojson.districts} />
+          <MapVoronoi data={pageProps.geojson.voronoi} />
+          <MapPoi data={pageProps.geojson.poi} />
+          <MapLabels data={pageProps.geojson.labels} />
           <MapMarker />
         </>
       ) : null}

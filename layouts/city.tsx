@@ -14,8 +14,8 @@ export const CityLayout: FC = () => {
   return (
     <Wrapper>
       <Headline />
-      {/* <Categories /> */}
-      {/* <Slider /> */}
+      <Categories />
+      <Slider />
     </Wrapper>
   );
 };

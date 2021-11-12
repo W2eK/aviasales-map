@@ -16,6 +16,7 @@ export const LabelWrapper = styled(motion.div)`
   bottom: 0;
   left: 50%;
   transform: translate(-50%, calc(50% - 4px));
+  z-index: 1;
   /* width:  */
   /* max-width: 100%; */
 `;

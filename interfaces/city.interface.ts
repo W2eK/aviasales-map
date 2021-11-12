@@ -1,13 +1,20 @@
+import { DistrictsGeojson } from './districts.interface';
+
 export type City = {
-  id: number;
+  districtId: number;
+  // id: number;
   title: string;
   camera: Camera;
-  poi: Poi[];
-  districts: District[];
+  poi: Record<number, Poi>;
+  // districts: District[];
+  order: number[];
   categories: Category[];
-  poiGeojson: PoiGeojson;
-  voronoiGeojson: VoronoiGeojson;
-  labelsGeojson: LabelsGeojson;
+  geojson: {
+    poi: PoiGeojson;
+    voronoi: VoronoiGeojson;
+    labels: LabelsGeojson;
+    // districts: DistrictsGeojson;
+  };
 };
 
 export type Camera = {
@@ -22,11 +29,13 @@ export type Poi = {
   name: string;
   image_url: string;
   type: PoiType;
+  description: string;
+  camera: Partial<Camera> & Pick<Camera, 'center'>;
 };
 
-export type District = Poi & { description: string };
+// export type District = Poi & { description: string };
 
-export type PoiProperties = Omit<Poi, 'name' | 'image_url'>;
+export type PoiProperties = Pick<Poi, 'id' | 'type'>;
 export type PoiGeojson = GeoJSON.FeatureCollection<
   GeoJSON.Point,
   PoiProperties
@@ -41,10 +50,12 @@ export type LabelsGeojson = GeoJSON.FeatureCollection<
   LabelsProperties
 >;
 
-// export type VoronoiProperties = { id: number; type: PoiType };
+export type VoronoiProperties = PoiProperties & {
+  aggregated?: true;
+};
 export type VoronoiGeojson = GeoJSON.FeatureCollection<
   GeoJSON.Polygon,
-  PoiProperties
+  VoronoiProperties
 >;
 
 export type Category = {

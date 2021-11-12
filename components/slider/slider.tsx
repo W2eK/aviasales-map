@@ -1,7 +1,4 @@
-import {
-  Footer,
-  StyledLabelWrapper
-} from './styled';
+import { Footer, StyledLabelWrapper } from './styled';
 
 import { useStoreContext } from 'store/context';
 import { usePageContext } from 'context/page-context';
@@ -17,23 +14,26 @@ import { ImageLabel, LabelWrapper } from 'components/marker/styled';
 export const Slider: FC = () => {
   const { state } = useStoreContext();
   const pageProps = usePageContext() as CityPageProps;
-  const poiName =
-    pageProps.city?.poi.find(({ id }) => id === state.poiHover)?.name || '';
+  const name =
+    state.poiHover !== null ? pageProps.poi[state.poiHover].name : null;
+
   const footer = useMemo(
     () => (
       <Footer
-        animate={{ scale: !state.isDragged ? 2.5 : 1 }}
+        animate={{
+          scale: !state.isDragged ? 2.5 : 1,
+          y: state.poiHover === null ? '250%' : 0
+        }}
         // animate={{ scale: 1 }}
         style={{ originY: 1, originX: 0.5 }}
       >
         <Carousel />
       </Footer>
     ),
-    [state.isDragged]
+    [state.isDragged, state.poiHover === null]
   );
-  return (
-    <>
-      {footer}
+  const label = useMemo(
+    () => (
       <StyledLabelWrapper
         animate={{
           // scale: !state.isDragged ? 0.4 : 1,
@@ -41,8 +41,15 @@ export const Slider: FC = () => {
           y: !state.isDragged ? -16 : 100
         }}
       >
-        <ImageLabel>{poiName}</ImageLabel>
+        {name && <ImageLabel>{name}</ImageLabel>}
       </StyledLabelWrapper>
+    ),
+    [state.isDragged, name]
+  );
+  return (
+    <>
+      {footer}
+      {label}
     </>
   );
 };

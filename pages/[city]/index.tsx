@@ -5,20 +5,21 @@ import { aviasalesApi } from 'services/aviasales-api';
 import { City, IATA } from 'interfaces/city.interface';
 import { CityLayout } from 'layouts/city';
 
-export interface CityPageProps {
+export type CityPageProps = City & {
   page: 'city';
-  districts: DistrictsGeojson;
-  city: City;
-}
+  geojson: {
+    districts: DistrictsGeojson;
+  };
+};
 
-const CityPage: NextPage<CityPageProps> = ({ city }) => {
+const CityPage: NextPage<CityPageProps> = ({ title }) => {
   // if(!city?.title) debugger
   return (
     <>
       <Head>
-        <title>{city?.title}</title>
+        <title>{title}</title>
       </Head>
-      {city?.title ? <CityLayout /> : null}
+      {title ? <CityLayout /> : null}
     </>
   );
 };
@@ -32,13 +33,17 @@ export const getStaticProps: GetStaticProps<CityPageProps> = async ({
     return { notFound: true };
   try {
     const iata = params.city as IATA;
-    const districtsPolygons = await aviasalesApi.requestPolygons({ iata });
+    console.log(params);
+    const districts = await aviasalesApi.requestPolygons({ iata });
     const city = await aviasalesApi.requestCity({ iata });
     return {
       props: {
         page: 'city',
-        districts: districtsPolygons,
-        city
+        ...city,
+        geojson: {
+          ...city.geojson,
+          districts
+        }
       }
     };
   } catch (err) {
