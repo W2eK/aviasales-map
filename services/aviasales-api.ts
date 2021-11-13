@@ -3,9 +3,11 @@ import axios from 'axios';
 import { CityWrapper, IATA } from 'interfaces/city.interface';
 import { DistrictsGeojson } from 'interfaces/districts.interface';
 import { WidgetPlaces } from 'interfaces/places.interface';
+import { BlocksRoot } from 'interfaces/poi.interface';
 import { shapeCity } from './shapers/shape-city';
 import { shapeDistricts } from './shapers/shape-districts';
 import { shapePlaces } from './shapers/shape-places';
+import { shapePoi } from './shapers/shape-poi';
 
 type RequestParams = {
   iata: IATA;
@@ -43,6 +45,16 @@ class AviasalesApi {
       headers
     });
     return shapePlaces(data);
+  }
+
+  async requestPoi({ id, locale = 'ru_RU' }: { id: number; locale?: string }) {
+    // https://monetization-trap-api.aviasales.ru/api/v1/trap/poi/105.json?locale=ru_RU
+    const url = `poi/${id}.json`;
+    const params = { locale };
+    const { data } = await this.monetizationClient.get<BlocksRoot>(url, {
+      params
+    });
+    return shapePoi(data);
   }
 
   async requestCity({ iata, locale = 'ru_RU' }: RequestParams) {

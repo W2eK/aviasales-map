@@ -14,6 +14,7 @@ import { MapLabels } from './labels';
 import { MapZoom } from './zoom';
 import { MapDragState } from './drag';
 import { MapMarker } from './marker';
+import { MapLayers } from './layers';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
@@ -40,15 +41,7 @@ const MapContainer: FC = () => {
       // showPadding
     >
       <CameraController />
-      {pageProps.page === 'city' && pageProps.title ? (
-        <>
-          <MapDistricts data={pageProps.geojson.districts} />
-          <MapVoronoi data={pageProps.geojson.voronoi} />
-          <MapPoi data={pageProps.geojson.poi} />
-          <MapLabels data={pageProps.geojson.labels} />
-          <MapMarker />
-        </>
-      ) : null}
+      <MapLayers/>
       <LazyImages />
       {/* <MapPointer /> */}
       <Source

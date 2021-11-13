@@ -39,7 +39,7 @@ export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
         replaceMaster
         sourceLayer=""
         type="symbol"
-        paint={{ 'text-color': '#5A6472' }}
+        // paint={{ 'text-color': '#5A6472' }}
       >
         <LabelsFilter />
       </Layer>

@@ -19,9 +19,9 @@ export type City = {
 
 export type Camera = {
   center: [number, number];
-  zoom: number;
-  pitch: number;
-  bearing: number;
+  zoom?: number;
+  pitch?: number;
+  bearing?: number;
 };
 
 export type Poi = {

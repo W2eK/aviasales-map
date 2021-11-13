@@ -6,6 +6,9 @@ import { useStoreContext } from 'store/context';
 import { setDistrictHover, setMapLock } from 'store/actions';
 import { CityPageProps } from 'pages/[city]';
 
+
+
+
 export const CameraController: FC = () => {
   const { state, dispatch } = useStoreContext();
   const pageProps = usePageContext();
@@ -17,14 +20,14 @@ export const CameraController: FC = () => {
       ipApi.getLocation().then(({ lat, lon }) => {
         map.setCenter([lon, lat]);
       });
-    } else if (pageProps.page === 'city') {
+    } else if (pageProps.page === 'city' || pageProps.page === 'poi') {
       map.jumpTo(pageProps.camera);
     }
   }, []);
 
-  // Others
+  // On Page Change
   useEffect(() => {
-    if (pageProps.page === 'city') {
+    if (pageProps.page === 'city' || pageProps.page === 'poi') {
       // if (pageProps.city) dispatch(setDistrictHover(pageProps.city.id));
       const { camera } = pageProps;
       map.flyTo(camera, { locked: true });

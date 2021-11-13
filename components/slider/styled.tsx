@@ -66,6 +66,7 @@ export const SlideImage = styled(Image).attrs(
   })
 )`
   background-color: var(--color-ink-300);
+  cursor: pointer;
 `;
 
 export const StyledLabelWrapper = styled(LabelWrapper)`
