@@ -15,11 +15,9 @@ export const buildVoronoi = <
   const voronoi = turf.voronoi(geojson, {
     bbox
   }) as GeoJSON.FeatureCollection<GeoJSON.Polygon, U>;
-  turf.featureEach(
-    voronoi,
-    (feature, index) =>
-      (feature.properties = { ...geojson.features[index].properties })
-  );
+  turf.featureEach(voronoi, (feature, index) => {
+    if (feature) feature.properties = { ...geojson.features[index].properties };
+  });
 
   // ! BUG: deal with multiple POI with same coordinates
   voronoi.features = voronoi.features.filter(Boolean);
