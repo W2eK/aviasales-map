@@ -13,7 +13,6 @@ export type CityPageProps = City & {
 };
 
 const CityPage: NextPage<CityPageProps> = ({ title }) => {
-  // if(!city?.title) debugger
   return (
     <>
       <Head>
@@ -35,7 +34,7 @@ export const getStaticProps: GetStaticProps<CityPageProps> = async ({
     const iata = params.city as IATA;
     console.log(params);
     const districts = await aviasalesApi.requestPolygons({ iata });
-    const city = await aviasalesApi.requestCity({ iata });
+    const city = await aviasalesApi.requestCity_({ iata });
     return {
       props: {
         page: 'city',

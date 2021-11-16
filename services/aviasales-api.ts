@@ -1,11 +1,10 @@
-import { truncate } from '@turf/turf';
 import axios from 'axios';
+import { truncate } from '@turf/turf';
 import { CityWrapper, IATA } from 'interfaces/city.interface';
 import { DistrictsGeojson } from 'interfaces/districts.interface';
 import { WidgetPlaces } from 'interfaces/places.interface';
 import { BlocksRoot } from 'interfaces/poi.interface';
 import { shapeCity } from './shapers/shape-city';
-import { shapeDistricts } from './shapers/shape-districts';
 import { shapePlaces } from './shapers/shape-places';
 import { shapePoi } from './shapers/shape-poi';
 
@@ -16,11 +15,13 @@ type RequestParams = {
 
 class AviasalesApi {
   private monetizationClient = axios.create({
-    baseURL: 'https://monetization-trap-api.aviasales.ru/api/v1/trap/'
+    baseURL: 'https://monetization-trap-api.aviasales.ru/api/v1/trap/',
+    headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }
   });
 
   private widgetClient = axios.create({
-    baseURL: 'https://content-admin.aviasales.ru/api/widgets'
+    baseURL: 'https://content-admin.aviasales.ru/api/widgets',
+    headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }
   });
 
   async requestPlaces() {
@@ -57,7 +58,7 @@ class AviasalesApi {
     return shapePoi(data);
   }
 
-  async requestCity({ iata, locale = 'ru_RU' }: RequestParams) {
+  async requestCity_({ iata, locale = 'ru_RU' }: RequestParams) {
     iata = iata.toUpperCase() as IATA;
     const url = `${iata}.json`;
     const params = { locale };
@@ -65,6 +66,21 @@ class AviasalesApi {
       params
     });
     return shapeCity(data, iata);
+  }
+  async requestCity({ iata, locale = 'ru_RU' }: RequestParams) {
+    iata = iata.toUpperCase() as IATA;
+    const url = `${iata}.json`;
+    const params = { locale };
+    const { data } = await this.monetizationClient.get<CityWrapper>(url, {
+      params
+    });
+    return data;
+  }
+  async requestCategories({ iata, locale = 'ru_RU' }: RequestParams) {
+    const data = await this.requestCity({ iata });
+    const categories = data.city_map.tabs//.map(())
+    // iata = iata.toUpperCase() as IATA;
+    // const
   }
 
   async requestPolygons({ iata, locale = 'ru_RU' }: RequestParams) {
@@ -74,7 +90,6 @@ class AviasalesApi {
       params
     });
     return truncate(data);
-    // return shapeDistricts(data);
   }
 }
 

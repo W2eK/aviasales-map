@@ -24,6 +24,7 @@ const Backdrop = styled.div`
 const Wrapper = styled.div`
   display: flex;
   height: 100vh;
+  /* https://css-tricks.com/the-trick-to-viewport-units-on-mobile/ */
   height: calc(var(--vh, 1vh) * 100);
   justify-content: center;
   align-items: center;

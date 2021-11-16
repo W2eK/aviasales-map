@@ -11,7 +11,7 @@ export const MapLayers: FC = () => {
   const pageProps = usePageContext();
   const { query } = useRouter();
   return useMemo(() => {
-    return pageProps.page !== 'index' ? (
+    return pageProps.page !== 'index' && pageProps.geojson ? (
       <>
         <MapDistricts data={pageProps.geojson.districts} />
         <MapVoronoi data={pageProps.geojson.voronoi} />

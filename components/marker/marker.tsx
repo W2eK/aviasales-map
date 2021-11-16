@@ -1,5 +1,5 @@
-import { SlideImage } from 'components/slider/styled';
 import Link from 'next/link';
+import { SlideImage } from 'components/slider/styled';
 import { useRouter } from 'next/router';
 import { AnimatePresence } from 'framer-motion';
 import { Poi } from 'interfaces/city.interface';
@@ -10,22 +10,21 @@ type MarkerProps = { poi: Poi; isDragged: boolean };
 
 export const Marker: FC<MarkerProps> = ({ poi, isDragged }) => {
   const router = useRouter();
-  // isDragged = true;
+  isDragged = true;
   return (
     <AnimatePresence>
       {isDragged ? (
         <Link
-          // href={{ pathname: `/${router.pathname}`, query: { poi: poi.id } }}
           href={{
-            pathname: '/[city]',
-            query: { ...router.query, poi: poi.id }
+            pathname: '/[city]/',
+            query: { ...router.query, category: 'all', poi: poi.id }
           }}
           passHref
         >
           <ImageWrapper
-            initial={{ opacity: 0, y: 600 }}
+            initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 600 }}
+            exit={{ opacity: 0, y: -100 }}
           >
             <SlideImage src={poi.image_url} key={poi.id} />
             <LabelWrapper>

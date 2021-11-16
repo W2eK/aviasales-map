@@ -1,12 +1,8 @@
-import { DistrictsGeojson } from './districts.interface';
-
 export type City = {
   districtId: number;
-  // id: number;
   title: string;
   camera: Camera;
   poi: Record<number, Poi>;
-  // districts: District[];
   order: number[];
   categories: Category[];
   geojson: {

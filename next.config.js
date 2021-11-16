@@ -19,5 +19,18 @@ module.exports = {
   },
   images: {
     domains: ['photo.hotellook.com']
+  },
+  async headers() {
+    return [
+      {
+        source: '/[city]',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      }
+    ];
   }
 };

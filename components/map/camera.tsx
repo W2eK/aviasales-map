@@ -20,14 +20,15 @@ export const CameraController: FC = () => {
       ipApi.getLocation().then(({ lat, lon }) => {
         map.setCenter([lon, lat]);
       });
-    } else if (pageProps.page === 'city' || pageProps.page === 'poi') {
+    } else if (pageProps.page === 'city') {
       map.jumpTo(pageProps.camera);
     }
+    // TODO: initial — from full bounds to overrides
   }, []);
 
   // On Page Change
   useEffect(() => {
-    if (pageProps.page === 'city' || pageProps.page === 'poi') {
+    if (pageProps.page === 'city') {
       // if (pageProps.city) dispatch(setDistrictHover(pageProps.city.id));
       const { camera } = pageProps;
       map.flyTo(camera, { locked: true });
