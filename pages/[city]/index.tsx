@@ -55,7 +55,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const places = await aviasalesApi.requestPlaces();
   const cities = places
     .map(({ iata }) => `/${iata.toLocaleLowerCase()}`)
-    .slice(0, 5);
+    // .slice(0, 5);
   return {
     paths: cities,
     fallback: true
