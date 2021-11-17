@@ -40,6 +40,9 @@ export const storeReducer: Reducer = (state = initialState, action) => {
     case 'SET_MAP_DRAG': {
       return { ...state, isDragged: action.payload };
     }
+    case 'RESET_STATE': {
+      return { ...initialState };
+    }
     default: {
       throw state;
     }

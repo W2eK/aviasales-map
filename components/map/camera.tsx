@@ -3,11 +3,8 @@ import { useMap } from 'mapboxr-gl';
 import { ipApi } from 'services/ip-api';
 import { usePageContext } from 'context/page-context';
 import { useStoreContext } from 'store/context';
-import { setDistrictHover, setMapLock } from 'store/actions';
+import { resetState, setDistrictHover, setMapLock } from 'store/actions';
 import { CityPageProps } from 'pages/[city]';
-
-
-
 
 export const CameraController: FC = () => {
   const { state, dispatch } = useStoreContext();
@@ -37,6 +34,7 @@ export const CameraController: FC = () => {
         dispatch(setMapLock(false));
       });
     } else if (pageProps.page === 'index') {
+      dispatch(resetState());
       map.flyTo({
         pitch: 0,
         zoom: 8,

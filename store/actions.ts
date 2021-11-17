@@ -20,6 +20,9 @@ export type Action =
   | {
       type: 'SET_MAP_DRAG';
       payload: boolean;
+    }
+  | {
+      type: 'RESET_STATE';
     };
 
 export const setDistrictHover = (id: number | null): Action => ({
@@ -46,3 +49,5 @@ export const setMapDrag = (state: boolean): Action => ({
   type: 'SET_MAP_DRAG',
   payload: state
 });
+
+export const resetState = (): Action => ({ type: 'RESET_STATE' });
