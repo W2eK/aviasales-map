@@ -9,7 +9,7 @@ import Nature from './svg/nature.svg';
 import Parks from './svg/parks.svg';
 import Restaurants from './svg/restaurants.svg';
 import Suburb from './svg/suburb.svg';
-import { PoiType } from 'interfaces/city.interface';
+import { PoiType } from 'interfaces/data.interface';
 
 type Icons = Record<PoiType, any> & { placeholder: any };
 

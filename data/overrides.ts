@@ -1,4 +1,4 @@
-import { IATA } from 'interfaces/city.interface';
+import { IATA } from "interfaces/iata.interface";
 
 type Override = Partial<{
   zoom: number;

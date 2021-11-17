@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { SlideImage } from 'components/slider/styled';
 import { useRouter } from 'next/router';
 import { AnimatePresence } from 'framer-motion';
-import { Poi } from 'interfaces/city.interface';
+import { Poi } from 'interfaces/data.interface';
 import { FC, useEffect } from 'react';
 import { ImageLabel, ImageWrapper, LabelWrapper } from './styled';
 

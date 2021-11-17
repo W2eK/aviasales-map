@@ -4,7 +4,7 @@ import { useMap } from 'mapboxr-gl';
 import { FC, useMemo } from 'react';
 import { useStoreContext } from 'store/context';
 import { Title, Subtitle, Header, Wrapper } from './styled';
-import { CityPageProps } from 'pages/[city]';
+import { CityPageProps } from 'interfaces/city.interface';
 
 export const Headline: FC = () => {
   const { state } = useStoreContext();

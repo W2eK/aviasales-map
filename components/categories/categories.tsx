@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { usePageContext } from 'context/page-context';
-import { CityPageProps } from 'pages/[city]';
+import { CityPageProps } from 'interfaces/city.interface';
 import { FC, useCallback, useMemo } from 'react';
 import { useStoreContext } from 'store/context';
 import { Selector } from './selector';
@@ -8,7 +8,7 @@ import { Wrapper } from './wrapper';
 import { Option } from './option';
 import { Options } from './options';
 import { Link } from 'components/shared/link';
-import { PoiType } from 'interfaces/city.interface';
+import { PoiType } from 'interfaces/data.interface';
 
 export const Categories: FC = () => {
   // Access to Store

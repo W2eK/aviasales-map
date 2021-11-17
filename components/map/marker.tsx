@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 import { Marker as MapboxMarker } from 'mapboxr-gl';
 import { useStoreContext } from 'store/context';
 import { usePageContext } from 'context/page-context';
-import { CityPageProps } from 'pages/[city]';
+import { CityPageProps } from 'interfaces/city.interface';
 import { Marker } from 'components/marker';
 
 export const MapMarker: FC = () => {

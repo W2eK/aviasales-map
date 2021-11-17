@@ -1,7 +1,7 @@
 import { FC, memo } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { Category, PoiType } from 'interfaces/city.interface';
+import { Category, PoiType } from 'interfaces/data.interface';
 import { Option } from './option';
 
 type OptionsProps = {

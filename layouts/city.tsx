@@ -1,7 +1,7 @@
 // import { Categories } from 'components/categories';
 import { Categories } from 'components/categories';
 import { Headline } from 'components/headline';
-import { Slider } from 'components/slider';
+// import { Slider } from 'components/slider';
 import { FC } from 'react';
 import styled from 'styled-components';
 

@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
 import { Source, Layer, Filter } from 'mapboxr-gl';
-import { LabelsGeojson } from 'interfaces/city.interface';
+import { LabelsGeojson } from 'interfaces/geodata.interface';
 import { Expression } from 'mapbox-gl';
 import { useStoreContext } from 'store/context';
 

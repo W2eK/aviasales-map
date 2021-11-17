@@ -1,6 +1,6 @@
 import { createContext, FC, useContext } from 'react';
 import { HomePageProps } from 'pages';
-import { CityPageProps } from 'pages/[city]';
+import { CityPageProps } from 'interfaces/city.interface';
 
 type PageContextProps = HomePageProps | CityPageProps;
 

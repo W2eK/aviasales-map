@@ -4,7 +4,7 @@ import { ipApi } from 'services/ip-api';
 import { usePageContext } from 'context/page-context';
 import { useStoreContext } from 'store/context';
 import { resetState, setDistrictHover, setMapLock } from 'store/actions';
-import { CityPageProps } from 'pages/[city]';
+import { CityPageProps } from 'interfaces/city.interface';
 
 export const CameraController: FC = () => {
   const { state, dispatch } = useStoreContext();

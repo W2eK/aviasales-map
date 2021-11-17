@@ -1,7 +1,7 @@
 import { EmblaSlide, SlideImage } from 'components/slider/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Poi } from 'interfaces/city.interface';
+import { Poi } from 'interfaces/data.interface';
 import { FC, memo } from 'react';
 
 type SliderItemsProps = { pois: Poi[] };

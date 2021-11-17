@@ -4,7 +4,7 @@ import { useStoreContext } from 'store/context';
 import { usePageContext } from 'context/page-context';
 
 import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
-import { CityPageProps } from 'pages/[city]';
+import { CityPageProps } from 'interfaces/city.interface';
 import { setDistrictHover, setPoiHover, setPoiType } from 'store/actions';
 import { vibrate } from 'services/vibration';
 import { SliderItems } from 'components/marker/items';

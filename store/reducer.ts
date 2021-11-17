@@ -1,5 +1,5 @@
 import { Action } from './actions';
-import { PoiType } from 'interfaces/city.interface';
+import { PoiType } from 'interfaces/data.interface';
 
 export type StoreState = {
   mapLocked: boolean;

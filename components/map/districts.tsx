@@ -4,7 +4,7 @@ import { useStoreContext } from 'store/context';
 import { setDistrictHover, setPoiType } from 'store/actions';
 import { Center } from './center';
 import { Expression } from 'mapbox-gl';
-import { DistrictsGeojson } from 'interfaces/districts.interface';
+import { DistrictsGeojson } from 'interfaces/geodata.interface';
 import { vibrate } from 'services/vibration';
 
 export interface DistrictsProps {

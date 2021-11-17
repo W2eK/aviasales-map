@@ -1,17 +1,12 @@
 import {
   Category,
-  City,
-  CityWrapper,
-  LabelsGeojson,
-  IATA,
   Poi,
-  PoiGeojson,
-  Camera
-} from 'interfaces/city.interface';
+} from 'interfaces/data.interface';
 import * as turf from '@turf/turf';
-import { overrides } from 'data/overrides';
-import { computePointOrder } from './utils/salesman';
-import { buildMultiVoronoi } from './utils/voronoi';
+import { buildVoronoi } from './utils/voronoi';
+import { CityMap } from 'services/interfaces/citymap.interface';
+import { AllPage, Geodata } from 'interfaces/city.interface';
+import { LabelsGeojson, PoiGeojson, VoronoiGeojson } from 'interfaces/geodata.interface';
 
 const trimDescription = (description: string) => {
   const words = description.split(/(?<=[\wа-я]{3}) /);
@@ -28,10 +23,12 @@ const trimDescription = (description: string) => {
   return text.trim();
 };
 
-export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
-  const { start_zoom: zoom, title, tabs } = city_map;
+export type ShapedCity = Omit<AllPage, 'geojson'> & {
+  geojson: Omit<Geodata, 'districts'>;
+};
 
-  // Pins
+export const shapeCity = ({ city_map }: CityMap): ShapedCity => {
+  const { start_zoom, title, tabs } = city_map;
   const poi: Record<number, Poi> = {};
   const categories: Category[] = [];
   const poiGeojson: PoiGeojson = turf.featureCollection([]);
@@ -55,37 +52,14 @@ export const shapeCity = ({ city_map }: CityWrapper, iata: IATA): City => {
       }
     });
   });
-  const order = computePointOrder(
-    turf.featureCollection([...poiGeojson.features, ...labelsGeojson.features])
-  );
-  const voronoiGeojson = buildMultiVoronoi(
-    poiGeojson,
-    categories.map(({ type }) => type).filter(type => type !== 'districts')
-  );
-
-  // Camera Options
-  // const { longitude, latitude } = city_map.start_point;
-  const { id, ...restOverrides } = overrides[iata] || {};
-
-  const center = (
-    labelsGeojson.features.find(({ properties }) => properties.id === id) ||
-    labelsGeojson.features[0]
-  ).geometry.coordinates as [number, number];
-  const pitch = 50;
-  const camera = { center, zoom, pitch, bearing: 0, ...restOverrides };
-  const districtId = id || labelsGeojson.features[0].properties.id;
-
+  const voronoiGeojson = buildVoronoi(poiGeojson) as VoronoiGeojson;
   return {
-    districtId,
-    title,
-    camera,
     poi,
-    order,
     categories,
     geojson: {
-      poi: turf.truncate(poiGeojson),
-      voronoi: turf.truncate(voronoiGeojson),
-      labels: turf.truncate(labelsGeojson)
+      voronoi: voronoiGeojson,
+      poi: poiGeojson,
+      labels: labelsGeojson
     }
   };
 };

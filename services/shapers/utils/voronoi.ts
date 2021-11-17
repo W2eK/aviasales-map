@@ -1,16 +1,16 @@
 import * as turf from '@turf/turf';
-import { PoiType } from 'interfaces/city.interface';
+import { PoiType } from 'interfaces/data.interface';
+import { computeBbox } from './bbox';
 
 export const buildVoronoi = <
   T extends GeoJSON.FeatureCollection<GeoJSON.Point, U>,
-  U extends Record<string, any>
+  U extends GeoJSON.GeoJsonProperties
 >(
   geojson: T,
+  clipping = false,
   radius = 1
 ): GeoJSON.FeatureCollection<GeoJSON.Polygon, U> => {
-  const bbox = turf.bbox(
-    turf.buffer(turf.bboxPolygon(turf.bbox(geojson)), radius)
-  );
+  const bbox = computeBbox(geojson, radius);
 
   const voronoi = turf.voronoi(geojson, {
     bbox
@@ -19,54 +19,21 @@ export const buildVoronoi = <
     if (feature) feature.properties = { ...geojson.features[index].properties };
   });
 
+  if (clipping) {
+    for (let i = 0; i < geojson.features.length; i++) {
+      const polygon = voronoi.features[i];
+      if (!polygon) continue;
+      const point = geojson.features[i];
+      const properties = point.properties;
+      const buffer = turf.buffer(point, radius);
+      const intersection = turf.intersect(polygon, buffer, {
+        properties
+      }) as GeoJSON.Feature<GeoJSON.Polygon, U>;
+      voronoi.features[i] = intersection;
+    }
+  }
+
   // ! BUG: deal with multiple POI with same coordinates
   voronoi.features = voronoi.features.filter(Boolean);
   return voronoi;
-};
-
-export const buildMultiVoronoi = <
-  T extends GeoJSON.FeatureCollection<GeoJSON.Point, U>,
-  U extends {
-    id: number;
-    type: PoiType;
-  }
->(
-  geojson: T,
-  filters: PoiType[]
-) => {
-  const rest = filters.reduce((map, key) => {
-    map[key] = turf.featureCollection([]) as T;
-    return map;
-  }, {} as Record<PoiType, T>);
-  geojson.features.forEach(feature => {
-    rest[feature.properties.type].features.push(feature);
-  });
-
-  const result: Partial<
-    Record<
-      PoiType | 'all',
-      GeoJSON.FeatureCollection<GeoJSON.Polygon, U & { aggregated?: true }>
-    >
-  > = {};
-
-  Object.entries(rest).forEach(([key, value]) => {
-    const voronoi = buildVoronoi<T, U>(value);
-    result[key as PoiType] = voronoi as GeoJSON.FeatureCollection<
-      GeoJSON.Polygon,
-      U & { aggregated?: true }
-    >;
-  });
-
-  const all = buildVoronoi<T, U>(geojson);
-  turf.propEach(all, properties => (properties!.aggregated = true));
-
-  result['all'] = all as GeoJSON.FeatureCollection<
-    GeoJSON.Polygon,
-    U & { aggregated?: true }
-  >;
-
-  return Object.values(result).reduce((result, collection) => {
-    result.features = result.features.concat(collection.features);
-    return result;
-  });
 };

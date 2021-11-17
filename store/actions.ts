@@ -1,4 +1,4 @@
-import { PoiType } from 'interfaces/city.interface';
+import { PoiType } from 'interfaces/data.interface';
 
 export type Action =
   | {

@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
 import { Source, Layer, Filter } from 'mapboxr-gl';
-import { VoronoiGeojson } from 'interfaces/city.interface';
+import { VoronoiGeojson } from 'interfaces/geodata.interface';
 import { useStoreContext } from 'store/context';
 import { Expression } from 'mapbox-gl';
 
@@ -31,7 +31,7 @@ export const MapVoronoi: FC<VoronoiProps> = ({ data }) => {
           // 'fill-outline-color': 'white'
         }}
       >
-        <VoronoiFilter />
+        {/* <VoronoiFilter /> */}
       </Layer>
     </Source>
   );

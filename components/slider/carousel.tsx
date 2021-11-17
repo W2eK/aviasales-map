@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { usePageContext } from 'context/page-context';
 import { useStoreContext } from 'store/context';
-import { CityPageProps } from 'pages/[city]';
+import { CityPageProps } from 'interfaces/city.interface';
 import { vibrate } from 'services/vibration';
 import { setPoiHover, setPoiType } from 'store/actions';
 import { SliderItems } from '../marker/items';

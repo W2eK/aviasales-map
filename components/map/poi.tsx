@@ -1,7 +1,7 @@
 import { FC, useCallback, useMemo } from 'react';
 import { Source, Layer, Filter } from 'mapboxr-gl';
 import { useStoreContext } from 'store/context';
-import { PoiGeojson, VoronoiGeojson } from 'interfaces/city.interface';
+import { PoiGeojson, VoronoiGeojson } from 'interfaces/geodata.interface';
 import { setPoiHover, setPoiType } from 'store/actions';
 import { vibrate } from 'services/vibration';
 import { Center } from './center';
