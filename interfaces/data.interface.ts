@@ -34,3 +34,5 @@ export const poiTypes = [
 ] as const;
 
 export type PoiType = typeof poiTypes[number];
+
+export type CategoryType = 'all' | PoiType;

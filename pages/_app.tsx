@@ -6,8 +6,13 @@ import { MapContainer } from 'components/map';
 import { StoreProvider } from 'store/context';
 import { PageProvider } from 'context/page-context';
 import '../components/slider/embla.css';
+import { CityLayout } from 'layouts/city';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const isMainPage =
+    pageProps.page === 'city' ||
+    pageProps.page === 'category' ||
+    pageProps.page === 'poi';
   return (
     <>
       <GlobalStyle />
@@ -16,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <StoreProvider>
             <MapContainer />
             <Component {...pageProps} />
+            {isMainPage ? <CityLayout /> : null}
           </StoreProvider>
         </PageProvider>
       </Background>

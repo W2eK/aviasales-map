@@ -8,9 +8,9 @@ import {
 } from './geodata.interface';
 import { PoiProps } from './poi.interface';
 
-export type CityPageProps = AllPage & (CityPage | CategoryPage | PoiPage);
+export type MainPageProps = CityPageProps | CategoryPageProps | PoiPageProps;
 
-export type AllPage = {
+export type CommonProps = {
   poi: Record<number, Poi>;
   categories: Category[];
   geojson: Geodata;
@@ -23,14 +23,14 @@ export type Geodata = {
   districts: DistrictsGeojson;
 };
 
-export type CityPage = {
+export type CityPageProps = CommonProps & {
   page: 'city';
   title: string; // Короче...
   camera: Camera; // From Override
   bounds: LngLatBoundsLike;
 };
 
-export type CategoryPage = {
+export type CategoryPageProps = CommonProps & {
   page: 'category';
   currentCategory: Category | null;
   title: string | null;
@@ -39,7 +39,7 @@ export type CategoryPage = {
   order: number[];
 };
 
-export type PoiPage = {
+export type PoiPageProps = CommonProps & {
   page: 'poi';
   currentCategory: Category | null;
   currentPoi: PoiProps;

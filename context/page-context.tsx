@@ -1,8 +1,8 @@
 import { createContext, FC, useContext } from 'react';
 import { HomePageProps } from 'pages';
-import { CityPageProps } from 'interfaces/city.interface';
+import { MainPageProps } from 'interfaces/city.interface';
 
-type PageContextProps = HomePageProps | CityPageProps;
+type PageContextProps = HomePageProps | MainPageProps;
 
 const PageContext = createContext<PageContextProps>({} as PageContextProps);
 export const PageProvider: FC<{ pageProps: PageContextProps }> = ({

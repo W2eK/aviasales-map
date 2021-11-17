@@ -9,14 +9,24 @@ import { shapePoi } from './shapers/shape-poi';
 import { CityMap } from './interfaces/citymap.interface';
 import { computePointOrder } from './shapers/utils/salesman';
 import { overrides } from 'data/overrides';
-import { CityPageProps } from 'interfaces/city.interface';
+import {
+  CityPageProps,
+  CategoryPageProps,
+  PoiPageProps
+} from 'interfaces/city.interface';
 import { computeBbox } from './shapers/utils/bbox';
 import { IATA } from 'interfaces/iata.interface';
-import { PoiType } from 'interfaces/data.interface';
+import { CategoryType, PoiType } from 'interfaces/data.interface';
 
 type RequestParams = {
   iata: IATA;
   locale?: string;
+};
+
+type RequestProps = {
+  iata: IATA;
+  category: CategoryType;
+  poi: number;
 };
 
 class AviasalesApi {
@@ -83,15 +93,17 @@ class AviasalesApi {
     return truncate(data);
   }
 
-  async requestPageProps({
-    iata,
-    poi,
-    category
-  }: {
-    iata: IATA;
-    poi?: number;
-    category?: 'all' | PoiType;
-  }): Promise<CityPageProps> {
+  async requestPageProps(
+    props: Pick<RequestProps, 'iata'>
+  ): Promise<CityPageProps>;
+  async requestPageProps(
+    props: Pick<RequestProps, 'iata' | 'category'>
+  ): Promise<CategoryPageProps>;
+  async requestPageProps(props: RequestProps): Promise<PoiPageProps>;
+  async requestPageProps(
+    props: Pick<RequestProps, 'iata'> & Partial<Omit<RequestProps, 'iata'>>
+  ): Promise<CityPageProps | CategoryPageProps | PoiPageProps> {
+    const { iata, category, poi } = props;
     const page =
       poi !== undefined ? 'poi' : category !== undefined ? 'category' : 'city';
     const districts = await this.requestPolygons({ iata });

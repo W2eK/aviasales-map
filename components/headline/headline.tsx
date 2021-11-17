@@ -4,11 +4,11 @@ import { useMap } from 'mapboxr-gl';
 import { FC, useMemo } from 'react';
 import { useStoreContext } from 'store/context';
 import { Title, Subtitle, Header, Wrapper } from './styled';
-import { CityPageProps } from 'interfaces/city.interface';
+import { MainPageProps } from 'interfaces/city.interface';
 
 export const Headline: FC = () => {
   const { state } = useStoreContext();
-  const pageProps = usePageContext() as CityPageProps;
+  const pageProps = usePageContext() as MainPageProps;
   const { map } = useMap() || {};
   return useMemo(() => {
     const district =

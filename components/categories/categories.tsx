@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { usePageContext } from 'context/page-context';
-import { CityPageProps } from 'interfaces/city.interface';
+import { MainPageProps } from 'interfaces/city.interface';
 import { FC, useCallback, useMemo } from 'react';
 import { useStoreContext } from 'store/context';
 import { Selector } from './selector';
@@ -12,7 +12,7 @@ import { PoiType } from 'interfaces/data.interface';
 
 export const Categories: FC = () => {
   // Access to Store
-  const pageProps = usePageContext() as CityPageProps;
+  const pageProps = usePageContext() as MainPageProps;
   const { state } = useStoreContext();
   const { query } = useRouter();
 
@@ -25,12 +25,11 @@ export const Categories: FC = () => {
       : state.poiType;
   const pinned = !!query.category && query.category !== 'all';
   const categories = pageProps.categories;
-
   if (typeof window !== 'undefined')
     (window as any).test = { hidden, collapsed, selected, pinned, categories };
   const renderLink = useCallback(
     (children: JSX.Element, type: PoiType) => (
-      <Link pathname="/[city]/" query={{ ...query, category: type }}>
+      <Link pathname="/[city]/[category]" query={{ ...query, category: type }}>
         {children}
       </Link>
     ),

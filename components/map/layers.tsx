@@ -1,6 +1,7 @@
 import { usePageContext } from 'context/page-context';
 import { useRouter } from 'next/router';
 import { FC, useMemo } from 'react';
+import { CameraController } from './camera';
 import { MapDistricts } from './districts';
 import { MapLabels } from './labels';
 import { MapMarker } from './marker';
@@ -18,6 +19,7 @@ export const MapLayers: FC = () => {
         <MapPoi data={pageProps.geojson.poi} />
         <MapLabels data={pageProps.geojson.labels} />
         <MapMarker />
+        <CameraController />
       </>
     ) : null;
   }, [query.city]);

@@ -1,12 +1,13 @@
-import {
-  Category,
-  Poi,
-} from 'interfaces/data.interface';
+import { Category, Poi } from 'interfaces/data.interface';
 import * as turf from '@turf/turf';
 import { buildVoronoi } from './utils/voronoi';
 import { CityMap } from 'services/interfaces/citymap.interface';
-import { AllPage, Geodata } from 'interfaces/city.interface';
-import { LabelsGeojson, PoiGeojson, VoronoiGeojson } from 'interfaces/geodata.interface';
+import { CommonProps } from 'interfaces/city.interface';
+import {
+  LabelsGeojson,
+  PoiGeojson,
+  VoronoiGeojson
+} from 'interfaces/geodata.interface';
 
 const trimDescription = (description: string) => {
   const words = description.split(/(?<=[\wа-я]{3}) /);
@@ -23,11 +24,7 @@ const trimDescription = (description: string) => {
   return text.trim();
 };
 
-export type ShapedCity = Omit<AllPage, 'geojson'> & {
-  geojson: Omit<Geodata, 'districts'>;
-};
-
-export const shapeCity = ({ city_map }: CityMap): ShapedCity => {
+export const shapeCity = ({ city_map }: CityMap) => {
   const { start_zoom, title, tabs } = city_map;
   const poi: Record<number, Poi> = {};
   const categories: Category[] = [];
@@ -39,8 +36,8 @@ export const shapeCity = ({ city_map }: CityMap): ShapedCity => {
     tab.pins.forEach(({ id, name, image_url, description, coordinates }) => {
       const { longitude, latitude } = coordinates;
       const center: [number, number] = [longitude, latitude];
-      const bearing = 180 - Math.random() * 360;
-      const camera = { center, bearing };
+      const bearing = 30 - Math.random() * 60;
+      const camera = { center, bearing, zoom: 16 };
       poi[id] = { type, id, name, image_url, camera, description };
       if (type !== 'districts') {
         poiGeojson.features.push(turf.point(center, { id, type }));

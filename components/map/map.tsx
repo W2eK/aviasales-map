@@ -1,7 +1,7 @@
 import MapboxrGL, { Source, Property } from 'mapboxr-gl';
 // import MapGL, { Marker } from '@urbica/react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { FC, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import { MapVoronoi } from './voronoi';
 import { CameraController } from './camera';
 import { MapDistricts } from './districts';
@@ -27,7 +27,6 @@ const center: [[number, number], [number, number]] = [
 ];
 
 const MapContainer: FC = () => {
-  const pageProps = usePageContext();
   // (window as any).pageProps = pageProps;
   return (
     <MapboxrGL
@@ -40,7 +39,6 @@ const MapContainer: FC = () => {
       padding={{ top: 0, bottom: 100 }}
       // showPadding
     >
-      <CameraController />
       <MapLayers/>
       <LazyImages />
       {/* <MapPointer /> */}
@@ -66,4 +64,4 @@ const MapContainer: FC = () => {
   );
 };
 
-export default MapContainer;
+export default memo(MapContainer);

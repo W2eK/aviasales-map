@@ -4,7 +4,7 @@ import { useStoreContext } from 'store/context';
 import { usePageContext } from 'context/page-context';
 
 import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
-import { CityPageProps } from 'interfaces/city.interface';
+import { MainPageProps } from 'interfaces/city.interface';
 import { setDistrictHover, setPoiHover, setPoiType } from 'store/actions';
 import { vibrate } from 'services/vibration';
 import { SliderItems } from 'components/marker/items';
@@ -13,7 +13,7 @@ import { ImageLabel, LabelWrapper } from 'components/marker/styled';
 
 export const Slider: FC = () => {
   const { state } = useStoreContext();
-  const pageProps = usePageContext() as CityPageProps;
+  const pageProps = usePageContext() as MainPageProps;
   const name =
     state.poiHover !== null ? pageProps.poi[state.poiHover].name : null;
 
