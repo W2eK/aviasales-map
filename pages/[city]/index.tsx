@@ -4,6 +4,7 @@ import { aviasalesApi } from 'services/aviasales-api';
 import { PoiType, poiTypes } from 'interfaces/data.interface';
 import { CityPageProps } from 'interfaces/city.interface';
 import { IATA, iataCodes } from 'interfaces/iata.interface';
+import { isDev } from 'utils/is-dev';
 
 export type CityParams = {
   city: IATA;
@@ -22,7 +23,7 @@ export default CityPage;
 export const getStaticProps: GetStaticProps<CityPageProps, CityParams> =
   async ({ params }) => {
     if (!params || !('city' in params)) return { notFound: true };
-    // console.log('city', params);
+    if (isDev) console.log('city', params);
     try {
       const iata = params.city;
       const props = await aviasalesApi.requestPageProps({ iata });

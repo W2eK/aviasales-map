@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { featureCollection, truncate } from '@turf/turf';
 import { DistrictsGeojson } from 'interfaces/geodata.interface';
 import { WidgetPlaces } from 'interfaces/places.interface';
@@ -17,6 +16,7 @@ import {
 import { computeBbox } from './shapers/utils/bbox';
 import { IATA } from 'interfaces/iata.interface';
 import { CategoryType, PoiType } from 'interfaces/data.interface';
+import { monetizationClient, widgetClient } from './axios';
 
 type RequestParams = {
   iata: IATA;
@@ -30,15 +30,8 @@ type RequestProps = {
 };
 
 class AviasalesApi {
-  private monetizationClient = axios.create({
-    baseURL: 'https://monetization-trap-api.aviasales.ru/api/v1/trap/',
-    headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }
-  });
-
-  private widgetClient = axios.create({
-    baseURL: 'https://content-admin.aviasales.ru/api/widgets',
-    headers: { 'Cache-Control': 'public, max-age=31536000, immutable' }
-  });
+  private monetizationClient = monetizationClient;
+  private widgetClient = widgetClient;
 
   async requestPlaces() {
     const headers = {

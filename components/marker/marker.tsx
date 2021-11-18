@@ -11,7 +11,6 @@ type MarkerProps = { poi: Poi; isDragged: boolean };
 export const Marker: FC<MarkerProps> = ({ poi, isDragged }) => {
   const router = useRouter();
   isDragged = true;
-  console.log(router.query);
   return (
     <AnimatePresence>
       {isDragged ? (
