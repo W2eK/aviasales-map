@@ -16,7 +16,8 @@ const OptionWrapper = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding: 0.5rem;
+  /* justify-content: center; */
   /* line-height: 0; */
   height: 100%;
 `;
@@ -35,8 +36,11 @@ const IconHolder = styled.div`
 `;
 
 const OptionLabel = styled.div`
+  position: absolute;
   font-size: 0.8rem;
   font-weight: 500;
+  bottom: .25rem;
+  color: var(--color-ink-500);
 `;
 
 const Option: FC<OptionProps> = ({
@@ -47,7 +51,11 @@ const Option: FC<OptionProps> = ({
   collapsed
 }) => {
   return (
-    <OptionWrapper>
+    <OptionWrapper
+      animate={{
+        justifyContent: collapsed ? 'flex-start' : 'center'
+      }}
+    >
       <IconHolder
         as={motion.div}
         animate={{

@@ -17,9 +17,9 @@ export const MapMarker: FC = () => {
           offset={[0, -40]}
           anchor="bottom"
         >
-          <Marker poi={poi} isDragged={state.isDragged} />
+          <Marker poi={poi} />
         </MapboxMarker>
       ),
-    [state.poiHover, state.isDragged]
+    [state.poiHover]
   );
 };

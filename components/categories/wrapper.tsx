@@ -1,5 +1,10 @@
 import { FC, memo } from 'react';
 import { motion } from 'framer-motion';
+import styled from 'styled-components';
+
+const StyledWrapper = styled.div`
+  height: 2.5rem;
+`;
 
 type WrapperProps = {
   hidden: boolean;
@@ -8,9 +13,12 @@ type WrapperProps = {
 
 const Wrapper: FC<WrapperProps> = ({ children, hidden }) => {
   return (
-    <motion.div animate={{ y: hidden ? 'calc(100% + 1.25rem)' : 0 }}>
+    <StyledWrapper
+      as={motion.div}
+      animate={{ y: hidden ? 'calc(100% + 4rem)' : 0 }}
+    >
       {children}
-    </motion.div>
+    </StyledWrapper>
   );
 };
 

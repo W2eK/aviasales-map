@@ -12,7 +12,7 @@ const SelectorWrapper = styled(motion.div)`
 `;
 
 const SelectorList = styled(motion.ul)`
-  min-height: 4rem;
+  height: 4rem;
   display: grid;
   grid-auto-flow: column;
   padding: 0 1rem;
@@ -58,8 +58,8 @@ const Selector: FC<SelectorProps> = ({ children, collapsed }) => {
     <SelectorWrapper animate={state}>
       <SelectorList
         variants={{
-          collapsed: { y: '1.25rem' },
-          expanded: { y: 0 }
+          collapsed: { y: 0 },
+          expanded: { y: '-1.5rem' }
         }}
       >
         <SelectorBackground
