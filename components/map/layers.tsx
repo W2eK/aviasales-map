@@ -1,6 +1,6 @@
-import { usePageContext } from 'context/page-context';
 import { useRouter } from 'next/router';
 import { FC, useMemo } from 'react';
+import { useStoreContext } from 'store/context';
 import { CameraController } from './camera';
 import { MapDistricts } from './districts';
 import { MapLabels } from './labels';
@@ -9,7 +9,7 @@ import { MapPoi } from './poi';
 import { MapVoronoi } from './voronoi';
 
 export const MapLayers: FC = () => {
-  const pageProps = usePageContext();
+  const { pageProps } = useStoreContext();
   const { query } = useRouter();
   return useMemo(() => {
     return pageProps.page !== 'index' && pageProps.geojson ? (

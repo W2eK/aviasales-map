@@ -4,8 +4,6 @@ import { GlobalStyle } from 'styles/global';
 import { Background } from 'components/background';
 import { MapContainer } from 'components/map';
 import { StoreProvider } from 'store/context';
-import { PageProvider } from 'context/page-context';
-import '../components/slider/embla.css';
 import { CityLayout } from 'layouts/city';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -13,17 +11,17 @@ function MyApp({ Component, pageProps }: AppProps) {
     pageProps.page === 'city' ||
     pageProps.page === 'category' ||
     pageProps.page === 'poi';
+
+  console.log(pageProps);
   return (
     <>
       <GlobalStyle />
       <Background>
-        <PageProvider pageProps={pageProps}>
-          <StoreProvider>
-            <MapContainer />
-            <Component {...pageProps} />
-            {isMainPage ? <CityLayout /> : null}
-          </StoreProvider>
-        </PageProvider>
+        <StoreProvider pageProps={pageProps}>
+          <MapContainer />
+          <Component {...pageProps} />
+          {/* {isMainPage ? <CityLayout /> : null} */}
+        </StoreProvider>
       </Background>
     </>
   );

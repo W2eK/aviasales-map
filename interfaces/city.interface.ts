@@ -1,4 +1,5 @@
 import { LngLatBoundsLike } from 'mapbox-gl';
+import { HomePageProps } from 'pages';
 import { Camera, Category, Poi } from './data.interface';
 import {
   DistrictsGeojson,
@@ -8,6 +9,7 @@ import {
 } from './geodata.interface';
 import { PoiProps } from './poi.interface';
 
+export type PageProps = HomePageProps | MainPageProps;
 export type MainPageProps = CityPageProps | CategoryPageProps | PoiPageProps;
 
 export type CommonProps = {

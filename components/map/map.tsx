@@ -7,7 +7,6 @@ import { CameraController } from './camera';
 import { MapDistricts } from './districts';
 import { MapPoi } from './poi';
 import { LazyImages } from './lazy-images';
-import { usePageContext } from 'context/page-context';
 // import { MapPointer } from './pointer';
 import { MapTerrain } from './terrain';
 import { MapLabels } from './labels';

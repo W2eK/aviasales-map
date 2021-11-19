@@ -1,5 +1,6 @@
 import { Action } from './actions';
 import { PoiType } from 'interfaces/data.interface';
+import { PageProps } from 'interfaces/city.interface';
 
 export type StoreState = {
   mapLocked: boolean;
@@ -7,7 +8,7 @@ export type StoreState = {
   poiHover: number | null;
   poiType: PoiType | null;
   selectedType: PoiType | null;
-  selectedIds: number[] | null;
+  selectedPoi: number | null;
   isDragged: boolean;
 };
 
@@ -15,7 +16,7 @@ export const initialState: StoreState = {
   mapLocked: false,
   isDragged: false,
   districtHover: null,
-  selectedIds: null,
+  selectedPoi: null,
   selectedType: null,
   poiHover: null,
   poiType: null
@@ -23,7 +24,7 @@ export const initialState: StoreState = {
 
 type Reducer = (state: StoreState, action: Action) => StoreState;
 
-export const storeReducer: Reducer = (state = initialState, action) => {
+export const storeReducer: Reducer = (state, action) => {
   switch (action.type) {
     case 'SET_DISTRICT_HOVER': {
       return { ...state, districtHover: action.payload };

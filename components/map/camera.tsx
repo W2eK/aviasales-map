@@ -1,17 +1,16 @@
 import { FC, useEffect, useRef } from 'react';
 import { useMap } from 'mapboxr-gl';
 import { ipApi } from 'services/ip-api';
-import { usePageContext } from 'context/page-context';
 import { useStoreContext } from 'store/context';
 import { resetState, setDistrictHover, setMapLock } from 'store/actions';
 import { MainPageProps } from 'interfaces/city.interface';
 import { FlyToOptions } from 'mapbox-gl';
 
 export const CameraController: FC = () => {
-  const { state, dispatch } = useStoreContext();
-  const pageProps = usePageContext() as MainPageProps;
+  const { state, dispatch, pageProps } = useStoreContext();
   const { map } = useMap();
   const initial = useRef(true);
+  const prev = useRef(pageProps.page);
   // Initial
   useEffect(() => {
     switch (pageProps.page) {
@@ -21,15 +20,15 @@ export const CameraController: FC = () => {
       //   });
       //   break;
       // }
-      case 'category': {
-        const bounds = map.cameraForBounds(pageProps.bounds)!;
-        bounds.zoom = Math.min(bounds.zoom);
-        map.jumpTo(bounds);
-        break;
-      }
       case 'city': {
         const bounds = map.cameraForBounds(pageProps.bounds)!;
         bounds.zoom = Math.min(bounds.zoom, 12);
+        map.jumpTo(bounds);
+        break;
+      }
+      case 'category': {
+        const bounds = map.cameraForBounds(pageProps.bounds)!;
+        bounds.zoom = Math.min(bounds.zoom);
         map.jumpTo(bounds);
         break;
       }
@@ -47,11 +46,11 @@ export const CameraController: FC = () => {
     switch (pageProps.page) {
       case 'city': {
         const camera = pageProps.camera;
-        map.flyTo(camera);
-        //   dispatch(setMapLock(true));
-        //   map.once('moveend', () => {
-        //     dispatch(setMapLock(false));
-        //   });
+        if (initial.current) {
+          setTimeout(() => map.flyTo({...camera, duration: 3000}), 2000);
+        } else {
+          map.flyTo(camera);
+        }
         break;
       }
       case 'category': {

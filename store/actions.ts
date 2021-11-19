@@ -1,3 +1,4 @@
+import { PageProps } from 'interfaces/city.interface';
 import { PoiType } from 'interfaces/data.interface';
 
 export type Action =
@@ -23,6 +24,10 @@ export type Action =
     }
   | {
       type: 'RESET_STATE';
+    }
+  | {
+      type: 'RESET_PAGE_PROPS';
+      payload: PageProps;
     };
 
 export const setDistrictHover = (id: number | null): Action => ({
@@ -51,3 +56,8 @@ export const setMapDrag = (state: boolean): Action => ({
 });
 
 export const resetState = (): Action => ({ type: 'RESET_STATE' });
+
+export const resetPageProps = (payload: PageProps): Action => ({
+  type: 'RESET_PAGE_PROPS',
+  payload
+});

@@ -20,7 +20,7 @@ monetizationClient.interceptors.request.use(
       const uri = `${request.url}?${params}`;
       const cached = cache.get(uri);
       if (cached) {
-        console.log(`"${uri}" served from cache`);
+        // console.log(`"${uri}" served from cache`);
         request.data = cached;
         // @ts-ignore
         request.adapter = () => {
