@@ -10,6 +10,7 @@ import Parks from './svg/parks.svg';
 import Restaurants from './svg/restaurants.svg';
 import Suburb from './svg/suburb.svg';
 import { PoiType } from 'interfaces/data.interface';
+import styled from 'styled-components';
 
 type Icons = Record<PoiType, any> & { placeholder: any };
 
@@ -23,13 +24,17 @@ const icons: Icons = {
   nature: <Nature />,
   parks: <Parks />,
   restaurants: <Restaurants />,
-  suburb: <Suburb />,
+  suburb: <Suburb />
 };
 
 type IconProps = {
   category: PoiType;
 };
 
+const IconWrapper = styled.div`
+  transform: translateY(1px);
+`;
+
 export const Icon: FC<IconProps> = ({ category }) => {
-  return icons[category] || icons.placeholder;
+  return <IconWrapper>{icons[category] || icons.placeholder}</IconWrapper>;
 };

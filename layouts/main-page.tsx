@@ -1,4 +1,6 @@
+import { Categories } from 'components/categories';
 import { FC } from 'react';
+import { useStoreContext } from 'store/context';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -9,12 +11,13 @@ const Wrapper = styled.div`
   grid-template-rows: min-content 1fr min-content;
 `;
 
-export const CityLayout: FC = () => {
-  return (
+export const MainPageLayout: FC = () => {
+  const { state } = useStoreContext();
+  return state.isMainPage ? (
     <Wrapper>
       <div>Header</div>
       <div>Cards</div>
-      <div>Categories</div>
+      <Categories />
     </Wrapper>
-  );
+  ) : null;
 };

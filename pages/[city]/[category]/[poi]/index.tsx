@@ -52,6 +52,6 @@ export const getStaticPaths: GetStaticPaths<PoiParams> = async context => {
   }
   return {
     paths: paths,
-    fallback: 'blocking'
+    fallback: true
   };
 };
