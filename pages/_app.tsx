@@ -11,8 +11,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     pageProps.page === 'city' ||
     pageProps.page === 'category' ||
     pageProps.page === 'poi';
-
-  console.log(pageProps);
   return (
     <>
       <GlobalStyle />

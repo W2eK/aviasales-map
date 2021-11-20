@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import { FC, useMemo } from 'react';
 import { useStoreContext } from 'store/context';
 import { CameraController } from './camera';
@@ -9,10 +8,9 @@ import { MapPoi } from './poi';
 import { MapVoronoi } from './voronoi';
 
 export const MapLayers: FC = () => {
-  const { pageProps } = useStoreContext();
-  const { query } = useRouter();
+  const { state, pageProps } = useStoreContext();
   return useMemo(() => {
-    return pageProps.page !== 'index' && pageProps.geojson ? (
+    return 'geojson' in pageProps ? (
       <>
         <MapDistricts data={pageProps.geojson.districts} />
         <MapVoronoi data={pageProps.geojson.voronoi} />
@@ -22,5 +20,5 @@ export const MapLayers: FC = () => {
         <CameraController />
       </>
     ) : null;
-  }, [query.city]);
+  }, [state.currentCity]);
 };

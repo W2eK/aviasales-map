@@ -96,7 +96,8 @@ class AviasalesApi {
   async requestPageProps(
     props: Pick<RequestProps, 'iata'> & Partial<Omit<RequestProps, 'iata'>>
   ): Promise<CityPageProps | CategoryPageProps | PoiPageProps> {
-    const { iata, category, poi } = props;
+    let { iata, category, poi } = props;
+    iata = iata.toUpperCase() as IATA;
     const page =
       poi !== undefined ? 'poi' : category !== undefined ? 'category' : 'city';
     const districts = await this.requestPolygons({ iata });
@@ -114,6 +115,7 @@ class AviasalesApi {
         ) || city.geojson.labels.features[0]
       ).geometry.coordinates as [number, number];
       const pitch = 50;
+      console.log(restOverrides);
       const camera = { center, zoom, pitch, bearing: 0, ...restOverrides };
       // @ts-ignore
       const features = featureCollection([

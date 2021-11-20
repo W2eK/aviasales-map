@@ -1,13 +1,13 @@
 import { FC, useEffect, useRef } from 'react';
 import { useMap } from 'mapboxr-gl';
 import { ipApi } from 'services/ip-api';
-import { useStoreContext } from 'store/context';
+import { MainPageContext, useStoreContext } from 'store/context';
 import { resetState, setDistrictHover, setMapLock } from 'store/actions';
 import { MainPageProps } from 'interfaces/city.interface';
 import { FlyToOptions } from 'mapbox-gl';
 
 export const CameraController: FC = () => {
-  const { state, dispatch, pageProps } = useStoreContext();
+  const { state, dispatch, pageProps } = useStoreContext() as MainPageContext;
   const { map } = useMap();
   const initial = useRef(true);
   const prev = useRef(pageProps.page);
@@ -23,7 +23,9 @@ export const CameraController: FC = () => {
       case 'city': {
         const bounds = map.cameraForBounds(pageProps.bounds)!;
         bounds.zoom = Math.min(bounds.zoom, 12);
-        map.jumpTo(bounds);
+        // map.
+        map.jumpTo({ ...bounds, bearing: 0, pitch: 0 });
+        // map.triggerRepaint();
         break;
       }
       case 'category': {
@@ -47,7 +49,7 @@ export const CameraController: FC = () => {
       case 'city': {
         const camera = pageProps.camera;
         if (initial.current) {
-          setTimeout(() => map.flyTo({...camera, duration: 3000}), 2000);
+          setTimeout(() => map.flyTo({ ...camera, duration: 5000 }), 2000);
         } else {
           map.flyTo(camera);
         }
@@ -95,7 +97,7 @@ export const CameraController: FC = () => {
     // } else {
     //   map.easeTo({ center });
     // }
-  }, [state.poiHover]);
+  }, [state.hoverPoi]);
 
   return null;
 };

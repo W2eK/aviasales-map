@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps<CityPageProps, CityParams> =
     if (!params || !('city' in params)) return { notFound: true };
     if (isDev) console.log('city', params);
     try {
-      const iata = params.city;
+      const iata = params.city.toUpperCase() as IATA;
       const props = await aviasalesApi.requestPageProps({ iata });
       return { props };
     } catch (err) {

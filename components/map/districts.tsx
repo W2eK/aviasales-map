@@ -17,17 +17,17 @@ const DistrictsCenter = () => {
     (features: DistrictsGeojson['features']) => {
       const [feature] = features;
       const id = !feature ? null : feature.properties.district_id;
-      if (state.districtHover !== id) {
+      if (state.hoverDistrict !== id) {
         dispatch(setDistrictHover(id));
         // id && vibrate(10);
       }
     },
-    [state.districtHover]
+    [state.hoverDistrict]
   );
   return useMemo(
     () => (
       <Center
-        id={state.districtHover}
+        id={state.hoverDistrict}
         layers={['districts-area']}
         handler={handler}
         isDragged={state.isDragged}
@@ -42,12 +42,12 @@ const DistrictFilter: FC = () => {
   return useMemo(() => {
     const rule: Expression = [
       'case',
-      ['==', ['get', 'district_id'], state.districtHover],
+      ['==', ['get', 'district_id'], state.hoverDistrict],
       true,
       false
     ];
     return <Filter rule={rule} />;
-  }, [state.districtHover]);
+  }, [state.hoverDistrict]);
 };
 
 export const MapDistricts: FC<DistrictsProps> = ({ data }) => {

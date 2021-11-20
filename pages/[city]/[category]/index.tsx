@@ -17,7 +17,8 @@ export const getStaticProps: GetStaticProps<CategoryPageProps, CategoryParams> =
     if (!('category' in params)) return { notFound: true };
     // console.log('category', params);
     try {
-      const { city: iata, category } = params;
+    const { category } = params;
+      const iata = params.city.toUpperCase() as IATA;
       const props = await aviasalesApi.requestPageProps({ iata, category });
       return { props };
     } catch (err) {

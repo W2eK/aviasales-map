@@ -13,12 +13,12 @@ const LabelsFilter: FC = () => {
   return useMemo(() => {
     const rule: Expression = [
       'case',
-      ['!=', ['get', 'id'], state.districtHover],
+      ['!=', ['get', 'id'], state.hoverDistrict],
       true,
       false
     ];
     return <Filter rule={rule} />;
-  }, [state.districtHover]);
+  }, [state.hoverDistrict]);
 };
 
 export const MapLabels: FC<MapLabelsProps> = ({ data }) => {

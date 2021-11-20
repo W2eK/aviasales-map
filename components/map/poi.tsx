@@ -18,20 +18,20 @@ const PoiCenter = () => {
       const [feature] = features;
       const id = !feature ? null : feature.properties.id;
       const type = !feature ? null : feature.properties.type;
-      if (state.poiHover !== id) {
+      if (state.hoverPoi !== id) {
         dispatch(setPoiHover(id));
         id && vibrate(10);
       }
-      if (state.poiType !== type) {
+      if (state.hoverType !== type) {
         dispatch(setPoiType(type));
       }
     },
-    [state.poiHover]
+    [state.hoverPoi]
   );
   return useMemo(
     () => (
       <Center
-        id={state.districtHover}
+        id={state.hoverDistrict}
         layers={['voronoi-fill']}
         handler={handler}
         isDragged={state.isDragged}
@@ -43,15 +43,14 @@ const PoiCenter = () => {
 
 const PoiFilter: FC = () => {
   const { state } = useStoreContext();
+  // ! BUG: Filter don't work on zoom 10-11
   return useMemo(() => {
-    const rule: Expression = [
-      'case',
-      ['==', ['get', 'id'], state.poiHover],
-      true,
-      false
-    ];
+    const rule: Expression =
+      state.hoverPoi === null
+        ? ['any', false]
+        : ['case', ['==', ['get', 'id'], state.hoverPoi], true, false];
     return <Filter rule={rule} />;
-  }, [state.poiHover]);
+  }, [state.hoverPoi]);
 };
 
 export const MapPoi: FC<PoiProps> = ({ data }) => {
@@ -105,7 +104,7 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
       >
         <PoiFilter />
       </Layer>
-      <Layer
+      {/* <Layer
         id="poi-hover-overpass"
         type="symbol"
         beforeId="sky"
@@ -121,7 +120,7 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
         }}
       >
         <PoiFilter />
-      </Layer>
+      </Layer> */}
     </Source>
   );
 };

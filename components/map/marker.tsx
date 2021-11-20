@@ -1,13 +1,11 @@
 import { FC, useMemo } from 'react';
 import { Marker as MapboxMarker } from 'mapboxr-gl';
-import { useStoreContext } from 'store/context';
-import { MainPageProps } from 'interfaces/city.interface';
+import { MainPageContext, useStoreContext } from 'store/context';
 import { Marker } from 'components/marker';
 
 export const MapMarker: FC = () => {
-  let { state, pageProps } = useStoreContext();
-  pageProps = pageProps as MainPageProps;
-  const poi = state.poiHover !== null ? pageProps.poi?.[state.poiHover] : null;
+  let { state, pageProps } = useStoreContext() as MainPageContext;
+  const poi = state.hoverPoi !== null ? pageProps.poi?.[state.hoverPoi] : null;
   return useMemo(
     () =>
       poi && (
@@ -19,6 +17,6 @@ export const MapMarker: FC = () => {
           <Marker poi={poi} />
         </MapboxMarker>
       ),
-    [state.poiHover]
+    [state.hoverPoi]
   );
 };

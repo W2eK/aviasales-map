@@ -1,4 +1,5 @@
 import { PoiPageProps } from 'interfaces/city.interface';
+import { IATA } from 'interfaces/iata.interface';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { aviasalesApi } from 'services/aviasales-api';
 import { CategoryParams } from '..';
@@ -18,7 +19,8 @@ export const getStaticProps: GetStaticProps<PoiPageProps, PoiParams> = async ({
   if (!('poi' in params) || isNaN(+params.poi)) return { notFound: true };
   // console.log('poi', params);
   try {
-    const { city: iata, category, poi: strPoi } = params;
+    const { category, poi: strPoi } = params;
+    const iata = params.city.toUpperCase() as IATA;
     const poi = +strPoi;
     const props = await aviasalesApi.requestPageProps({ iata, category, poi });
     return { props };

@@ -8,6 +8,7 @@ export const MapTerrain: FC = () => {
   const handler: MapHandlers['zoom'] = useCallback(
     ({ target: map }) => {
       const zoomIsLarge = map.getZoom() >= 11;
+      // const zoomIsLarge = true;
       if (showTerrain !== zoomIsLarge) setShowTerrain(zoomIsLarge);
     },
     [showTerrain]

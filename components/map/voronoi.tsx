@@ -12,11 +12,11 @@ const VoronoiFilter: FC = () => {
   const { state } = useStoreContext();
   return useMemo(() => {
     const rule: Expression =
-      state.selectedType === null
+      state.currentCategory === null
         ? ['case', ['has', 'aggregated'], true, false]
-        : ['case', ['==', ['get', 'type'], state.selectedType], true, false];
+        : ['case', ['==', ['get', 'type'], state.currentCategory], true, false];
     return <Filter rule={rule} />;
-  }, [state.selectedType]);
+  }, [state.currentCategory]);
 };
 
 export const MapVoronoi: FC<VoronoiProps> = ({ data }) => {
