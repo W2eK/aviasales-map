@@ -149,12 +149,14 @@ class AviasalesApi {
       if (page === 'category') {
         const title = currentCategory && currentCategory.title;
         const subtitle = currentCategory && currentCategory.title;
-        const bounds = computeBbox(collection);
+        const bounds = computeBbox(
+          category === 'districts' ? districts : collection
+        );
         return {
           page: 'category',
           ...city,
           geojson,
-          currentCategory,
+          currentCategory: currentCategory?.type || 'all',
           title,
           subtitle,
           order,
@@ -168,8 +170,8 @@ class AviasalesApi {
           page: 'poi',
           ...city,
           geojson,
-          currentPoi,
-          currentCategory,
+          currentPoi: poi!,
+          currentCategory: currentCategory?.type || 'all',
           title,
           camera,
           order

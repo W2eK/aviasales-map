@@ -1,11 +1,19 @@
 import { FC, useMemo } from 'react';
-import { Source, Layer, Filter } from 'mapboxr-gl';
+import { Source, Layer, Filter, Property } from 'mapboxr-gl';
 import { LabelsGeojson } from 'interfaces/geodata.interface';
-import { Expression } from 'mapbox-gl';
+import { Expression, Visibility } from 'mapbox-gl';
 import { useStoreContext } from 'store/context';
 
 type MapLabelsProps = {
   data: LabelsGeojson;
+};
+
+const LabelsVisibility: FC = () => {
+  const { state } = useStoreContext();
+  return useMemo(() => {
+    const value: Visibility = state.isDetailPage ? 'none' : 'visible';
+    return <Property type="layout" name="visibility" value={value} />;
+  }, [state.isDetailPage, state.hoverPoi, state.isDragged]);
 };
 
 const LabelsFilter: FC = () => {
@@ -32,6 +40,7 @@ export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
         type="symbol"
       >
         <LabelsFilter />
+        <LabelsVisibility />
       </Layer>
       <Layer
         master="districts-labels-48"
@@ -42,6 +51,7 @@ export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
         // paint={{ 'text-color': '#5A6472' }}
       >
         <LabelsFilter />
+        <LabelsVisibility />
       </Layer>
     </Source>
   );

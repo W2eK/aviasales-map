@@ -1,6 +1,6 @@
 import { LngLatBoundsLike } from 'mapbox-gl';
 import { HomePageProps } from 'pages';
-import { Camera, Category, Poi } from './data.interface';
+import { Camera, Category, CategoryType, Poi } from './data.interface';
 import {
   DistrictsGeojson,
   LabelsGeojson,
@@ -34,7 +34,7 @@ export type CityPageProps = CommonProps & {
 
 export type CategoryPageProps = CommonProps & {
   page: 'category';
-  currentCategory: Category | null;
+  currentCategory: CategoryType;
   title: string | null;
   subtitle: string | null;
   bounds: LngLatBoundsLike;
@@ -43,8 +43,8 @@ export type CategoryPageProps = CommonProps & {
 
 export type PoiPageProps = CommonProps & {
   page: 'poi';
-  currentCategory: Category | null;
-  currentPoi: PoiProps;
+  currentCategory: CategoryType;
+  currentPoi: number;
   title: string;
   camera: Camera; // Zoom to poi
   order: number[];

@@ -4,13 +4,14 @@ import { ipApi } from 'services/ip-api';
 import { MainPageContext, useStoreContext } from 'store/context';
 import { resetState, setDistrictHover, setMapLock } from 'store/actions';
 import { MainPageProps } from 'interfaces/city.interface';
-import { FlyToOptions } from 'mapbox-gl';
+import { FlyToOptions, PaddingOptions } from 'mapbox-gl';
 
 export const CameraController: FC = () => {
   const { state, dispatch, pageProps } = useStoreContext() as MainPageContext;
   const { map } = useMap();
   const initial = useRef(true);
   const prev = useRef(pageProps.page);
+
   // Initial
   useEffect(() => {
     switch (pageProps.page) {
@@ -49,15 +50,23 @@ export const CameraController: FC = () => {
       case 'city': {
         const camera = pageProps.camera;
         if (initial.current) {
-          setTimeout(() => map.flyTo({ ...camera, duration: 5000 }), 2000);
+          setTimeout(() => map.flyTo({ ...camera, duration: 3000 }), 1000);
         } else {
-          map.flyTo(camera);
+          // @ts-ignore
+          const padding: PaddingOptions = { bottom: 100 };
+          map.flyTo({ ...camera, padding });
         }
         break;
       }
       case 'category': {
-        const bounds = map.cameraForBounds(pageProps.bounds)!;
-        map.flyTo(bounds);
+        const bounds = map.cameraForBounds(pageProps.bounds, {
+          pitch: map.getPitch(),
+          bearing: map.getBearing(),
+          padding: { top: 40, bottom: 100, left: 40, right: 40 }
+        })!;
+        // @ts-ignore
+        const padding: PaddingOptions = { bottom: 352 };
+        map.flyTo({ ...bounds, padding });
         break;
       }
       case 'poi': {
@@ -88,15 +97,18 @@ export const CameraController: FC = () => {
   }, [pageProps]);
 
   useEffect(() => {
-    // if (state.poiHover === null || state.isDragged) return;
-    // const center = (pageProps as CityPageProps).poi[state.poiHover].camera
-    //   .center;
-    // const distance = map.project(map.getCenter()).dist(map.project(center));
-    // if (distance > 400) {
-    //   map.flyTo({ center });
-    // } else {
-    //   map.easeTo({ center });
-    // }
+    if (state.isDragged) return;
+    if (state.hoverPoi !== null) {
+      const center = pageProps.poi[state.hoverPoi].camera.center;
+      const distance = map.project(map.getCenter()).dist(map.project(center));
+      if (distance > 400) {
+        map.flyTo({ center });
+      } else {
+        map.easeTo({ center });
+      }
+    } else {
+
+    }
   }, [state.hoverPoi]);
 
   return null;

@@ -1,4 +1,4 @@
-import { IATA } from "interfaces/iata.interface";
+import { IATA } from 'interfaces/iata.interface';
 
 type Override = Partial<{
   zoom: number;
@@ -9,6 +9,7 @@ type Override = Partial<{
 
 export const overrides: Partial<Record<IATA, Override>> = {
   ATH: { id: 196, zoom: 13 },
+  AYT: { id: 175, bearing: -25, zoom: 12.5 },
   TBS: { zoom: 13, bearing: -80, id: 65 },
   LED: { id: 41, bearing: -80 },
   CPH: { id: 900, zoom: 12 },

@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo } from 'react';
-import { Source, Layer, Filter } from 'mapboxr-gl';
+import { Source, Layer, Filter, Property } from 'mapboxr-gl';
 import { useStoreContext } from 'store/context';
 import { PoiGeojson, VoronoiGeojson } from 'interfaces/geodata.interface';
 import { setPoiHover, setPoiType } from 'store/actions';
@@ -53,6 +53,18 @@ const PoiFilter: FC = () => {
   }, [state.hoverPoi]);
 };
 
+const PoiSort: FC = () => {
+  const { state } = useStoreContext();
+  return useMemo(() => {
+    const value: Expression =
+      state.currentCategory === null
+        ? ['any', true]
+        : ['case', ['==', ['get', 'type'], state.currentCategory], true, false];
+    // return <Property name="symbol-sort-key" type="layout" value={value} />;
+    return <Filter rule={value} />;
+  }, [state.currentCategory]);
+};
+
 export const MapPoi: FC<PoiProps> = ({ data }) => {
   return (
     <Source id="poi" data={data} type="geojson" promoteId="id" strict>
@@ -71,6 +83,8 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
             '#0655fe',
             '#9ea9b7'
           ],
+          'circle-stroke-color': 'white',
+          'circle-stroke-width': 1.5,
           'circle-radius': [
             'case',
             ['boolean', ['feature-state', 'active'], false],
@@ -83,13 +97,20 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
         id="poi-inactive"
         type="symbol"
         beforeId="districts-labels"
+        // paint={{
+        //   'icon-translate': [0, -12],
+        //   'icon-translate-anchor': 'viewport'
+        // }}
         layout={{
           'icon-image': ['concat', ['get', 'type'], '-inactive'],
           'icon-size': 0.5,
           'icon-padding': 0,
-          'icon-allow-overlap': ['step', ['zoom'], false, 11, true]
+          // 'icon-allow-overlap': ['step', ['zoom'], false, 11, true]
+          'icon-allow-overlap': true
         }}
-      />
+      >
+        <PoiSort />
+      </Layer>
       <Layer
         id="poi-hover"
         type="symbol"

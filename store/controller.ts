@@ -1,7 +1,14 @@
 import { PageProps } from 'interfaces/city.interface';
 import { useRouter } from 'next/router';
 import { Dispatch, useEffect } from 'react';
-import { Action, resetState, setCurrentParam, setPageState } from './actions';
+import {
+  Action,
+  resetState,
+  setCurrentParam,
+  setDistrictHover,
+  setPageState,
+  setPoiHover
+} from './actions';
 import { StoreState } from './reducer';
 import { PoiParams } from 'pages/[city]/[category]/[poi]';
 
@@ -32,12 +39,24 @@ export const useStoreController = (props: ControllerProps) => {
   }, [poi]);
 
   useEffect(() => {
-    const isMainPage =
-      'page' in pageProps &&
-      ['city', 'category', 'poi'].includes(pageProps.page);
+    // Determine page type
+    const isMainPage = 'page' in pageProps;
     const isDetailPage =
-      'page' in pageProps && ['category', 'poi'].includes(pageProps.page);
+      isMainPage && (pageProps.page === 'category' || pageProps.page === 'poi');
     dispatch(setPageState({ isMainPage, isDetailPage }));
+
+    // Reset hover states
+    if (isDetailPage) {
+      const { hoverPoi, hoverDistrict } = state;
+      if (
+        hoverPoi &&
+        pageProps.currentCategory !== 'all' &&
+        pageProps.poi[hoverPoi].type !== pageProps.currentCategory
+      )
+        dispatch(setPoiHover(null));
+      if (hoverDistrict && pageProps.currentCategory !== 'districts')
+        dispatch(setDistrictHover(null));
+    }
     if (!isMainPage) dispatch(resetState());
   }, [pageProps]);
 };

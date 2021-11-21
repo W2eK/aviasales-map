@@ -17,7 +17,7 @@ import { MapLayers } from './layers';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
-  (window as any).__MAPBOXR_GL_LOG = true;
+  (window as any).__MAPBOXR_GL_LOG = false;
 }
 
 const center: [[number, number], [number, number]] = [
@@ -36,7 +36,7 @@ const MapContainer: FC = () => {
       center={[15, 50]}
       zoom={3}
       padding={{ top: 0, bottom: 100 }}
-      // showPadding
+      showPadding
     >
       <MapLayers/>
       <LazyImages />
