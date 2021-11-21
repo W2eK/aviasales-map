@@ -28,7 +28,15 @@ export const storeReducer: Reducer = (state, action) => {
       return { ...state, ...action.payload };
     }
     case 'SET_INDEX': {
-      return { ...state, index: action.payload };
+      if (!state.isDetailPage) {
+        console.error(action.type);
+        throw state;
+      }
+      const index = action.payload;
+      const key =
+        state.currentCategory === 'districts' ? 'hoverDistrict' : 'hoverPoi';
+      const id = state.pageProps.order[index] || null;
+      return { ...state, index, [key]: id };
     }
     case 'SET_PAGE_STATE': {
       return reducePageState(state, action.payload);

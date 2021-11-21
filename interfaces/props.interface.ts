@@ -36,6 +36,7 @@ export type CategoryPageProps = CommonProps & {
   currentCategory: CategoryType;
   title: string | null;
   subtitle: string | null;
+  camera: Camera;
   bounds: LngLatBoundsLike;
   order: number[];
 };

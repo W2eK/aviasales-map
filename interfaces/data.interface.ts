@@ -9,7 +9,7 @@ export type Poi = {
 
 export type Camera = {
   center: [number, number];
-  zoom?: number;
+  zoom: number;
   pitch?: number;
   bearing?: number;
 };

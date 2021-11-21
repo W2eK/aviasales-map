@@ -16,7 +16,6 @@ export const EmblaSlider: FC<EmblaProps> = ({ children, index, dispatch }) => {
     startIndex: index + indexOffset,
     skipSnaps: true
   });
-  console.log(index);
 
   const onSelect = useCallback(() => {
     if (!embla) return;
@@ -36,7 +35,7 @@ export const EmblaSlider: FC<EmblaProps> = ({ children, index, dispatch }) => {
     if (!embla) return;
     const currentIndex = embla.selectedScrollSnap() + indexOffset;
     if (currentIndex !== index) embla.scrollTo(index + indexOffset, true);
-  }, [index]);
+  }, [children, index]);
 
   return (
     <EmblaMain ref={ref}>

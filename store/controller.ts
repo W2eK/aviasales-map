@@ -15,6 +15,10 @@ export const useStoreController = (props: ControllerProps) => {
   const { city, category, poi }: Partial<PoiParams> = router.query;
 
   useEffect(() => {
+    dispatch(setPageState(pageProps));
+  }, [pageProps]);
+
+  useEffect(() => {
     const currentCity = city || null;
     dispatch(setCurrentParam({ currentCity }));
   }, [city]);
@@ -28,8 +32,4 @@ export const useStoreController = (props: ControllerProps) => {
     const currentPoi = poi === undefined ? null : +poi;
     dispatch(setCurrentParam({ currentPoi }));
   }, [poi]);
-
-  useEffect(() => {
-    dispatch(setPageState(pageProps));
-  }, [pageProps]);
 };

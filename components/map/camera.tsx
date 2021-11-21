@@ -1,115 +1,74 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { useMap } from 'mapboxr-gl';
-import { ipApi } from 'services/ip-api';
 import { MainPageContext, useStoreContext } from 'store/context';
-import { resetState, setDistrictHover, setMapLock } from 'store/actions';
 import { MainPageProps } from 'interfaces/props.interface';
-import { FlyToOptions, PaddingOptions } from 'mapbox-gl';
+import { Map } from 'mapbox-gl';
+import { CategoryCamera, CityCamera, PoiCamera } from 'components/camera';
+
+const useCamera = (map: Map, pageProps: MainPageProps) => {
+  return useMemo(() => {
+    if (pageProps.page === 'city') {
+      return new CityCamera(map, pageProps);
+    } else if (pageProps.page === 'category') {
+      return new CategoryCamera(map, pageProps);
+    } else {
+      return new PoiCamera(map, pageProps);
+    }
+  }, [map, pageProps]);
+};
 
 export const CameraController: FC = () => {
-  const { state, dispatch } = useStoreContext() as MainPageContext;
+  const { state } = useStoreContext() as MainPageContext;
   const { map } = useMap();
-  const initial = useRef(true);
-  const prev = useRef(state.pageProps.page);
+  const page = state.pageProps.page;
+  const camera = useCamera(map, state.pageProps);
 
-  // Initial
-  // useEffect(() => {
-  //   switch (pageProps.page) {
-  //     // case 'index': {
-  //     //   ipApi.getLocation().then(({ lat, lon }) => {
-  //     //     map.setCenter([lon, lat]);
-  //     //   });
-  //     //   break;
-  //     // }
-  //     case 'city': {
-  //       const bounds = map.cameraForBounds(pageProps.bounds)!;
-  //       bounds.zoom = Math.min(bounds.zoom, 12);
-  //       // map.
-  //       map.jumpTo({ ...bounds, bearing: 0, pitch: 0 });
-  //       // map.triggerRepaint();
-  //       break;
-  //     }
-  //     case 'category': {
-  //       const bounds = map.cameraForBounds(pageProps.bounds)!;
-  //       bounds.zoom = Math.min(bounds.zoom);
-  //       map.jumpTo(bounds);
-  //       break;
-  //     }
-  //     case 'poi': {
-  //       const center = pageProps.camera.center;
-  //       map.jumpTo({ center, zoom: 11 });
-  //     }
-  //     default:
-  //       break;
-  //   }
-  // }, []);
+  // INITIAL ANIMATION
+  useEffect(() => {
+    camera.jumpToInitial();
+  }, []);
 
-  // // On Page Change
-  // useEffect(() => {
-  //   switch (pageProps.page) {
-  //     case 'city': {
-  //       const camera = pageProps.camera;
-  //       if (initial.current) {
-  //         setTimeout(() => map.flyTo({ ...camera, duration: 3000 }), 1000);
-  //       } else {
-  //         // @ts-ignore
-  //         const padding: PaddingOptions = { bottom: 100 };
-  //         map.flyTo({ ...camera, padding });
-  //       }
-  //       break;
-  //     }
-  //     case 'category': {
-  //       const bounds = map.cameraForBounds(pageProps.bounds, {
-  //         pitch: map.getPitch(),
-  //         bearing: map.getBearing(),
-  //         padding: { top: 40, bottom: 100, left: 40, right: 40 }
-  //       })!;
-  //       // @ts-ignore
-  //       const padding: PaddingOptions = { bottom: 352 };
-  //       map.flyTo({ ...bounds, padding });
-  //       break;
-  //     }
-  //     case 'poi': {
-  //       const camera = pageProps.camera;
-  //       map.flyTo(camera);
-  //       break;
-  //     }
-  //     default:
-  //       break;
-  //   }
-  //   initial.current = false;
-  //   // if (pageProps.page === 'city') {
-  //   //   // if (pageProps.city) dispatch(setDistrictHover(pageProps.city.id));
-  //   //   const { camera } = pageProps;
-  //   //   map.flyTo(camera, { locked: true });
-  //   //   dispatch(setMapLock(true));
-  //   //   map.once('moveend', () => {
-  //   //     dispatch(setMapLock(false));
-  //   //   });
-  //   // } else if (pageProps.page === 'index') {
-  //   //   dispatch(resetState());
-  //   //   map.flyTo({
-  //   //     pitch: 0,
-  //   //     zoom: 8,
-  //   //     bearing: 0
-  //   //   });
-  //   // }
-  // }, [pageProps]);
+  // ANIMATION ON PAGE CHANGE
+  useEffect(() => {
+    switch (page) {
+      case 'city': {
+        if (state.hoverPoi !== null) {
+          camera.flyToTarget(state.hoverPoi);
+        } else {
+          (camera as CityCamera).flyToInitial();
+        }
+        break;
+      }
+      case 'category': {
+        (camera as CategoryCamera).flyToInitial();
+        break;
+      }
+      case 'poi': {
+        (camera as PoiCamera).flyToTarget();
+      }
+    }
+  }, [state.pageProps]);
 
-  // useEffect(() => {
-  //   if (state.isDragged) return;
-  //   if (state.hoverPoi !== null) {
-  //     const center = pageProps.poi[state.hoverPoi].camera.center;
-  //     const distance = map.project(map.getCenter()).dist(map.project(center));
-  //     if (distance > 400) {
-  //       map.flyTo({ center });
-  //     } else {
-  //       map.easeTo({ center });
-  //     }
-  //   } else {
+  // ANIMATION ON POI CHANGE
+  useEffect(() => {
+    if (state.isDragged) return;
+    if (page === 'city' || page === 'category') {
+      if (state.hoverPoi === null) {
+        (camera as CityCamera | CategoryCamera).flyToInitial();
+      } else {
+        (camera as CityCamera | CategoryCamera).flyToTarget(state.hoverPoi);
+      }
+    }
+  }, [state.hoverPoi]);
 
-  //   }
-  // }, [state.hoverPoi]);
-
+  // ANIMATION ON DISTRICT CHANGE
+  useEffect(() => {
+    if (state.isDragged || page !== 'category') return;
+    if (state.hoverDistrict === null) {
+      (camera as CategoryCamera).flyToInitial();
+    } else {
+      (camera as CategoryCamera).flyToDistrict(state.hoverDistrict);
+    }
+  }, [state.hoverDistrict]);
   return null;
 };

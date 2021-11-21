@@ -20,7 +20,6 @@ export const Slider: FC = () => {
         : null,
     [showContent, order]
   );
-
   return useMemo(
     () => (
       <SliderWrapper showContent={showContent}>

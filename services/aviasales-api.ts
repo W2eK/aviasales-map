@@ -105,18 +105,19 @@ class AviasalesApi {
     const city = shapeCity(raw);
     const geojson = { ...city.geojson, districts };
 
+    const zoom = raw.city_map.start_zoom;
+    const { id, ...restOverrides } = overrides[iata] || {};
+    const center = (
+      city.geojson.labels.features.find(
+        ({ properties }) => properties.id === id
+      ) || city.geojson.labels.features[0]
+    ).geometry.coordinates as [number, number];
+    const pitch = 50;
+    const camera = { center, zoom, pitch, bearing: 0, ...restOverrides };
+
     if (page === 'city') {
       const title = raw.city_map.title;
-      const zoom = raw.city_map.start_zoom;
-      const { id, ...restOverrides } = overrides[iata] || {};
-      const center = (
-        city.geojson.labels.features.find(
-          ({ properties }) => properties.id === id
-        ) || city.geojson.labels.features[0]
-      ).geometry.coordinates as [number, number];
-      const pitch = 50;
-      console.log(restOverrides);
-      const camera = { center, zoom, pitch, bearing: 0, ...restOverrides };
+
       // @ts-ignore
       const features = featureCollection([
         ...geojson.poi.features,
@@ -160,7 +161,8 @@ class AviasalesApi {
           title,
           subtitle,
           order,
-          bounds
+          bounds,
+          camera
         };
       } else {
         const currentPoi = await this.requestPoi({ id: poi! });
