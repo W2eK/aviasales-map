@@ -1,7 +1,6 @@
 import { Category } from 'interfaces/data.interface';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
-import { StoreState } from 'store/reducer';
 import {
   Item,
   ItemIndicator,
@@ -13,6 +12,7 @@ import { Link } from 'components/shared/link';
 import { MainPageParams } from 'interfaces/params.interface';
 import { motion } from 'framer-motion';
 import { Icon } from 'components/icon';
+import { StoreState } from 'store/state';
 
 type ItemProps = Pick<StoreState, 'currentCategory' | 'hoverType'> & {
   category: Category;

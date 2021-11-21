@@ -2,7 +2,7 @@ import { Category, Poi } from 'interfaces/data.interface';
 import * as turf from '@turf/turf';
 import { buildVoronoi } from './utils/voronoi';
 import { CityMap } from 'services/interfaces/citymap.interface';
-import { CommonProps } from 'interfaces/city.interface';
+import { CommonProps } from 'interfaces/props.interface';
 import {
   LabelsGeojson,
   PoiGeojson,

@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { aviasalesApi } from 'services/aviasales-api';
 import { PoiType, poiTypes } from 'interfaces/data.interface';
-import { CityPageProps } from 'interfaces/city.interface';
+import { CityPageProps } from 'interfaces/props.interface';
 import { IATA, iataCodes } from 'interfaces/iata.interface';
 import { isDev } from 'utils/is-dev';
 

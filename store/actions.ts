@@ -1,7 +1,7 @@
-import { PageProps } from 'interfaces/city.interface';
+import { PageProps } from 'interfaces/props.interface';
 import { CategoryType, PoiType } from 'interfaces/data.interface';
 import { IATA } from 'interfaces/iata.interface';
-import { StoreState } from './reducer';
+import { PageState } from './state';
 
 type SetCurrentParam = {
   type: 'SET_CURRENT_PARAM';
@@ -9,11 +9,6 @@ type SetCurrentParam = {
     | { currentPoi: number | null }
     | { currentCategory: CategoryType | null }
     | { currentCity: IATA | null };
-};
-
-type SetPageState = {
-  type: 'SET_PAGE_STATE';
-  payload: Pick<StoreState, 'isMainPage' | 'isDetailPage'>;
 };
 
 export type Action =
@@ -44,8 +39,15 @@ export type Action =
       type: 'RESET_PAGE_PROPS';
       payload: PageProps;
     }
-  | SetCurrentParam
-  | SetPageState;
+  | {
+      type: 'SET_INDEX';
+      payload: number;
+    }
+  | {
+      type: 'SET_PAGE_STATE';
+      payload: PageProps;
+    }
+  | SetCurrentParam;
 
 export const setDistrictHover = (id: number | null): Action => ({
   type: 'SET_DISTRICT_HOVER',
@@ -86,9 +88,12 @@ export const setCurrentParam = <T extends SetCurrentParam['payload']>(
   payload
 });
 
-export const setPageState = (
-  payload: SetPageState['payload']
-): SetPageState => ({
+export const setPageState = (payload: PageProps): Action => ({
   type: 'SET_PAGE_STATE',
+  payload
+});
+
+export const setIndex = (payload: number): Action => ({
+  type: 'SET_INDEX',
   payload
 });

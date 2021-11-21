@@ -5,12 +5,12 @@ import { CategoriesList } from './list';
 import { Item, List, Wrapper } from './styled';
 
 export const Categories: FC = () => {
-  const { state, pageProps } = useStoreContext() as MainPageContext;
+  const { state } = useStoreContext() as MainPageContext;
   const collapsed = state.isDetailPage;
   return useMemo(
     () => (
       <CategoriesList collapsed={collapsed}>
-        {pageProps.categories.map(category => (
+        {state.pageProps.categories.map(category => (
           <CategoryItem
             key={category.type}
             category={category}

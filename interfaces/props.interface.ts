@@ -7,7 +7,6 @@ import {
   PoiGeojson,
   VoronoiGeojson
 } from './geodata.interface';
-import { PoiProps } from './poi.interface';
 
 export type PageProps = {} | HomePageProps | MainPageProps;
 export type MainPageProps = CityPageProps | CategoryPageProps | PoiPageProps;

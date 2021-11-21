@@ -1,4 +1,4 @@
-import { PoiPageProps } from 'interfaces/city.interface';
+import { PoiPageProps } from 'interfaces/props.interface';
 import { IATA } from 'interfaces/iata.interface';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { aviasalesApi } from 'services/aviasales-api';

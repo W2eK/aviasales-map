@@ -1,24 +1,26 @@
-import {
-  CategoryPageProps,
-  MainPageProps,
-  PageProps,
-  PoiPageProps
-} from 'interfaces/city.interface';
-import { useRouter } from 'next/router';
+import { PageProps } from 'interfaces/props.interface';
 import { createContext, Dispatch, FC, useContext, useReducer } from 'react';
 import { Action } from './actions';
 import { useStoreController } from './controller';
-import { initialState, storeReducer, StoreState } from './reducer';
+import { storeReducer } from './reducer';
+import {
+  InternalState,
+  DetailsPageState,
+  initialState,
+  MainPageState,
+  StoreState
+} from './state';
 
 type StoreContextProps = {
   state: StoreState;
   dispatch: Dispatch<Action>;
-  pageProps: PageProps;
 };
 
-export type MainPageContext = StoreContextProps & { pageProps: MainPageProps };
+export type MainPageContext = StoreContextProps & {
+  state: InternalState & MainPageState;
+};
 export type DetailsPageContext = StoreContextProps & {
-  pageProps: CategoryPageProps | PoiPageProps;
+  state: InternalState & DetailsPageState;
 };
 
 export const StoreContext = createContext<StoreContextProps>(
@@ -32,9 +34,9 @@ export const StoreProvider: FC<{
   if (typeof window !== 'undefined') (window as any).state = state;
   if (typeof window !== 'undefined') (window as any).pageProps = pageProps;
 
-  useStoreController({ state, dispatch, pageProps });
+  useStoreController({ dispatch, pageProps });
   return (
-    <StoreContext.Provider value={{ state, dispatch, pageProps }}>
+    <StoreContext.Provider value={{ state, dispatch }}>
       {children}
     </StoreContext.Provider>
   );

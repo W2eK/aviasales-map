@@ -12,7 +12,7 @@ import {
   CityPageProps,
   CategoryPageProps,
   PoiPageProps
-} from 'interfaces/city.interface';
+} from 'interfaces/props.interface';
 import { computeBbox } from './shapers/utils/bbox';
 import { IATA } from 'interfaces/iata.interface';
 import { CategoryType, PoiType } from 'interfaces/data.interface';

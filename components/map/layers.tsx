@@ -1,5 +1,6 @@
 import { FC, useMemo } from 'react';
-import { useStoreContext } from 'store/context';
+import { MainPageContext, useStoreContext } from 'store/context';
+import { MainPageState } from 'store/state';
 import { CameraController } from './camera';
 import { MapDistricts } from './districts';
 import { MapLabels } from './labels';
@@ -8,14 +9,14 @@ import { MapPoi } from './poi';
 import { MapVoronoi } from './voronoi';
 
 export const MapLayers: FC = () => {
-  const { state, pageProps } = useStoreContext();
+  const { state } = useStoreContext();
   return useMemo(() => {
-    return 'geojson' in pageProps ? (
+    return state.isMainPage ? (
       <>
-        <MapDistricts data={pageProps.geojson.districts} />
-        <MapVoronoi data={pageProps.geojson.voronoi} />
-        <MapPoi data={pageProps.geojson.poi} />
-        <MapLabels data={pageProps.geojson.labels} />
+        <MapDistricts data={state.pageProps.geojson.districts} />
+        <MapVoronoi data={state.pageProps.geojson.voronoi} />
+        <MapPoi data={state.pageProps.geojson.poi} />
+        <MapLabels data={state.pageProps.geojson.labels} />
         <MapMarker />
         <CameraController />
       </>

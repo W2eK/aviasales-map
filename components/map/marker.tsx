@@ -4,8 +4,8 @@ import { MainPageContext, useStoreContext } from 'store/context';
 import { Marker } from 'components/marker';
 
 export const MapMarker: FC = () => {
-  let { state, pageProps } = useStoreContext() as MainPageContext;
-  const poi = state.hoverPoi !== null ? pageProps.poi?.[state.hoverPoi] : null;
+  let { state } = useStoreContext() as MainPageContext;
+  const poi = state.hoverPoi !== null ? state.pageProps.poi?.[state.hoverPoi] : null;
   return useMemo(
     () =>
       poi && (

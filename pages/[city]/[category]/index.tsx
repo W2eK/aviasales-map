@@ -1,4 +1,4 @@
-import { CategoryPageProps } from 'interfaces/city.interface';
+import { CategoryPageProps } from 'interfaces/props.interface';
 import { Category, CategoryType, PoiType } from 'interfaces/data.interface';
 import { IATA } from 'interfaces/iata.interface';
 import { GetStaticPaths, GetStaticProps } from 'next';
