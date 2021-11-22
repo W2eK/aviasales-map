@@ -67,7 +67,7 @@ export const CameraController: FC = () => {
     if (state.hoverDistrict === null) {
       (camera as CategoryCamera).flyToInitial();
     } else {
-      (camera as CategoryCamera).flyToDistrict(state.hoverDistrict);
+      (camera as CategoryCamera).flyToTarget(state.hoverDistrict);
     }
   }, [state.hoverDistrict]);
   return null;

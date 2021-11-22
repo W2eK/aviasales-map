@@ -1,5 +1,5 @@
 import { featureCollection, truncate } from '@turf/turf';
-import { DistrictsGeojson } from 'interfaces/geodata.interface';
+import { DistrictsGeojson, VoronoiGeojson } from 'interfaces/geodata.interface';
 import { WidgetPlaces } from 'interfaces/places.interface';
 import { BlocksRoot } from 'interfaces/poi.interface';
 import { shapeCity } from './shapers/shape-city';
@@ -17,6 +17,7 @@ import { computeBbox } from './shapers/utils/bbox';
 import { IATA } from 'interfaces/iata.interface';
 import { CategoryType, PoiType } from 'interfaces/data.interface';
 import { monetizationClient, widgetClient } from './axios';
+import { buildVoronoi } from './shapers/utils/voronoi';
 
 type RequestParams = {
   iata: IATA;
@@ -112,8 +113,7 @@ class AviasalesApi {
         ({ properties }) => properties.id === id
       ) || city.geojson.labels.features[0]
     ).geometry.coordinates as [number, number];
-    const pitch = 50;
-    const camera = { center, zoom, pitch, bearing: 0, ...restOverrides };
+    const camera = { center, zoom, pitch: 50, bearing: 0, ...restOverrides };
 
     if (page === 'city') {
       const title = raw.city_map.title;
@@ -147,12 +147,20 @@ class AviasalesApi {
         category !== 'all'
           ? city.categories.find(({ type }) => type === category)!
           : null;
+
+      geojson.voronoi =
+        category === 'districts'
+          ? featureCollection([])
+          : buildVoronoi(collection);
+
       if (page === 'category') {
         const title = currentCategory && currentCategory.title;
         const subtitle = currentCategory && currentCategory.title;
         const bounds = computeBbox(
           category === 'districts' ? districts : collection
         );
+        camera.bearing =
+          camera.bearing > 0 ? camera.bearing + 10 : camera.bearing - 10;
         return {
           page: 'category',
           ...city,

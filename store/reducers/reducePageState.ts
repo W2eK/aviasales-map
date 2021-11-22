@@ -1,35 +1,6 @@
 import { PageProps } from 'interfaces/props.interface';
 import { initialState, StoreState } from 'store/state';
 
-/*
-useEffect(() => {
-    // Determine page type
-    const isMainPage = 'page' in pageProps;
-    const isDetailPage =
-      isMainPage && (pageProps.page === 'category' || pageProps.page === 'poi');
-    dispatch(setPageState({ isMainPage, isDetailPage }));
-
-    // Reset hover states
-    if (isDetailPage) {
-      const { hoverPoi, hoverDistrict } = state;
-
-      const index = hoverPoi ? pageProps.order.indexOf(hoverPoi) : -1;
-      console.log(index);
-      dispatch(setIndex(index));
-
-      if (
-        hoverPoi &&
-        pageProps.currentCategory !== 'all' &&
-        pageProps.poi[hoverPoi].type !== pageProps.currentCategory
-      )
-        dispatch(setPoiHover(null));
-      if (hoverDistrict && pageProps.currentCategory !== 'districts')
-        dispatch(setDistrictHover(null));
-    }
-    if (!isMainPage) dispatch(resetState());
-  }, [pageProps]);
-*/
-
 export const reducePageState = (
   state: StoreState,
   pageProps: PageProps
@@ -42,7 +13,13 @@ export const reducePageState = (
   } else if (pageProps.page === 'city') {
     const isMainPage = true;
     const isDetailPage = false;
-    return { ...state, isMainPage, isDetailPage, pageProps };
+    return {
+      ...state,
+      isMainPage,
+      isDetailPage,
+      pageProps,
+      hoverDistrict: null
+    };
   } else {
     const isMainPage = true;
     const isDetailPage = true;

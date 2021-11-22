@@ -21,12 +21,12 @@ const VoronoiFilter: FC = () => {
 
 export const MapVoronoi: FC<VoronoiProps> = ({ data }) => {
   return (
-    <Source id="voronoi" type="geojson" data={data}>
+    <Source id="voronoi" type="geojson" data={data} strict>
       <Layer
         id="voronoi-fill"
         type="fill"
         paint={{
-          'fill-opacity': 0
+          'fill-opacity': 0,
           // 'fill-color': 'rgba(0, 0, 0, 0.01)',
           // 'fill-outline-color': 'white'
         }}

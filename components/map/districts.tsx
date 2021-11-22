@@ -1,11 +1,13 @@
-import { FC, useCallback, useEffect, useMemo } from 'react';
-import { Source, Layer, Property, Filter } from 'mapboxr-gl';
+import { FC, useCallback, useMemo } from 'react';
+import { Source, Layer, Property, Filter, LayerHandlers } from 'mapboxr-gl';
 import { useStoreContext } from 'store/context';
-import { setDistrictHover, setPoiType } from 'store/actions';
+import { setDistrictHover } from 'store/actions';
 import { Center } from './center';
 import { Expression } from 'mapbox-gl';
 import { DistrictsGeojson } from 'interfaces/geodata.interface';
-import { vibrate } from 'services/vibration';
+import { useRouter } from 'next/router';
+import { PoiParams } from 'pages/[city]/[category]/[poi]';
+import { ClickHandler } from './click';
 
 export interface DistrictsProps {
   data: DistrictsGeojson;
@@ -13,6 +15,9 @@ export interface DistrictsProps {
 
 const DistrictsCenter = () => {
   const { state, dispatch } = useStoreContext();
+  const handleDistricts =
+    state.currentCategory === null || state.currentCategory === 'districts';
+
   const handler = useCallback(
     (features: DistrictsGeojson['features']) => {
       const [feature] = features;
@@ -25,31 +30,50 @@ const DistrictsCenter = () => {
     [state.hoverDistrict]
   );
   return useMemo(
-    () => (
-      <Center
-        id={state.hoverDistrict}
-        layers={['districts-area']}
-        handler={handler}
-        isDragged={state.isDragged}
-      />
-    ),
-    [state.isDragged, handler]
+    () =>
+      handleDistricts ? (
+        <Center
+          id={state.hoverDistrict}
+          layers={['districts-area']}
+          handler={handler}
+          isDragged={state.isDragged}
+        />
+      ) : null,
+    [state.isDragged, handler, handleDistricts]
   );
 };
 
 const DistrictFilter: FC = () => {
   const { state } = useStoreContext();
+  const isDistrictCurrent = state.currentCategory === 'districts';
   return useMemo(() => {
-    const rule: Expression = [
-      'case',
-      ['==', ['get', 'district_id'], state.hoverDistrict],
-      true,
-      false
-    ];
+    const rule: Expression = isDistrictCurrent
+      ? ['any', false]
+      : [
+          'case',
+          ['==', ['get', 'district_id'], state.hoverDistrict],
+          true,
+          false
+        ];
     return <Filter rule={rule} />;
-  }, [state.hoverDistrict]);
+  }, [state.hoverDistrict, isDistrictCurrent]);
 };
 
+export const DistrictClick: FC = () => {
+  const { dispatch } = useStoreContext();
+  const router = useRouter();
+  return useMemo(() => {
+    const handler: LayerHandlers['click'] = ({ features }) => {
+      if (features) {
+        const id = features[0].id as number;
+        dispatch(setDistrictHover(id));
+        const { city }: Partial<PoiParams> = router.query;
+        if (city) router.push(`/${city}/districts`);
+      }
+    };
+    return <ClickHandler handler={handler} />;
+  }, [dispatch, router]);
+};
 export const MapDistricts: FC<DistrictsProps> = ({ data }) => {
   const colorRule: Expression = [
     'case',
@@ -64,6 +88,7 @@ export const MapDistricts: FC<DistrictsProps> = ({ data }) => {
         <DistrictsCenter />
         <Layer master="districts-area" replaceMaster type="fill" sourceLayer="">
           <Property type="paint" name="fill-color" value={colorRule} />
+          <DistrictClick />
         </Layer>
         <Layer master="districts-line" replaceMaster type="line" sourceLayer="">
           <Property type="paint" name="line-color" value={colorRule} />

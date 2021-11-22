@@ -7,10 +7,22 @@ type Reducer = (state: StoreState, action: Action) => StoreState;
 export const storeReducer: Reducer = (state, action) => {
   switch (action.type) {
     case 'SET_DISTRICT_HOVER': {
+      if (
+        state.isDetailPage &&
+        state.currentCategory === 'districts' &&
+        action.payload !== null
+      ) {
+        const index = state.pageProps.order.indexOf(action.payload);
+        return { ...state, hoverDistrict: action.payload, index };
+      }
       return { ...state, hoverDistrict: action.payload };
     }
     case 'SET_POI_HOVER': {
-      return { ...state, hoverPoi: action.payload };
+      if (state.isDetailPage) {
+        const index = state.pageProps.order.indexOf(action.payload || -1);
+        return { ...state, hoverPoi: action.payload, index };
+      }
+      return { ...state, hoverPoi: action.payload, index: -1 };
     }
     case 'SET_POI_TYPE': {
       return { ...state, hoverType: action.payload };

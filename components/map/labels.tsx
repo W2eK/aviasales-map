@@ -3,6 +3,7 @@ import { Source, Layer, Filter, Property } from 'mapboxr-gl';
 import { LabelsGeojson } from 'interfaces/geodata.interface';
 import { Expression, Visibility } from 'mapbox-gl';
 import { useStoreContext } from 'store/context';
+import { DistrictClick } from './districts';
 
 type MapLabelsProps = {
   data: LabelsGeojson;
@@ -18,15 +19,15 @@ const LabelsVisibility: FC = () => {
 
 const LabelsFilter: FC = () => {
   const { state } = useStoreContext();
+  const { currentCategory } = state;
   return useMemo(() => {
-    const rule: Expression = [
-      'case',
-      ['!=', ['get', 'id'], state.hoverDistrict],
-      true,
-      false
-    ];
+    const equality = currentCategory !== 'districts' ? '!=' : '==';
+    const rule: Expression =
+      currentCategory !== null && currentCategory !== 'districts'
+        ? ['any', false]
+        : ['case', [equality, ['get', 'id'], state.hoverDistrict], true, false];
     return <Filter rule={rule} />;
-  }, [state.hoverDistrict]);
+  }, [state.hoverDistrict, currentCategory]);
 };
 
 export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
@@ -40,7 +41,8 @@ export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
         type="symbol"
       >
         <LabelsFilter />
-        <LabelsVisibility />
+        {/* <LabelsVisibility /> */}
+        <DistrictClick />
       </Layer>
       <Layer
         master="districts-labels-48"
@@ -51,7 +53,8 @@ export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
         // paint={{ 'text-color': '#5A6472' }}
       >
         <LabelsFilter />
-        <LabelsVisibility />
+        {/* <LabelsVisibility /> */}
+        <DistrictClick />
       </Layer>
     </Source>
   );

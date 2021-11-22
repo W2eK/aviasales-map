@@ -1,11 +1,16 @@
 import { FC, useCallback, useMemo } from 'react';
-import { Source, Layer, Filter, Property } from 'mapboxr-gl';
-import { useStoreContext } from 'store/context';
-import { PoiGeojson, VoronoiGeojson } from 'interfaces/geodata.interface';
+import { Source, Layer, Filter, Listener, LayerHandlers } from 'mapboxr-gl';
+import { MainPageContext, useStoreContext } from 'store/context';
+import {
+  PoiGeojson,
+  PoiProperties,
+  VoronoiGeojson
+} from 'interfaces/geodata.interface';
 import { setPoiHover, setPoiType } from 'store/actions';
 import { vibrate } from 'services/vibration';
 import { Center } from './center';
-import { Expression } from 'mapbox-gl';
+import { Expression, MapLayerMouseEvent } from 'mapbox-gl';
+import { ClickHandler } from './click';
 
 export interface PoiProps {
   data: PoiGeojson;
@@ -51,6 +56,19 @@ const PoiFilter: FC = () => {
         : ['case', ['==', ['get', 'id'], state.hoverPoi], true, false];
     return <Filter rule={rule} />;
   }, [state.hoverPoi]);
+};
+
+const PoiClick: FC = () => {
+  const { dispatch } = useStoreContext() as MainPageContext;
+  return useMemo(() => {
+    const handler: LayerHandlers['click'] = ({ features }) => {
+      if (features) {
+        dispatch(setPoiHover(features[0].id as number));
+        dispatch(setPoiType((features[0].properties as PoiProperties).type));
+      }
+    };
+    return <ClickHandler handler={handler} />;
+  }, [dispatch]);
 };
 
 const PoiSort: FC = () => {
@@ -108,13 +126,15 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
           // 'icon-allow-overlap': ['step', ['zoom'], false, 11, true]
           'icon-allow-overlap': true
         }}
+        cursor
       >
         <PoiSort />
+        <PoiClick />
       </Layer>
       <Layer
         id="poi-hover"
         type="symbol"
-        beforeId="districts-labels"
+        beforeId="sky"
         layout={{
           'icon-image': ['concat', ['get', 'type'], '-active'],
           'icon-size': 0.5,

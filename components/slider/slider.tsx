@@ -23,7 +23,7 @@ export const Slider: FC = () => {
   return useMemo(
     () => (
       <SliderWrapper showContent={showContent}>
-        <EmblaSlider index={state.index} dispatch={dispatch}>
+        <EmblaSlider startIndex={state.index} dispatch={dispatch}>
           {slides}
         </EmblaSlider>
       </SliderWrapper>

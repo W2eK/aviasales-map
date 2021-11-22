@@ -7,6 +7,7 @@ interface PointWithId extends Point {
 
 const coefficient = 0.9999; // 0.9999999;
 
+// TODO: Add caching
 export const computePointOrder = <
   T extends GeoJSON.FeatureCollection<GeoJSON.Point, U>,
   U extends Record<string, any> & { id: number }

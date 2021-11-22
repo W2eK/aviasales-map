@@ -1,3 +1,4 @@
+import { bbox, featureCollection, point } from '@turf/turf';
 import { Camera } from 'interfaces/data.interface';
 import {
   CategoryPageProps,
@@ -53,7 +54,9 @@ export class MapCamera {
       duration: this.duration,
       ...camera
     };
-    if (distance > 400) {
+
+    const isZoomIn = this.map.getZoom() < options.zoom;
+    if (distance > 400 || isZoomIn) {
       this.map.flyTo(options);
     } else {
       this.map.easeTo(options);
@@ -65,5 +68,13 @@ export class MapCamera {
   ) {
     const camera = this.map.cameraForBounds(bounds, options)!;
     this.animateFly(camera);
+  }
+  static getBbox(...features: (GeoJSON.Feature | [number, number])[]) {
+    const collection = featureCollection(
+      features.map(feature =>
+        Array.isArray(feature) ? point(feature) : feature
+      )
+    );
+    return bbox(collection) as [number, number, number, number];
   }
 }
