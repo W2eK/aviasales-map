@@ -14,7 +14,7 @@ export const Marker: FC<MarkerProps> = ({ poi }) => {
     <AnimatePresence>
       {router.route === '/[city]' ? (
         <Link
-          pathname="/[city]/[category]/[poi]/"
+          pathname="/[city]/[category]/"
           query={{ ...router.query, category: 'all', poi: poi.id + '' }}
         >
           <ImageWrapper

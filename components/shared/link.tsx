@@ -6,11 +6,12 @@ type LinkProps = {
   children: React.ReactNode | string;
   pathname: string;
   query: AllPageParams;
+  shallow?: boolean;
 };
 
-export const Link: FC<LinkProps> = ({ children, pathname, query }) => {
+export const Link: FC<LinkProps> = ({ children, pathname, query, shallow }) => {
   return (
-    <NextLink href={{ pathname, query }}>
+    <NextLink href={{ pathname, query }} shallow={shallow}>
       <a>{children}</a>
     </NextLink>
   );

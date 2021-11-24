@@ -50,3 +50,5 @@ export type PoiPageProps = CommonProps & {
   camera: Camera; // Zoom to poi
   order: number[];
 };
+
+export type PageType = 'city' | 'category' | 'poi';

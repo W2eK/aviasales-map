@@ -13,23 +13,19 @@ type CardProps = {
 export const Card: FC<CardProps> = ({ poi }) => {
   const query = useRouter().query as Partial<PoiParams>;
   const { state } = useStoreContext() as DetailsPageContext;
-  const cardOpen = state.currentPoi === poi.id;
-  const description =
-    state.pageProps.page === 'poi' && cardOpen
-      ? state.pageProps.description
-      : '';
+  const cardIsOpen = state.currentPoi === poi.id;
   
-  // prettier-ignore
   return useMemo(() => (
     <Link
-      pathname={cardOpen ? '/[city]/[category]' : '/[city]/[category]/[poi]'}
+    shallow
+      pathname="/[city]/[category]"
       query={
-        cardOpen
+        cardIsOpen
           ? { city: query.city, category: query.category }
-          : { ...query, poi: cardOpen ? undefined : poi.id }
+          : { ...query, poi: cardIsOpen ? undefined : poi.id }
       }
     >
-      <CardContent poi={poi} open={cardOpen} description={description}/>
+      <CardContent poi={poi} isOpen={cardIsOpen}/>
     </Link>
-  ), [cardOpen, description]);
+  ), [cardIsOpen]);
 };
