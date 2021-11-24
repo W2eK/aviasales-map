@@ -3,6 +3,7 @@ import { Map, PaddingOptions } from 'mapbox-gl';
 import { MapCamera } from './map-camera';
 
 export class CityCamera extends MapCamera {
+  public page: 'city' = 'city';
   protected padding: PaddingOptions = {
     top: 0,
     left: 0,

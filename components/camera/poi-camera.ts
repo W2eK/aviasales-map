@@ -3,6 +3,7 @@ import { Map, PaddingOptions } from 'mapbox-gl';
 import { MapCamera } from './map-camera';
 
 export class PoiCamera extends MapCamera {
+  public page: 'poi' = 'poi';
   protected padding: PaddingOptions = {
     top: 0,
     left: 0,

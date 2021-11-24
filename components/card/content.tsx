@@ -16,7 +16,7 @@ export const CardContent: FC<CardContentProps> = ({
 }) => {
   const [ref, description] = useDescription({ id: poi.id, type: poi.type });
   return (
-    <Wrapper>
+    <Wrapper key={poi.name}>
       <div ref={ref}></div>
       <CardImage
         src={poi.image_url}
@@ -27,8 +27,9 @@ export const CardContent: FC<CardContentProps> = ({
         style={{
           justifyContent: isOpen ? 'flex-start' : 'flex-end'
         }}
+        key={poi.name}
       >
-        <Text as={motion.div} layout="position" key={poi.name}>
+        <Text as={motion.div} layout key={poi.name}>
           <Header>{poi.name}</Header>
           <Paragraph>{description}</Paragraph>
         </Text>

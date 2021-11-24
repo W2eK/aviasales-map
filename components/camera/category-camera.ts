@@ -1,20 +1,11 @@
-import {
-  bbox as getBbox,
-  featureCollection,
-  point,
-  lineString,
-  transformRotate
-} from '@turf/turf';
+import { lineString, transformRotate } from '@turf/turf';
 import { CategoryPageProps } from 'interfaces/props.interface';
-import {
-  CameraForBoundsOptions,
-  LngLatBoundsLike,
-  Map,
-  PaddingOptions
-} from 'mapbox-gl';
+import { LngLatBoundsLike, Map, PaddingOptions } from 'mapbox-gl';
 import { MapCamera } from './map-camera';
 
 export class CategoryCamera extends MapCamera {
+  private stop = false;
+  public page: 'category' = 'category';
   protected padding: PaddingOptions = {
     top: 0,
     left: 0,
@@ -28,6 +19,7 @@ export class CategoryCamera extends MapCamera {
   ) {
     super(map, pageProps);
     this.padding.bottom = (padding || 300) + 40;
+    this.camera.zoom = 13;
   }
   // jumpToInitial = CityCamera.prototype.jumpToInitial.bind(this);
   jumpToInitial() {
@@ -43,12 +35,25 @@ export class CategoryCamera extends MapCamera {
     this.animateBounds(this.pageProps.bounds);
   }
 
-  flyToDistrict(id: number) {
+  private getDistrict(id: number) {
     const district = this.pageProps.geojson.districts.features.find(
       ({ properties }) => properties.district_id === id
     )!;
+    return district;
+  }
+
+  flyToDistrict(id: number) {
+    const district = this.getDistrict(id);
     const bbox = MapCamera.getBbox(district, this.camera.center);
     this.animateBounds(bbox);
+  }
+
+  zoomToDistrict(id: number) {
+    const district = this.getDistrict(id);
+    const bbox = MapCamera.getBbox(district);
+    super.animateBounds(bbox, {
+      bearing: this.getBearing(20)
+    });
   }
 
   flyToTarget(id: number) {
@@ -58,6 +63,20 @@ export class CategoryCamera extends MapCamera {
     const bbox = MapCamera.getBbox(line, pivoted);
     this.animateBounds(bbox);
   }
+  zoomToTarget(id: number) {
+    const center = this.pageProps.poi[id].camera.center;
+    const zoom = 15;
+    const bearing = this.getBearing(20);
+    this.animateFly({ center, zoom, bearing });
+  }
+
+  private rotateCamera(timestamp: number) {
+    if (this.stop) return;
+    const bearing = this.map.getBearing() + 0.1;
+    this.map.rotateTo(bearing, { duration: 0 });
+    requestAnimationFrame(this.rotateCamera.bind(this));
+  }
+
   protected animateBounds(bbox: LngLatBoundsLike) {
     let top, left, bottom, right;
     top = left = bottom = right = 64;

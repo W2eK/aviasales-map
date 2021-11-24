@@ -4,6 +4,7 @@ import {
   CategoryPageProps,
   CityPageProps,
   MainPageProps,
+  PageType,
   PoiPageProps
 } from 'interfaces/props.interface';
 import {
@@ -76,5 +77,8 @@ export class MapCamera {
       )
     );
     return bbox(collection) as [number, number, number, number];
+  }
+  protected getBearing(deg: number) {
+    return this.map.getBearing() + (this.camera.bearing > 0 ? deg : -deg);
   }
 }

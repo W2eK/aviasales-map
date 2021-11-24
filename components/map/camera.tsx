@@ -30,45 +30,57 @@ export const CameraController: FC = () => {
 
   // ANIMATION ON PAGE CHANGE
   useEffect(() => {
-    switch (page) {
-      case 'city': {
-        if (state.hoverPoi !== null) {
-          camera.flyToTarget(state.hoverPoi);
-        } else {
-          (camera as CityCamera).flyToInitial();
-        }
-        break;
-      }
-      case 'category': {
-        (camera as CategoryCamera).flyToInitial();
-        break;
-      }
-      case 'poi': {
-        (camera as PoiCamera).flyToTarget();
+    if (camera.page === 'city' || camera.page === 'category') {
+      if (state.hoverPoi !== null) {
+        camera.flyToTarget(state.hoverPoi);
+      } else {
+        camera.flyToInitial();
       }
     }
   }, [state.pageProps]);
 
   // ANIMATION ON POI CHANGE
   useEffect(() => {
-    if (state.isDragged) return;
-    if (page === 'city' || page === 'category') {
-      if (state.hoverPoi === null) {
-        (camera as CityCamera | CategoryCamera).flyToInitial();
-      } else {
-        (camera as CityCamera | CategoryCamera).flyToTarget(state.hoverPoi);
-      }
+    if (state.isDragged || camera.page === 'poi') return;
+    if (state.hoverPoi === null) {
+      camera.flyToInitial();
+    } else if (
+      state.currentPoi === state.hoverPoi &&
+      camera.page === 'category'
+    ) {
+      camera.zoomToTarget(state.currentPoi);
+    } else {
+      camera.flyToTarget(state.hoverPoi);
     }
   }, [state.hoverPoi]);
 
   // ANIMATION ON DISTRICT CHANGE
   useEffect(() => {
-    if (state.isDragged || page !== 'category') return;
-    if (state.hoverDistrict === null) {
-      (camera as CategoryCamera).flyToInitial();
-    } else {
-      (camera as CategoryCamera).flyToTarget(state.hoverDistrict);
+    if (!state.isDragged && camera.page === 'category') {
+      if (state.hoverDistrict === null) {
+        camera.flyToInitial();
+      } else {
+        camera.flyToTarget(state.hoverDistrict);
+      }
     }
   }, [state.hoverDistrict]);
+
+  // ANIMATION ON SELECTED POI
+  useEffect(() => {
+    if (state.isDragged || camera.page !== 'category') return;
+    if (state.currentPoi !== null) {
+      if (state.currentPoi === state.hoverDistrict) {
+        camera.zoomToDistrict(state.hoverDistrict);
+      } else {
+        camera.zoomToTarget(state.currentPoi);
+      }
+    } else if (state.hoverPoi !== null) {
+      camera.flyToTarget(state.hoverPoi);
+    } else if (state.hoverDistrict !== null) {
+      camera.flyToTarget(state.hoverDistrict);
+    } else if (state.hoverPoi === null) {
+      camera.flyToInitial();
+    }
+  }, [state.currentPoi]);
   return null;
 };
