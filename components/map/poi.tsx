@@ -10,7 +10,6 @@ import { setPoiHover, setPoiType } from 'store/actions';
 import { vibrate } from 'services/vibration';
 import { Center } from './center';
 import { Expression, MapLayerMouseEvent } from 'mapbox-gl';
-import { ClickHandler } from './click';
 
 export interface PoiProps {
   data: PoiGeojson;
@@ -58,18 +57,7 @@ const PoiFilter: FC = () => {
   }, [state.hoverPoi]);
 };
 
-const PoiClick: FC = () => {
-  const { dispatch } = useStoreContext() as MainPageContext;
-  return useMemo(() => {
-    const handler: LayerHandlers['click'] = ({ features }) => {
-      if (features) {
-        dispatch(setPoiHover(features[0].id as number));
-        dispatch(setPoiType((features[0].properties as PoiProperties).type));
-      }
-    };
-    return <ClickHandler handler={handler} />;
-  }, [dispatch]);
-};
+
 
 const PoiSort: FC = () => {
   const { state } = useStoreContext();
@@ -129,7 +117,6 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
         cursor
       >
         <PoiSort />
-        <PoiClick />
       </Layer>
       <Layer
         id="poi-hover"

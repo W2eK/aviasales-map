@@ -3,7 +3,6 @@ import { Source, Layer, Filter, Property } from 'mapboxr-gl';
 import { LabelsGeojson } from 'interfaces/geodata.interface';
 import { Expression, Visibility } from 'mapbox-gl';
 import { useStoreContext } from 'store/context';
-import { DistrictClick } from './districts';
 
 type MapLabelsProps = {
   data: LabelsGeojson;
@@ -42,7 +41,6 @@ export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
       >
         <LabelsFilter />
         {/* <LabelsVisibility /> */}
-        <DistrictClick />
       </Layer>
       <Layer
         master="districts-labels-48"
@@ -54,7 +52,6 @@ export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
       >
         <LabelsFilter />
         {/* <LabelsVisibility /> */}
-        <DistrictClick />
       </Layer>
     </Source>
   );

@@ -9,19 +9,7 @@ import { MapMarker } from './marker';
 import { MapPoi } from './poi';
 import { MapVoronoi } from './voronoi';
 import { PoiParams } from 'pages/[city]/[category]/[poi]';
-import { ClickHandler } from './click';
-
-const MapClick: FC = () => {
-  const { dispatch } = useStoreContext();
-  const router = useRouter();
-  return useMemo(() => {
-    const handler: MapHandlers['click'] = () => {
-      const { city, category }: Partial<PoiParams> = router.query;
-      if (city && category) router.push(`/${city}`);
-    };
-    return <ClickHandler handler={handler} />;
-  }, [dispatch, router]);
-};
+import { ClickHandlers } from './click';
 
 // prettier-ignore
 export const MapLayers: FC = () => {
@@ -41,7 +29,7 @@ export const MapLayers: FC = () => {
         <MapLabels data={state.pageProps.geojson.labels} />
         <MapMarker />
         <CameraController />
-        <MapClick />
+        <ClickHandlers/>
       </>
     ) : null,
   [state.currentCity]);

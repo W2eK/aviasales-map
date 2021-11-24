@@ -5,9 +5,6 @@ import { setDistrictHover } from 'store/actions';
 import { Center } from './center';
 import { Expression } from 'mapbox-gl';
 import { DistrictsGeojson } from 'interfaces/geodata.interface';
-import { useRouter } from 'next/router';
-import { PoiParams } from 'pages/[city]/[category]/[poi]';
-import { ClickHandler } from './click';
 
 export interface DistrictsProps {
   data: DistrictsGeojson;
@@ -59,21 +56,7 @@ const DistrictFilter: FC = () => {
   }, [state.hoverDistrict, isDistrictCurrent]);
 };
 
-export const DistrictClick: FC = () => {
-  const { dispatch } = useStoreContext();
-  const router = useRouter();
-  return useMemo(() => {
-    const handler: LayerHandlers['click'] = ({ features }) => {
-      if (features) {
-        const id = features[0].id as number;
-        dispatch(setDistrictHover(id));
-        const { city }: Partial<PoiParams> = router.query;
-        if (city) router.push(`/${city}/districts`);
-      }
-    };
-    return <ClickHandler handler={handler} />;
-  }, [dispatch, router]);
-};
+
 export const MapDistricts: FC<DistrictsProps> = ({ data }) => {
   const colorRule: Expression = [
     'case',
@@ -88,7 +71,6 @@ export const MapDistricts: FC<DistrictsProps> = ({ data }) => {
         <DistrictsCenter />
         <Layer master="districts-area" replaceMaster type="fill" sourceLayer="">
           <Property type="paint" name="fill-color" value={colorRule} />
-          <DistrictClick />
         </Layer>
         <Layer master="districts-line" replaceMaster type="line" sourceLayer="">
           <Property type="paint" name="line-color" value={colorRule} />
