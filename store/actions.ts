@@ -47,6 +47,10 @@ export type Action =
       type: 'SET_PAGE_STATE';
       payload: PageProps;
     }
+  | {
+      type: 'SET_SLIDER_HEIGHT';
+      payload: number;
+    }
   | SetCurrentParam;
 
 export const setDistrictHover = (id: number | null): Action => ({
@@ -95,5 +99,10 @@ export const setPageState = (payload: PageProps): Action => ({
 
 export const setIndex = (payload: number): Action => ({
   type: 'SET_INDEX',
+  payload
+});
+
+export const setSliderHeight = (payload: number): Action => ({
+  type: 'SET_SLIDER_HEIGHT',
   payload
 });

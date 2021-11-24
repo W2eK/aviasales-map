@@ -53,6 +53,9 @@ export const storeReducer: Reducer = (state, action) => {
     case 'SET_PAGE_STATE': {
       return reducePageState(state, action.payload);
     }
+    case 'SET_SLIDER_HEIGHT': {
+      return { ...state, sliderHeight: action.payload };
+    }
     default: {
       throw state;
     }

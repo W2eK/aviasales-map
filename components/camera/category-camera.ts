@@ -19,10 +19,15 @@ export class CategoryCamera extends MapCamera {
     top: 0,
     left: 0,
     right: 0,
-    bottom: 400
+    bottom: 340
   };
-  constructor(protected map: Map, protected pageProps: CategoryPageProps) {
+  constructor(
+    protected map: Map,
+    protected pageProps: CategoryPageProps,
+    padding: number
+  ) {
     super(map, pageProps);
+    this.padding.bottom = (padding || 300) + 40;
   }
   // jumpToInitial = CityCamera.prototype.jumpToInitial.bind(this);
   jumpToInitial() {

@@ -1,8 +1,8 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { FC, useMemo } from 'react';
+import { Card } from 'components/card';
+import { FC, useMemo, useRef } from 'react';
 import { MainPageContext, useStoreContext } from 'store/context';
 import { EmblaSlider } from './embla';
-import { EmblaSlide, SlideContent, Wrapper } from './styled';
+import { EmblaSlide } from './styled';
 import { SliderWrapper } from './wrapper';
 
 export const Slider: FC = () => {
@@ -14,7 +14,7 @@ export const Slider: FC = () => {
       showContent
         ? order.map(id => (
             <EmblaSlide key={id}>
-              <SlideContent>{state.pageProps.poi[id].name}</SlideContent>
+              <Card poi={state.pageProps.poi[id]} />
             </EmblaSlide>
           ))
         : null,

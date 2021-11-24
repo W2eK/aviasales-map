@@ -34,7 +34,7 @@ export const StoreProvider: FC<{
   if (typeof window !== 'undefined') (window as any).state = state;
   if (typeof window !== 'undefined') (window as any).pageProps = pageProps;
 
-  useStoreController({ dispatch, pageProps });
+  useStoreController({ state, dispatch, pageProps });
   return (
     <StoreContext.Provider value={{ state, dispatch }}>
       {children}

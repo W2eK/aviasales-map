@@ -5,23 +5,23 @@ import { MainPageProps } from 'interfaces/props.interface';
 import { Map } from 'mapbox-gl';
 import { CategoryCamera, CityCamera, PoiCamera } from 'components/camera';
 
-const useCamera = (map: Map, pageProps: MainPageProps) => {
+const useCamera = (map: Map, pageProps: MainPageProps, padding: number) => {
   return useMemo(() => {
     if (pageProps.page === 'city') {
       return new CityCamera(map, pageProps);
     } else if (pageProps.page === 'category') {
-      return new CategoryCamera(map, pageProps);
+      return new CategoryCamera(map, pageProps, padding);
     } else {
       return new PoiCamera(map, pageProps);
     }
-  }, [map, pageProps]);
+  }, [map, pageProps, padding]);
 };
 
 export const CameraController: FC = () => {
   const { state } = useStoreContext() as MainPageContext;
   const { map } = useMap();
   const page = state.pageProps.page;
-  const camera = useCamera(map, state.pageProps);
+  const camera = useCamera(map, state.pageProps, state.sliderHeight);
 
   // INITIAL ANIMATION
   useEffect(() => {

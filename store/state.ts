@@ -19,12 +19,10 @@ export type InternalState = {
   currentPoi: number | null;
   mapLocked: boolean;
   isDragged: boolean;
+  sliderHeight: number;
 };
 
-export type PageState =
-  | HomePageState
-  | CityPageState
-  | DetailsPageState;
+export type PageState = HomePageState | CityPageState | DetailsPageState;
 
 type HomePageState = {
   isMainPage: false;
@@ -58,5 +56,6 @@ export const initialState: StoreState = {
   isDragged: false,
   isMainPage: false,
   isDetailPage: false,
-  pageProps: {}
+  pageProps: {},
+  sliderHeight: 0
 };

@@ -46,6 +46,7 @@ export type PoiPageProps = CommonProps & {
   currentCategory: CategoryType;
   currentPoi: number;
   title: string;
+  description: string;
   camera: Camera; // Zoom to poi
   order: number[];
 };

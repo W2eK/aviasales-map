@@ -57,7 +57,7 @@ export const iataCodes = [
   'TIV',
   'TLL',
   'TOF',
-  'TXL',
+  'BER', // // 'TXL',
   'UFA',
   'VCE',
   'VIE',

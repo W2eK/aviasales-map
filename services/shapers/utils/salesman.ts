@@ -1,5 +1,6 @@
 import salesman, { Point } from 'salesman.js';
 import * as turf from '@turf/turf';
+import { cache } from 'services/cache';
 
 interface PointWithId extends Point {
   id: number;
@@ -14,6 +15,8 @@ export const computePointOrder = <
 >(
   geojson: T
 ): number[] => {
+  const cached = cache.get(geojson);
+  if (cached) return cached as number[];
   const mercator = turf.toMercator(geojson);
   const mappedById = geojson.features.reduce(
     (obj, feature) => ((obj[feature.properties.id] = feature), obj),
@@ -31,7 +34,10 @@ export const computePointOrder = <
     ...turf.coordAll(turf.featureCollection(ordered)),
     turf.getCoord(ordered[0])
   ]);
-  const { i: segmentIndex, length } = turf.segmentReduce<{ length: number; i: number }>(
+  const { i: segmentIndex, length } = turf.segmentReduce<{
+    length: number;
+    i: number;
+  }>(
     line,
     (prev, next, _, __, ___, i) => {
       if (next) {
@@ -42,10 +48,15 @@ export const computePointOrder = <
     },
     { length: 0, i: 0 }
   );
-  ordered = [...ordered.slice(segmentIndex + 1), ...ordered.slice(0, segmentIndex + 1)];
-  const orderedLine = turf.lineString(
-    turf.coordAll(turf.featureCollection(ordered))
-  );
+  ordered = [
+    ...ordered.slice(segmentIndex + 1),
+    ...ordered.slice(0, segmentIndex + 1)
+  ];
+  // const orderedLine = turf.lineString(
+  //   turf.coordAll(turf.featureCollection(ordered))
+  // );
   // console.log(JSON.stringify(orderedLine));
-  return solution.map(i => points[i].id);
+  const ids = solution.map(i => points[i].id);
+  cache.set(geojson, ids);
+  return ids;
 };

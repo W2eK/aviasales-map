@@ -1,7 +1,7 @@
 import { featureCollection, truncate } from '@turf/turf';
 import { DistrictsGeojson, VoronoiGeojson } from 'interfaces/geodata.interface';
 import { WidgetPlaces } from 'interfaces/places.interface';
-import { BlocksRoot } from 'interfaces/poi.interface';
+import { BlocksRoot, DistrictRootBlock } from 'interfaces/poi.interface';
 import { shapeCity } from './shapers/shape-city';
 import { shapePlaces } from './shapers/shape-places';
 import { shapePoi } from './shapers/shape-poi';
@@ -18,6 +18,7 @@ import { IATA } from 'interfaces/iata.interface';
 import { CategoryType, PoiType } from 'interfaces/data.interface';
 import { monetizationClient, widgetClient } from './axios';
 import { buildVoronoi } from './shapers/utils/voronoi';
+import { shapeDistrict } from './shapers/shape-district';
 
 type RequestParams = {
   iata: IATA;
@@ -58,14 +59,28 @@ class AviasalesApi {
     return shapePlaces(data);
   }
 
-  async requestPoi({ id, locale = 'ru_RU' }: { id: number; locale?: string }) {
+  async requestPoi({
+    id,
+    locale = 'ru_RU',
+    type
+  }: {
+    id: number;
+    locale?: string;
+    type: 'districts' | 'poi';
+  }) {
     // https://monetization-trap-api.aviasales.ru/api/v1/trap/poi/105.json?locale=ru_RU
-    const url = `poi/${id}.json`;
+    const url = `${type}/${id}.json`;
     const params = { locale };
-    const { data } = await this.monetizationClient.get<BlocksRoot>(url, {
+    const { data } = await this.monetizationClient.get<
+      BlocksRoot | DistrictRootBlock
+    >(url, {
       params
     });
-    return shapePoi(data);
+    if ('district' in data) {
+      return shapeDistrict(data);
+    } else {
+      return shapePoi(data);
+    }
   }
 
   async requestCity({ iata, locale = 'ru_RU' }: RequestParams) {
@@ -173,7 +188,8 @@ class AviasalesApi {
           camera
         };
       } else {
-        const currentPoi = await this.requestPoi({ id: poi! });
+        const type = category === 'districts' ? 'districts' : 'poi';
+        const currentPoi = await this.requestPoi({ id: poi!, type });
         const title = currentPoi.title;
         const camera = city.poi[poi!].camera;
         return {
@@ -183,6 +199,7 @@ class AviasalesApi {
           currentPoi: poi!,
           currentCategory: currentCategory?.type || 'all',
           title,
+          description: currentPoi.description,
           camera,
           order
         };

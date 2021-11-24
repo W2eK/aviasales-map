@@ -19,7 +19,7 @@ export const MarkerImage = styled(Image).attrs(
     quality: 10,
     width: 150,
     height: 150,
-    layout: 'responsive',
+    layout: 'intrinsic',
     loader: imageLoader
   })
 )`

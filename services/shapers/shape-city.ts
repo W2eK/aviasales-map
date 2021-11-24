@@ -37,7 +37,7 @@ export const shapeCity = ({ city_map }: CityMap) => {
       const { longitude, latitude } = coordinates;
       const center: [number, number] = [longitude, latitude];
       const bearing = 30 - Math.random() * 60;
-      const camera = { center, bearing, zoom: 16 };
+      const camera = { center, bearing, zoom: 16, pitch: 50 };
       poi[id] = { type, id, name, image_url, camera, description };
       if (type !== 'districts') {
         poiGeojson.features.push(turf.point(center, { id, type }));

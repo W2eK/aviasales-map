@@ -4,12 +4,19 @@ export const Wrapper = styled.div`
   display: flex;
   align-items: flex-end;
   z-index: -1;
+  width: 100%;
 `;
 
 export const EmblaMain = styled.div`
   pointer-events: auto;
   width: 100%;
   position: relative;
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, .4),
+    rgba(0, 0, 0, .2) 70%,
+    rgba(0, 0, 0, 0)
+  );
 `;
 
 export const EmblaButton = styled.button`
@@ -50,14 +57,4 @@ export const EmblaPlaceholder = styled.div`
   position: relative;
   /* background-color: var(--color-ink-200); */
   /* opacity: .5 */
-`;
-
-export const SlideContent = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-ink-200);
-  /* // ! SHADOW DROP PERFORMANCE ON MOBILE CHROME */
-  /* box-shadow: var(--shadow-2); */
-  border-radius: 1rem 1rem 0 0;
 `;

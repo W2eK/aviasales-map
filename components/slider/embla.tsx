@@ -5,7 +5,8 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
-  useMemo
+  useMemo,
+  useRef
 } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import {
@@ -16,7 +17,7 @@ import {
   EmblaButton,
   EmblaMain
 } from './styled';
-import { Action, setIndex, setPoiHover } from 'store/actions';
+import { Action, setIndex, setPoiHover, setSliderHeight } from 'store/actions';
 import { vibrate } from 'services/vibration';
 import { useStoreContext } from 'store/context';
 
@@ -34,11 +35,14 @@ export const EmblaSlider: FC<EmblaProps> = ({
   const indexOffset = 1;
   const { state } = useStoreContext();
   const { index } = state;
-  const [ref, embla] = useEmblaCarousel({
+  const ref = useRef<HTMLDivElement>(null);
+  const [emblaRef, embla] = useEmblaCarousel({
     // loop: true,
     startIndex: startIndex + indexOffset,
     skipSnaps: true
   });
+
+  const showButtons = state.currentPoi === null;
 
   const onSelect = useCallback(() => {
     if (!embla) return;
@@ -68,18 +72,26 @@ export const EmblaSlider: FC<EmblaProps> = ({
     embla.scrollTo(index + indexOffset, jump);
   }, [embla, children, index]);
 
+  useEffect(() => {
+    const height = ref.current?.clientHeight;
+    if (height) dispatch(setSliderHeight(height));
+  }, [ref.current?.clientHeight]);
   // prettier-ignore
   return useMemo(() => (
-    <EmblaMain>
-      <EmblaViewport ref={ref}>
+    <EmblaMain ref={ref}>
+      <EmblaViewport ref={emblaRef}>
         <EmblaContainer>
           <EmblaPlaceholder />
           {children}
           <EmblaPlaceholder />
         </EmblaContainer>
       </EmblaViewport>
-      <EmblaButton onClick={scrollPrev} />
-      <EmblaButton onClick={scrollNext} />
+      {true ? (
+        <>
+          <EmblaButton onClick={scrollPrev} />
+          <EmblaButton onClick={scrollNext} />
+        </>
+      ) : null}
     </EmblaMain>
   ), [children, embla])
 };
