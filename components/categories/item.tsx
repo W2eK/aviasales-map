@@ -28,7 +28,9 @@ export const CategoryItem: FC<ItemProps> = ({
   const params = useRouter().query as MainPageParams;
   const isSelected = category.type === currentCategory;
   const isHighlighted =
-    currentCategory === null ? category.type === hoverType : isSelected;
+    currentCategory === null || currentCategory === 'all'
+      ? category.type === hoverType
+      : isSelected;
   return (
     <Item>
       <Link

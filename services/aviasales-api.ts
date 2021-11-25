@@ -1,7 +1,10 @@
 import { featureCollection, truncate } from '@turf/turf';
 import { DistrictsGeojson, VoronoiGeojson } from 'interfaces/geodata.interface';
 import { WidgetPlaces } from 'interfaces/places.interface';
-import { BlocksRoot, DistrictRootBlock } from 'interfaces/poi.interface';
+import {
+  BlocksRoot,
+  DistrictRootBlock as DistrictRoot
+} from 'interfaces/poi.interface';
 import { shapeCity } from './shapers/shape-city';
 import { shapePlaces } from './shapers/shape-places';
 import { shapePoi } from './shapers/shape-poi';
@@ -72,7 +75,7 @@ class AviasalesApi {
     const url = `${type}/${id}.json`;
     const params = { locale };
     const { data } = await this.monetizationClient.get<
-      BlocksRoot | DistrictRootBlock
+      BlocksRoot | DistrictRoot
     >(url, {
       params
     });

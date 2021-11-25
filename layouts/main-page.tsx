@@ -7,9 +7,11 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   height: 100%;
   position: relative;
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   pointer-events: none;
-  grid-template-rows: min-content 1fr min-content;
+
 `;
 
 export const MainPageLayout: FC = () => {
@@ -18,7 +20,7 @@ export const MainPageLayout: FC = () => {
     () =>
       state.isMainPage ? (
         <Wrapper>
-          <div>Header</div>
+          <div></div>
           <Slider />
           <Categories />
         </Wrapper>

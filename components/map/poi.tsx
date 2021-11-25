@@ -57,13 +57,11 @@ const PoiFilter: FC = () => {
   }, [state.hoverPoi]);
 };
 
-
-
 const PoiSort: FC = () => {
   const { state } = useStoreContext();
   return useMemo(() => {
     const value: Expression =
-      state.currentCategory === null
+      state.currentCategory === null || state.currentCategory === 'all'
         ? ['any', true]
         : ['case', ['==', ['get', 'type'], state.currentCategory], true, false];
     // return <Property name="symbol-sort-key" type="layout" value={value} />;

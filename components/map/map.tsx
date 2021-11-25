@@ -32,7 +32,7 @@ const MapContainer: FC = () => {
       accessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
       mapStyle={process.env.NEXT_PUBLIC_MAPBOX_STYLE_URL}
       wrapper={{ style: { height: '100%' } }}
-      maxPitch={70}
+      // maxPitch={80}
       center={[15, 50]}
       zoom={3}
       padding={{ top: 0, bottom: 100 }}
@@ -48,7 +48,7 @@ const MapContainer: FC = () => {
         tileSize={512}
         maxzoom={14}
       >
-        <MapTerrain />
+        {/* <MapTerrain /> */}
       </Source>
       <Property type="layout" name="visibility" value="none" layer="poi-halo" />
       <Property

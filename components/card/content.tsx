@@ -2,7 +2,13 @@ import { motion } from 'framer-motion';
 import { Poi } from 'interfaces/data.interface';
 import { FC } from 'react';
 import { CardImage } from './image';
-import { Content, Header, ImageFadeOut, Paragraph, Text, Wrapper } from './styled';
+import {
+  Content,
+  Header,
+  Paragraph,
+  Text,
+  Wrapper
+} from './styled';
 import { useDescription } from './use-description';
 
 type CardContentProps = {
@@ -10,10 +16,7 @@ type CardContentProps = {
   isOpen: boolean;
 };
 
-export const CardContent: FC<CardContentProps> = ({
-  poi,
-  isOpen
-}) => {
+export const CardContent: FC<CardContentProps> = ({ poi, isOpen }) => {
   const [ref, description] = useDescription({ id: poi.id, type: poi.type });
   return (
     <Wrapper key={poi.name}>

@@ -1,11 +1,11 @@
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 export const useViewport = (
   options?: IntersectionObserverInit
 ): [MutableRefObject<HTMLDivElement>, boolean] => {
   const ref = useRef<HTMLDivElement>();
   const [state, setState] = useState(false);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (ref.current) {
       const { current } = ref;
       const observer = new IntersectionObserver(([entry]) => {

@@ -12,12 +12,12 @@ export const useDescription = ({ id, type: poiType }: UseDescriptionProps) => {
   const [ref, isVisible] = useViewport();
   const [description, setDescription] = useState('');
   useEffect(() => {
-    if (isVisible && !description && poiType !== 'instaplaces') {
+    if (ref.current && isVisible && !description) {
       const type = poiType === 'districts' ? 'districts' : 'poi';
       aviasalesApi
         .requestPoi({ id, type })
-        .then(data => setDescription(data.description));
+        .then(({ description }) => setDescription(description));
     }
-  }, [isVisible]);
+  }, [ref.current, isVisible]);
   return [ref, description];
 };

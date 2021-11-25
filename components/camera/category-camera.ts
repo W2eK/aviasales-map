@@ -67,7 +67,7 @@ export class CategoryCamera extends MapCamera {
     const center = this.pageProps.poi[id].camera.center;
     const zoom = 15;
     const bearing = this.getBearing(20);
-    this.animateFly({ center, zoom, bearing });
+    this.animateFly({ center, zoom, bearing, pitch: 75 });
   }
 
   private rotateCamera(timestamp: number) {

@@ -1,4 +1,5 @@
 import {
+  AdviceBlock,
   BlocksRoot,
   DescriptionBlock,
   ImageBlock,
@@ -7,6 +8,10 @@ import {
 } from 'interfaces/poi.interface';
 
 export const shapePoi = ({ blocks }: BlocksRoot): PoiProps => {
+  const advice =
+    blocks.find((block): block is AdviceBlock => block.type === 'advice')?.block
+      .text || '';
+
   const description =
     blocks.find(
       (block): block is DescriptionBlock => block.type === 'description'
@@ -21,7 +26,7 @@ export const shapePoi = ({ blocks }: BlocksRoot): PoiProps => {
       ?.block.images[0]?.image_url || '';
 
   return {
-    description,
+    description: description || advice,
     title,
     image
   };

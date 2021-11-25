@@ -12,10 +12,10 @@ export const EmblaMain = styled.div`
   width: 100%;
   position: relative;
   background: linear-gradient(
-    0deg,
-    rgba(0, 0, 0, .4),
-    rgba(0, 0, 0, .2) 70%,
-    rgba(0, 0, 0, 0)
+    180deg,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.2) 30%,
+    rgba(0, 0, 0, 0.4)
   );
 `;
 
@@ -34,7 +34,6 @@ export const EmblaButton = styled.button`
 
 export const EmblaViewport = styled.div`
   overflow: hidden;
-  pointer-events: auto;
   width: 100%;
   /* background-color: red; */
 `;
@@ -47,13 +46,13 @@ export const EmblaContainer = styled.div`
 `;
 export const EmblaSlide = styled.div`
   flex: 0 0 calc(100% - 2rem - 4rem);
-  margin-left: 1rem;
+  margin-right: 1rem;
   position: relative;
   aspect-ratio: 1/1;
 `;
 
 export const EmblaPlaceholder = styled.div`
-  flex: 0 0 30%;
+  flex: 0 0 10%;
   position: relative;
   /* background-color: var(--color-ink-200); */
   /* opacity: .5 */

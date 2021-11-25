@@ -56,7 +56,11 @@ export const CameraController: FC = () => {
 
   // ANIMATION ON DISTRICT CHANGE
   useEffect(() => {
-    if (!state.isDragged && camera.page === 'category') {
+    if (
+      !state.isDragged &&
+      camera.page === 'category' &&
+      state.hoverPoi === null
+    ) {
       if (state.hoverDistrict === null) {
         camera.flyToInitial();
       } else {
