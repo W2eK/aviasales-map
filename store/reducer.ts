@@ -48,7 +48,7 @@ export const storeReducer: Reducer = (state, action) => {
       const key =
         state.currentCategory === 'districts' ? 'hoverDistrict' : 'hoverPoi';
       const id = state.pageProps.order[index] || null;
-      const hoverType = id && state.pageProps.poi[id].type;
+      const hoverType = id !== null ? state.pageProps.poi[id].type : null;
       return { ...state, index, [key]: id, hoverType };
     }
     case 'SET_PAGE_STATE': {

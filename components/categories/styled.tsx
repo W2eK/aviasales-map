@@ -34,6 +34,7 @@ export const IconWrapper = styled.div<{ 'data-selected': boolean }>`
   justify-content: center;
   align-items: center;
   color: var(--color-ink-400);
+  font-size: 21px;
   &[data-selected='true'] {
     color: var(--color-white);
   }

@@ -9,10 +9,11 @@ import Nature from './svg/nature.svg';
 import Parks from './svg/parks.svg';
 import Restaurants from './svg/restaurants.svg';
 import Suburb from './svg/suburb.svg';
+import Arrow from './svg/arrow.svg';
 import { PoiType } from 'interfaces/data.interface';
 import styled from 'styled-components';
 
-type Icons = Record<PoiType, any> & { placeholder: any };
+type Icons = Record<PoiType | 'arrow', any> & { placeholder: any };
 
 const icons: Icons = {
   placeholder: <Placeholder />,
@@ -24,11 +25,12 @@ const icons: Icons = {
   nature: <Nature />,
   parks: <Parks />,
   restaurants: <Restaurants />,
-  suburb: <Suburb />
+  suburb: <Suburb />,
+  arrow: <Arrow />
 };
 
 type IconProps = {
-  category: PoiType;
+  category: keyof Icons;
 };
 
 const IconWrapper = styled.div`

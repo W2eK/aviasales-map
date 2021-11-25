@@ -1,4 +1,5 @@
 import { Categories } from 'components/categories';
+import { Topbar } from 'components/topbar';
 import { Slider } from 'components/slider';
 import { FC, useMemo } from 'react';
 import { useStoreContext } from 'store/context';
@@ -9,9 +10,10 @@ const Wrapper = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   pointer-events: none;
-
+  & > div:nth-child(2) {
+    flex: 1;
+  }
 `;
 
 export const MainPageLayout: FC = () => {
@@ -20,7 +22,7 @@ export const MainPageLayout: FC = () => {
     () =>
       state.isMainPage ? (
         <Wrapper>
-          <div></div>
+          <Topbar />
           <Slider />
           <Categories />
         </Wrapper>

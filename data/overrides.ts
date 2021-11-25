@@ -18,6 +18,7 @@ export const overrides: Partial<Record<IATA, Override>> = {
   BUS: { id: 233, zoom: 13, bearing: -140 },
   CPH: { id: 900, zoom: 12 },
   CPT: { bearing: -170 },
+  FRS: { id: 599, bearing: -20, zoom: 11.5 },
   GOJ: { id: 801, bearing: -80 },
   LED: { id: 41, bearing: -80 },
   MSQ: { id: 376 },

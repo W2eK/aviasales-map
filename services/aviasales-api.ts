@@ -172,8 +172,10 @@ class AviasalesApi {
           : buildVoronoi(collection);
 
       if (page === 'category') {
-        const title = currentCategory && currentCategory.title;
-        const subtitle = currentCategory && currentCategory.title;
+        const title = currentCategory
+          ? currentCategory.title
+          : raw.city_map.title;
+        const subtitle = currentCategory && currentCategory.subtitle;
         const bounds = computeBbox(
           category === 'districts' ? districts : collection
         );

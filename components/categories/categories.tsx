@@ -17,12 +17,13 @@ export const Categories: FC = () => {
             currentCategory={state.currentCategory}
             hoverType={state.hoverType}
             collapsed={collapsed}
+            hoverDistrict={!!state.hoverDistrict}
           >
             {category.title}
           </CategoryItem>
         ))}
       </CategoriesList>
     ),
-    [state.currentCity, state.currentCategory, state.hoverType, collapsed]
+    [state.currentCity, state.currentCategory, state.hoverType, !!state.hoverDistrict, collapsed]
   );
 };

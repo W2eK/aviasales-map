@@ -17,18 +17,22 @@ import { StoreState } from 'store/state';
 type ItemProps = Pick<StoreState, 'currentCategory' | 'hoverType'> & {
   category: Category;
   collapsed: boolean;
+  hoverDistrict: boolean;
 };
 
 export const CategoryItem: FC<ItemProps> = ({
   category,
   collapsed,
   currentCategory,
-  hoverType
+  hoverType,
+  hoverDistrict
 }) => {
   const params = useRouter().query as MainPageParams;
   const isSelected = category.type === currentCategory;
   const isHighlighted =
-    currentCategory === null || currentCategory === 'all'
+    hoverDistrict && category.type === 'districts'
+      ? true
+      : currentCategory === null || currentCategory === 'all'
       ? category.type === hoverType
       : isSelected;
   return (

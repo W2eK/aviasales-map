@@ -24,6 +24,7 @@ const Backdrop = styled.div`
 const Wrapper = styled.div`
   display: flex;
   height: 100vh;
+  height: 100vh;
   /* https://css-tricks.com/the-trick-to-viewport-units-on-mobile/ */
   height: calc(var(--vh, 1vh) * 100);
   justify-content: center;
@@ -62,9 +63,13 @@ const Overlay = styled.main`
 
 export const Background: FC = ({ children }) => {
   useEffect(() => {
-    let vh = window.innerHeight * 0.01;
-    // Then we set the value in the --vh custom property to the root of the document
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    const resize = () => {
+      let vh = window.innerHeight * 0.01;
+      // Then we set the value in the --vh custom property to the root of the document
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+    window.addEventListener('resize', resize);
+    resize();
   }, []);
   return (
     <Wrapper>
