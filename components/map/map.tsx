@@ -14,6 +14,7 @@ import { MapZoom } from './zoom';
 import { MapDragState } from './drag';
 import { MapMarker } from './marker';
 import { MapLayers } from './layers';
+import { MapPointer } from './pointer';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
@@ -36,11 +37,11 @@ const MapContainer: FC = () => {
       center={[15, 50]}
       zoom={3}
       padding={{ top: 0, bottom: 100 }}
-      showPadding
+      // showPadding
     >
       <MapLayers/>
       <LazyImages />
-      {/* <MapPointer /> */}
+      <MapPointer />
       <Source
         id="mapbox-dem"
         type="raster-dem"

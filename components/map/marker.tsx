@@ -5,18 +5,18 @@ import { Marker } from 'components/marker';
 
 export const MapMarker: FC = () => {
   let { state } = useStoreContext() as MainPageContext;
-  const poi = state.hoverPoi !== null ? state.pageProps.poi?.[state.hoverPoi] : null;
+  const poi =
+    state.hoverPoi !== null ? state.pageProps.poi?.[state.hoverPoi] : null;
   return useMemo(
-    () =>
-      poi && (
-        <MapboxMarker
-          coordinates={poi.camera.center}
-          offset={[0, -40]}
-          anchor="bottom"
-        >
-          <Marker poi={poi} />
-        </MapboxMarker>
-      ),
+    () => (
+      <MapboxMarker
+        coordinates={poi?.camera.center || [0, 0]}
+        offset={[0, -60]}
+        anchor="bottom"
+      >
+        <Marker poi={poi} />
+      </MapboxMarker>
+    ),
     [state.hoverPoi]
   );
 };

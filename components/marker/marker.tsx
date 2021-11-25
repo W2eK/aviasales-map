@@ -6,13 +6,13 @@ import { ImageLabel, ImageWrapper, LabelWrapper } from './styled';
 import { Link } from 'components/shared/link';
 import { MarkerImage } from './image';
 
-type MarkerProps = { poi: Poi };
+type MarkerProps = { poi: Poi | null };
 
 export const Marker: FC<MarkerProps> = ({ poi }) => {
   const router = useRouter();
   return (
     <AnimatePresence>
-      {router.route === '/[city]' ? (
+      {poi && router.route === '/[city]' ? (
         <Link
           pathname="/[city]/[category]/"
           query={{ ...router.query, category: 'all', poi: poi.id + '' }}

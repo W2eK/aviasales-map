@@ -49,7 +49,7 @@ export const shapeCity = ({ city_map }: CityMap) => {
       }
     });
   });
-  const voronoiGeojson = buildVoronoi(poiGeojson) as VoronoiGeojson;
+  const voronoiGeojson = buildVoronoi(poiGeojson);
   return {
     poi,
     categories,

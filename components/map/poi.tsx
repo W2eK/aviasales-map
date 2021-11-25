@@ -9,7 +9,7 @@ import {
 import { setPoiHover, setPoiType } from 'store/actions';
 import { vibrate } from 'services/vibration';
 import { Center } from './center';
-import { Expression, MapLayerMouseEvent } from 'mapbox-gl';
+import { Expression, LngLat, Map, MapLayerMouseEvent } from 'mapbox-gl';
 
 export interface PoiProps {
   data: PoiGeojson;
@@ -18,27 +18,37 @@ export interface PoiProps {
 const PoiCenter = () => {
   const { state, dispatch } = useStoreContext();
   const handler = useCallback(
-    (features: VoronoiGeojson['features']) => {
+    (features: VoronoiGeojson['features'], map: Map) => {
       const [feature] = features;
-      const id = !feature ? null : feature.properties.id;
-      const type = !feature ? null : feature.properties.type;
-      if (state.hoverPoi !== id) {
-        dispatch(setPoiHover(id));
-        id && vibrate(10);
-      }
-      if (state.hoverType !== type) {
-        dispatch(setPoiType(type));
+      if (feature) {
+        const center = map.getCenter();
+        const { id, type, lon, lat } = feature.properties;
+        const close =
+          !!state.currentCategory ||
+          map.project(center).dist(map.project(new LngLat(lon, lat))) < 55;
+        if (close && state.hoverPoi !== id) {
+          dispatch(setPoiHover(id));
+          dispatch(setPoiType(type));
+          id && vibrate(10);
+        } else if (state.hoverPoi !== null && !close) {
+          dispatch(setPoiHover(null));
+          dispatch(setPoiType(null));
+        }
+      } else if (state.hoverPoi) {
+        dispatch(setPoiHover(null));
+        dispatch(setPoiType(null));
       }
     },
-    [state.hoverPoi]
+    [state.hoverPoi, state.currentCategory]
   );
   return useMemo(
     () => (
       <Center
-        id={state.hoverDistrict}
+        id={state.hoverPoi}
         layers={['voronoi-fill']}
         handler={handler}
         isDragged={state.isDragged}
+        featureStateSource="poi"
       />
     ),
     [state.isDragged, handler]
@@ -87,13 +97,13 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
             '#0655fe',
             '#9ea9b7'
           ],
-          'circle-stroke-color': 'white',
+          'circle-stroke-color': 'rgb(239, 241, 244)',
           'circle-stroke-width': 1.5,
           'circle-radius': [
             'case',
             ['boolean', ['feature-state', 'active'], false],
-            7,
-            3
+            4,
+            2.5
           ]
         }}
       />
@@ -101,10 +111,10 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
         id="poi-inactive"
         type="symbol"
         beforeId="districts-labels"
-        // paint={{
-        //   'icon-translate': [0, -12],
-        //   'icon-translate-anchor': 'viewport'
-        // }}
+        paint={{
+          'icon-translate': [0, -12],
+          'icon-translate-anchor': 'viewport'
+        }}
         layout={{
           'icon-image': ['concat', ['get', 'type'], '-inactive'],
           'icon-size': 0.5,
@@ -120,6 +130,10 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
         id="poi-hover"
         type="symbol"
         beforeId="sky"
+        paint={{
+          'icon-translate': [0, -12],
+          'icon-translate-anchor': 'viewport'
+        }}
         layout={{
           'icon-image': ['concat', ['get', 'type'], '-active'],
           'icon-size': 0.5,

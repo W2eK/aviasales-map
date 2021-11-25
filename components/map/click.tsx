@@ -48,7 +48,7 @@ export const ClickHandlers: FC = () => {
     }
   }, []);
 
-  return (
+  return useMemo(() => (
     <>
       <ClickHandler handler={districtClickHandler} layer="districts-labels-24" />
       <ClickHandler handler={districtClickHandler} layer="districts-labels-48" />
@@ -56,5 +56,5 @@ export const ClickHandlers: FC = () => {
       <ClickHandler handler={districtClickHandler} layer="districts-area" />
       <ClickHandler handler={mapClickHandler} />
     </>
-  );
+  ), [districtClickHandler, poiClickHandler, mapClickHandler]);
 };

@@ -16,7 +16,8 @@ export type LabelsGeojson = GeoJSON.FeatureCollection<
 >;
 
 export type VoronoiProperties = PoiProperties & {
-  aggregated?: true;
+  lon: number;
+  lat: number;
 };
 export type VoronoiGeojson = GeoJSON.FeatureCollection<
   GeoJSON.Polygon,
