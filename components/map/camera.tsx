@@ -71,6 +71,7 @@ export const CameraController: FC = () => {
 
   // ANIMATION ON SELECTED POI
   useEffect(() => {
+    console.log(state)
     if (state.isDragged || camera.page !== 'category') return;
     if (state.currentPoi !== null) {
       if (state.currentPoi === state.hoverDistrict) {

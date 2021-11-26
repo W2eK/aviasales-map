@@ -42,7 +42,7 @@ export const storeReducer: Reducer = (state, action) => {
     case 'SET_INDEX': {
       if (!state.isDetailPage) {
         console.error(action.type);
-        throw state;
+        return state;
       }
       const index = action.payload;
       const key =

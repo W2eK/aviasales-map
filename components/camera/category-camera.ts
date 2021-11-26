@@ -19,7 +19,7 @@ export class CategoryCamera extends MapCamera {
   ) {
     super(map, pageProps);
     this.padding.bottom = (padding || 300) + 40;
-    this.camera.zoom = 13;
+    this.camera = { ...this.camera, zoom: this.camera.zoom + 2 };
   }
   // jumpToInitial = CityCamera.prototype.jumpToInitial.bind(this);
   jumpToInitial() {

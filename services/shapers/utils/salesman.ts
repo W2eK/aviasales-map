@@ -6,7 +6,7 @@ interface PointWithId extends Point {
   id: number;
 }
 
-const coefficient = 0.9999; // 0.9999999;
+const coefficient = 0.99999; // 0.9999999;
 
 // TODO: Add caching
 export const computePointOrder = <

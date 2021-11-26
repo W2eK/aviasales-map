@@ -111,11 +111,8 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
         id="poi-inactive"
         type="symbol"
         beforeId="districts-labels"
-        paint={{
-          'icon-translate': [0, -12],
-          'icon-translate-anchor': 'viewport'
-        }}
         layout={{
+          'icon-offset': [0, -21],
           'icon-image': ['concat', ['get', 'type'], '-inactive'],
           'icon-size': 0.5,
           'icon-padding': 0,
@@ -130,11 +127,8 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
         id="poi-hover"
         type="symbol"
         beforeId="sky"
-        paint={{
-          'icon-translate': [0, -12],
-          'icon-translate-anchor': 'viewport'
-        }}
         layout={{
+          'icon-offset': [0, -21],
           'icon-image': ['concat', ['get', 'type'], '-active'],
           'icon-size': 0.5,
           'icon-padding': 0,

@@ -8,7 +8,7 @@ export const Topbar: FC = () => {
   const { state } = useStoreContext() as MainPageContext;
   const title = state.pageProps.title;
   const subtitle =
-    state.currentCategory === 'all'
+    state.currentCategory === 'all' && state.hoverType !== null
       ? state.pageProps.categories.find(({ type }) => type === state.hoverType)!
           .title
       : 'subtitle' in state.pageProps
