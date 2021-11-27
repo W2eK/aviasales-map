@@ -1,5 +1,6 @@
 import { bbox, featureCollection, point } from '@turf/turf';
 import { Camera } from 'interfaces/data.interface';
+import { Position } from 'interfaces/geodata.interface';
 import {
   CategoryPageProps,
   CityPageProps,
@@ -70,7 +71,7 @@ export class MapCamera {
     const camera = this.map.cameraForBounds(bounds, options)!;
     this.animateFly(camera);
   }
-  static getBbox(...features: (GeoJSON.Feature | [number, number])[]) {
+  static getBbox(...features: (GeoJSON.Feature | Position)[]) {
     const collection = featureCollection(
       features.map(feature =>
         Array.isArray(feature) ? point(feature) : feature

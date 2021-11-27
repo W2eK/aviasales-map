@@ -6,6 +6,7 @@ import { CommonProps } from 'interfaces/props.interface';
 import {
   LabelsGeojson,
   PoiGeojson,
+  Position,
   VoronoiGeojson
 } from 'interfaces/geodata.interface';
 
@@ -35,7 +36,7 @@ export const shapeCity = ({ city_map }: CityMap) => {
     categories.push({ id, title, subtitle, type });
     tab.pins.forEach(({ id, name, image_url, description, coordinates }) => {
       const { longitude, latitude } = coordinates;
-      const center: [number, number] = [longitude, latitude];
+      const center: Position = [longitude, latitude];
       const bearing = 30 - Math.random() * 60;
       const camera = { center, bearing, zoom: 16, pitch: 50 };
       poi[id] = { type, id, name, image_url, camera, description };

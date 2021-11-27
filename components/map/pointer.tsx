@@ -4,6 +4,7 @@ import { Layer, Source, Listener, MapHandlers } from 'mapboxr-gl';
 import { useStoreContext } from 'store/context';
 import { point } from '@turf/turf';
 import styled from 'styled-components';
+import { Position } from 'interfaces/geodata.interface';
 // Source.log = false;
 
 const Pointer = styled.div`
@@ -21,9 +22,9 @@ const PointerBorder = styled.div`
 `;
 
 export const MapPointer: FC = () => {
-  const [center, setCenter] = useState<[number, number] | null>(null);
+  const [center, setCenter] = useState<Position | null>(null);
   const handler: MapHandlers['move'] = useCallback(({ target: map }) => {
-    setCenter(map.getCenter().toArray() as [number, number]);
+    setCenter(map.getCenter().toArray() as Position);
   }, []);
 
   // prettier-ignore

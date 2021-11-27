@@ -30,6 +30,12 @@ const LabelsFilter: FC = () => {
 };
 
 export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
+  const colorRule: Expression = [
+    'case',
+    ['boolean', ['feature-state', 'active'], false],
+    'black',
+    'black'
+  ];
   return (
     <Source id="labels" type="geojson" data={data} promoteId="id">
       <Layer
@@ -38,6 +44,7 @@ export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
         replaceMaster
         sourceLayer=""
         type="symbol"
+        paint={{ 'text-color': colorRule }}
       >
         <LabelsFilter />
         {/* <LabelsVisibility /> */}
@@ -48,6 +55,7 @@ export const MapLabels: FC<MapLabelsProps> = ({ data }) => {
         replaceMaster
         sourceLayer=""
         type="symbol"
+        paint={{ 'text-color': colorRule }}
         // paint={{ 'text-color': '#5A6472' }}
       >
         <LabelsFilter />

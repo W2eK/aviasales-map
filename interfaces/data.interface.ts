@@ -1,3 +1,5 @@
+import { Position } from "./geodata.interface";
+
 export type Poi = {
   id: number;
   name: string;
@@ -8,7 +10,7 @@ export type Poi = {
 };
 
 export type Camera = {
-  center: [number, number];
+  center: Position;
   zoom: number;
   pitch: number;
   bearing: number;

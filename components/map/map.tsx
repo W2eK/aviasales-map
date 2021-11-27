@@ -12,7 +12,6 @@ import { MapTerrain } from './terrain';
 import { MapLabels } from './labels';
 import { MapZoom } from './zoom';
 import { MapDragState } from './drag';
-import { MapMarker } from './marker';
 import { MapLayers } from './layers';
 import { MapPointer } from './pointer';
 
@@ -20,11 +19,6 @@ if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
   (window as any).__MAPBOXR_GL_LOG = false;
 }
-
-const center: [[number, number], [number, number]] = [
-  [44.80157, 41.6938],
-  [44.80157, 41.6938]
-];
 
 const MapContainer: FC = () => {
   // (window as any).pageProps = pageProps;

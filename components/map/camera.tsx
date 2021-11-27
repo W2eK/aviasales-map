@@ -20,7 +20,6 @@ const useCamera = (map: Map, pageProps: MainPageProps, padding: number) => {
 export const CameraController: FC = () => {
   const { state } = useStoreContext() as MainPageContext;
   const { map } = useMap();
-  const page = state.pageProps.page;
   const camera = useCamera(map, state.pageProps, state.sliderHeight);
 
   // INITIAL ANIMATION
@@ -71,7 +70,6 @@ export const CameraController: FC = () => {
 
   // ANIMATION ON SELECTED POI
   useEffect(() => {
-    console.log(state)
     if (state.isDragged || camera.page !== 'category') return;
     if (state.currentPoi !== null) {
       if (state.currentPoi === state.hoverDistrict) {

@@ -1,5 +1,5 @@
 import { featureCollection, truncate } from '@turf/turf';
-import { DistrictsGeojson, VoronoiGeojson } from 'interfaces/geodata.interface';
+import { DistrictsGeojson, Position, VoronoiGeojson } from 'interfaces/geodata.interface';
 import { WidgetPlaces } from 'interfaces/places.interface';
 import {
   BlocksRoot,
@@ -130,7 +130,7 @@ class AviasalesApi {
       city.geojson.labels.features.find(
         ({ properties }) => properties.id === id
       ) || city.geojson.labels.features[0]
-    ).geometry.coordinates as [number, number];
+    ).geometry.coordinates as Position;
     const camera = { center, zoom, pitch: 50, bearing: 0, ...restOverrides };
 
     if (page === 'city') {

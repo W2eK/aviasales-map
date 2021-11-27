@@ -1,35 +1,20 @@
-import { useRouter } from 'next/router';
 import { AnimatePresence } from 'framer-motion';
-import { Poi } from 'interfaces/data.interface';
-import { FC } from 'react';
-import { ImageLabel, ImageWrapper, LabelWrapper } from './styled';
-import { Link } from 'components/shared/link';
-import { MarkerImage } from './image';
+import { Position } from 'interfaces/geodata.interface';
+import { LngLatLike } from 'mapbox-gl';
+import { Marker as MapboxMarker } from 'mapboxr-gl';
+import { FC, useRef } from 'react';
 
-type MarkerProps = { poi: Poi | null };
+type MapboxMarkerProps = Parameters<typeof MapboxMarker>[0];
+type MarkerProps = Omit<MapboxMarkerProps, 'coordinates'> & {
+  coordinates: MapboxMarkerProps['coordinates'] | null;
+};
 
-export const Marker: FC<MarkerProps> = ({ poi }) => {
-  const router = useRouter();
+export const Marker: FC<MarkerProps> = ({ children, coordinates, ...rest }) => {
+  const prev = useRef<LngLatLike>([0, 0]);
+  if (coordinates) prev.current = coordinates;
   return (
-    <AnimatePresence>
-      {poi && router.route === '/[city]' ? (
-        <Link
-          pathname="/[city]/[category]/"
-          query={{ ...router.query, category: 'all', poi: poi.id + '' }}
-        >
-          <ImageWrapper
-            onClick={e => e.nativeEvent.stopPropagation()}
-            initial={{ opacity: 0, y: -100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -100 }}
-          >
-            <MarkerImage src={poi.image_url} key={poi.id} />
-            <LabelWrapper>
-              <ImageLabel>{poi.name}</ImageLabel>
-            </LabelWrapper>
-          </ImageWrapper>
-        </Link>
-      ) : null}
-    </AnimatePresence>
+    <MapboxMarker coordinates={coordinates || prev.current} {...rest}>
+      {children}
+    </MapboxMarker>
   );
 };

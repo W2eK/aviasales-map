@@ -34,6 +34,7 @@ const DistrictsCenter = () => {
           layers={['districts-area']}
           handler={handler}
           isDragged={state.isDragged}
+          featureStateSource={['', 'labels']}
         />
       ) : null,
     [state.isDragged, handler, handleDistricts]
@@ -78,14 +79,14 @@ export const MapDistricts: FC<DistrictsProps> = ({ data }) => {
         <Layer master="districts-halo" replaceMaster type="line" sourceLayer="">
           <Property type="paint" name="line-color" value={colorRule} />
         </Layer>
-        <Layer
+        {/* <Layer
           master="districts-collisions"
           replaceMaster
           type="symbol"
           sourceLayer=""
         >
           <DistrictFilter />
-        </Layer>
+        </Layer> */}
       </Source>
     )
   );

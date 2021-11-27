@@ -7,7 +7,7 @@ type CenterProps<T extends GeoJSON.Feature> = {
   handler: (features: T[], map: Map) => any;
   layers: string[];
   isDragged: boolean;
-  featureStateSource?: string;
+  featureStateSource?: string | string[];
 };
 export const Center = <T extends GeoJSON.Feature>({
   id,
@@ -23,9 +23,14 @@ export const Center = <T extends GeoJSON.Feature>({
     }) as any as T[];
     handler(features, map);
   };
+  featureStateSource = Array.isArray(featureStateSource)
+    ? featureStateSource
+    : [featureStateSource];
   return (
     <>
-      <FeatureState state={id} source={featureStateSource} />
+      {featureStateSource.map(key => (
+        <FeatureState key={key} state={id} source={key} />
+      ))}
       {isDragged ? (
         <Listener type="on" event="move" handler={queryFeatures} />
       ) : null}

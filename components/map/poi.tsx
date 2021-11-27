@@ -1,11 +1,7 @@
 import { FC, useCallback, useMemo } from 'react';
 import { Source, Layer, Filter, Listener, LayerHandlers } from 'mapboxr-gl';
-import { MainPageContext, useStoreContext } from 'store/context';
-import {
-  PoiGeojson,
-  PoiProperties,
-  VoronoiGeojson
-} from 'interfaces/geodata.interface';
+import { useStoreContext } from 'store/context';
+import { PoiGeojson, VoronoiGeojson } from 'interfaces/geodata.interface';
 import { setPoiHover, setPoiType } from 'store/actions';
 import { vibrate } from 'services/vibration';
 import { Center } from './center';
@@ -133,7 +129,7 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
           'icon-size': 0.5,
           'icon-padding': 0,
           'icon-allow-overlap': true,
-          'icon-ignore-placement': true
+          'icon-ignore-placement': false
         }}
       >
         <PoiFilter />

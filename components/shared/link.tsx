@@ -1,5 +1,5 @@
 import { default as NextLink } from 'next/link';
-import { FC } from 'react';
+import { AnchorHTMLAttributes, DetailedHTMLProps, FC } from 'react';
 import { AllPageParams } from 'interfaces/params.interface';
 
 type LinkProps = {
@@ -7,12 +7,21 @@ type LinkProps = {
   pathname: string;
   query: AllPageParams;
   shallow?: boolean;
-};
+} & DetailedHTMLProps<
+  AnchorHTMLAttributes<HTMLAnchorElement>,
+  HTMLAnchorElement
+>;
 
-export const Link: FC<LinkProps> = ({ children, pathname, query, shallow }) => {
+export const Link: FC<LinkProps> = ({
+  children,
+  pathname,
+  query,
+  shallow,
+  ...rest
+}) => {
   return (
     <NextLink href={{ pathname, query }} shallow={shallow}>
-      <a>{children}</a>
+      <a {...rest}>{children}</a>
     </NextLink>
   );
 };

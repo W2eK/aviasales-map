@@ -31,3 +31,5 @@ export interface DistrictsProperties {
 
 export interface DistrictsGeojson
   extends GeoJSON.FeatureCollection<GeoJSON.Polygon, DistrictsProperties> {}
+
+export type Position = [number, number];
