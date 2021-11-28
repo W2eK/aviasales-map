@@ -29,9 +29,12 @@ export const CameraController: FC = () => {
 
   // ANIMATION ON PAGE CHANGE
   useEffect(() => {
+    console.log('pageProps');
     if (camera.page === 'city' || camera.page === 'category') {
       if (state.hoverPoi !== null) {
         camera.flyToTarget(state.hoverPoi);
+      } else if (state.hoverDistrict !== null && camera.page === 'category') {
+        camera.flyToTarget(state.hoverDistrict);
       } else {
         camera.flyToInitial();
       }
@@ -40,7 +43,8 @@ export const CameraController: FC = () => {
 
   // ANIMATION ON POI CHANGE
   useEffect(() => {
-    if (state.isDragged || camera.page === 'poi') return;
+    console.log('hoverPoi');
+    if (state.isDragged || camera.page === 'poi' || state.hoverDistrict) return;
     if (state.hoverPoi === null) {
       camera.flyToInitial();
     } else if (
@@ -55,6 +59,7 @@ export const CameraController: FC = () => {
 
   // ANIMATION ON DISTRICT CHANGE
   useEffect(() => {
+    console.log('hoverDistrict');
     if (
       !state.isDragged &&
       camera.page === 'category' &&
@@ -70,6 +75,7 @@ export const CameraController: FC = () => {
 
   // ANIMATION ON SELECTED POI
   useEffect(() => {
+    console.log('currentPoi');
     if (state.isDragged || camera.page !== 'category') return;
     if (state.currentPoi !== null) {
       if (state.currentPoi === state.hoverDistrict) {

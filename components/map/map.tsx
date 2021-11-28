@@ -13,7 +13,7 @@ import { MapLabels } from './labels';
 import { MapZoom } from './zoom';
 import { MapDragState } from './drag';
 import { MapLayers } from './layers';
-import { MapPointer } from './pointer';
+import { PointerMarker } from '../pointer';
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   (window as any).__MAPBOXR_GL_DEBUG = true;
@@ -35,7 +35,7 @@ const MapContainer: FC = () => {
     >
       <MapLayers/>
       <LazyImages />
-      <MapPointer />
+      <PointerMarker />
       <Source
         id="mapbox-dem"
         type="raster-dem"

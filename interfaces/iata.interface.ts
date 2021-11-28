@@ -1,4 +1,7 @@
+export const iataChanges = ['BER', 'TXL'];
+
 export const iataCodes = [
+  ...iataChanges,
   'AMS',
   'AYT',
   'ATH',
@@ -7,7 +10,6 @@ export const iataCodes = [
   'BCN',
   'BUS',
   'BEG',
-  'TXL',
   'BUD',
   'VLC',
   'WAW',

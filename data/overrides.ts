@@ -10,10 +10,11 @@ type Override = Partial<{
 
 export const overrides: Partial<Record<IATA, Override>> = {
   AMS: { center: [4.894, 52.373], zoom: 12, bearing: 10, id: 922 },
-  ATH: { id: 196, zoom: 13 },
+  ATH: { id: 196, bearing: 80, zoom: 13 },
   AYT: { id: 175, bearing: -25, zoom: 11 },
   BGY: { id: 666, bearing: 10 },
-  TXL: { id: 329, bearing: 75, zoom: 11 },
+  BER: { id: 329, bearing: -40, zoom: 11 },
+  TXL: { id: 329, bearing: -40, zoom: 11 },
   BCN: { id: 384, bearing: -15 },
   BUD: { id: 642, bearing: 35, zoom: 13 },
   BUS: { id: 233, zoom: 13, bearing: -140 },
