@@ -44,6 +44,6 @@ export const getStaticPaths: GetStaticPaths<CategoryParams> = async context => {
   }
   return {
     paths,
-    fallback: true
+    fallback: false
   };
 };

@@ -21,6 +21,10 @@ export const Item = styled.li`
 const imageLoader: ImageLoader = ({ src, width }) =>
   `https://photo.hotellook.com/static/cities/${width}x${width}/${src}`;
 
+// `https://photo.hotellook.com/static/as_trap/${type}/${id}/${width}x${width}/${url}`;
+// `https://photo.hotellook.com/static/cities/${width}x${width}/${src}`;
+// `https://photo.hotellook.com/static/as_trap/${type}/${id}/${width}x${width}/${url}`;
+
 export const ItemImage = styled(Image).attrs(
   (): Partial<ImageProps> => ({
     quality: 10,

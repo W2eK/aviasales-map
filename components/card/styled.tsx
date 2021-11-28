@@ -76,5 +76,6 @@ export const Header = styled.h2`
 export const Paragraph = styled.p`
   position: absolute;
   top: 100%;
-  /* margin: .5rem 0; */
+  font-size: 14px;
+  line-height: 1.4;
 `;

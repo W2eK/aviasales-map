@@ -18,6 +18,7 @@ export const MapPointer: FC<MapPointerProps> = ({
     <PointerOutline
       style={style}
       as={motion.div}
+      initial={{ opacity: 0 }}
       animate={{
         opacity: isHidden ? 0 : 1,
         backgroundColor: isActive

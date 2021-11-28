@@ -37,11 +37,11 @@ export const getStaticProps: GetStaticProps<CityPageProps, CityParams> =
 export const getStaticPaths: GetStaticPaths<CityParams> = async () => {
   const places = await aviasalesApi.requestPlaces();
   const cities = places
-    .map(({ iata }) => `/${iata.toLocaleLowerCase()}`)
-    .slice(0, 1) as IATA[];
+    .map(({ iata }) => `${iata.toLocaleLowerCase()}`)
+    .slice(0, 1 && places.length) as IATA[];
   const paths = cities.map(city => ({ params: { city } }));
   return {
     paths,
-    fallback: true
+    fallback: false
   };
 };
