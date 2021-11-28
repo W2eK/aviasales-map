@@ -1,11 +1,17 @@
 import { FC, useCallback, useMemo } from 'react';
-import { Source, Layer, Filter, Listener, LayerHandlers } from 'mapboxr-gl';
+import { Source, Layer, Filter, Property } from 'mapboxr-gl';
 import { useStoreContext } from 'store/context';
 import { PoiGeojson, VoronoiGeojson } from 'interfaces/geodata.interface';
 import { setPoiHover, setPoiType } from 'store/actions';
 import { vibrate } from 'services/vibration';
 import { Center } from './center';
-import { Expression, LngLat, Map, MapLayerMouseEvent } from 'mapbox-gl';
+import {
+  Expression,
+  LngLat,
+  Map,
+  MapLayerMouseEvent,
+  Visibility
+} from 'mapbox-gl';
 
 export interface PoiProps {
   data: PoiGeojson;
@@ -63,6 +69,17 @@ const PoiFilter: FC = () => {
   }, [state.hoverPoi]);
 };
 
+const PoiVisibility: FC = () => {
+  const {
+    state: { mapLocked }
+  } = useStoreContext();
+  return useMemo(() => {
+    return (
+      <Property type="paint" name="icon-opacity" value={mapLocked ? 0 : 1} />
+    );
+  }, [mapLocked]);
+};
+
 const PoiSort: FC = () => {
   const { state } = useStoreContext();
   return useMemo(() => {
@@ -118,6 +135,7 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
         cursor
       >
         <PoiSort />
+        <PoiVisibility />
       </Layer>
       <Layer
         id="poi-hover"
@@ -133,6 +151,7 @@ export const MapPoi: FC<PoiProps> = ({ data }) => {
         }}
       >
         <PoiFilter />
+        <PoiVisibility />
       </Layer>
       {/* <Layer
         id="poi-hover-overpass"

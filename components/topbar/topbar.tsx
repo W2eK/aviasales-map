@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import { motion } from 'framer-motion';
+import { FC, useMemo } from 'react';
 import { MainPageContext, useStoreContext } from 'store/context';
 import { BackButton } from './back';
 import { Header } from './header';
@@ -14,11 +15,14 @@ export const Topbar: FC = () => {
       : 'subtitle' in state.pageProps
       ? state.pageProps.subtitle
       : null;
-  return (
-    <Wrapper>
-      <Header title={title!} subtitle={subtitle} />
-      <BackButton />
-      <Fadeout />
-    </Wrapper>
-  );
+      
+  return useMemo(() => {
+    return (
+      <Wrapper>
+        <Header title={title!} subtitle={subtitle} />
+        <BackButton />
+        <Fadeout />
+      </Wrapper>
+    );
+  }, [title, subtitle]);
 };

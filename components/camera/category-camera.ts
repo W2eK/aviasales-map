@@ -27,7 +27,7 @@ export class CategoryCamera extends MapCamera {
       maxZoom: this.camera.zoom
     })!;
     this.map.jumpTo({ ...bounds, bearing: 0, pitch: 0 });
-    this.delayedFly(this.flyToInitial.bind(this));
+    return this.delayedFly(this.flyToInitial.bind(this));
   }
   flyToInitial() {
     let top, left, bottom, right;

@@ -33,16 +33,20 @@ export class MapCamera {
     const center = this.pageProps.poi[id].camera.center;
     this.animateFly({ center });
   }
-  delayedFly(callback: (...args: any[]) => void) {
+  delayedFly(callback: (...args: any[]) => void): Promise<void> {
     this.locked = true;
-    this.map.once('idle', () =>
-      setTimeout(() => {
-        this.locked = false;
-        this.duration = 3000;
-        callback();
-        this.duration = 1000;
-      }, 700)
-    );
+    return new Promise(resolve => {
+      // return
+      this.map.once('idle', () =>
+        setTimeout(() => {
+          this.locked = false;
+          this.duration = 3000;
+          setTimeout(resolve, 1000);
+          callback();
+          this.duration = 1000;
+        }, 700)
+      );
+    });
   }
   protected animateFly(camera: FlyToOptions = {}) {
     if (this.locked) return;

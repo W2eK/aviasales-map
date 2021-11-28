@@ -52,7 +52,7 @@ export const initialState: StoreState = {
   currentCity: null,
   currentPoi: null,
   currentCategory: null,
-  mapLocked: false,
+  mapLocked: true,
   isDragged: false,
   isMainPage: false,
   isDetailPage: false,

@@ -4,6 +4,7 @@ import { MainPageContext, useStoreContext } from 'store/context';
 import { MainPageProps } from 'interfaces/props.interface';
 import { Map } from 'mapbox-gl';
 import { CategoryCamera, CityCamera, PoiCamera } from 'components/camera';
+import { setMapLock } from 'store/actions';
 
 const useCamera = (map: Map, pageProps: MainPageProps, padding: number) => {
   return useMemo(() => {
@@ -18,18 +19,18 @@ const useCamera = (map: Map, pageProps: MainPageProps, padding: number) => {
 };
 
 export const CameraController: FC = () => {
-  const { state } = useStoreContext() as MainPageContext;
+  const { state, dispatch } = useStoreContext() as MainPageContext;
   const { map } = useMap();
   const camera = useCamera(map, state.pageProps, state.sliderHeight);
 
   // INITIAL ANIMATION
   useEffect(() => {
-    camera.jumpToInitial();
+    dispatch(setMapLock(true));
+    camera.jumpToInitial().then(() => dispatch(setMapLock(false)));
   }, []);
 
   // ANIMATION ON PAGE CHANGE
   useEffect(() => {
-    console.log('pageProps');
     if (camera.page === 'city' || camera.page === 'category') {
       if (state.hoverPoi !== null) {
         camera.flyToTarget(state.hoverPoi);
@@ -43,7 +44,6 @@ export const CameraController: FC = () => {
 
   // ANIMATION ON POI CHANGE
   useEffect(() => {
-    console.log('hoverPoi');
     if (state.isDragged || camera.page === 'poi' || state.hoverDistrict) return;
     if (state.hoverPoi === null) {
       camera.flyToInitial();
@@ -59,7 +59,6 @@ export const CameraController: FC = () => {
 
   // ANIMATION ON DISTRICT CHANGE
   useEffect(() => {
-    console.log('hoverDistrict');
     if (
       !state.isDragged &&
       camera.page === 'category' &&
@@ -75,7 +74,6 @@ export const CameraController: FC = () => {
 
   // ANIMATION ON SELECTED POI
   useEffect(() => {
-    console.log('currentPoi');
     if (state.isDragged || camera.page !== 'category') return;
     if (state.currentPoi !== null) {
       if (state.currentPoi === state.hoverDistrict) {

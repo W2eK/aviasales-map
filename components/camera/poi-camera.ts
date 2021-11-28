@@ -16,7 +16,7 @@ export class PoiCamera extends MapCamera {
   jumpToInitial() {
     const center = this.pageProps.camera.center;
     this.map.jumpTo({ center, zoom: 12 });
-    this.delayedFly(this.flyToTarget.bind(this));
+    return this.delayedFly(this.flyToTarget.bind(this));
   }
   flyToTarget() {
     if (this.locked) return;

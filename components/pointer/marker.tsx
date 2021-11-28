@@ -13,8 +13,9 @@ export const PointerMarker: FC = () => {
 
   const isActive = !!state.hoverPoi || !!state.hoverDistrict;
   const isHidden =
-    state.isDetailPage &&
-    (state.index === -1 || state.index >= state.pageProps.order.length);
+    state.mapLocked ||
+    (state.isDetailPage &&
+      (state.index === -1 || state.index >= state.pageProps.order.length));
   // prettier-ignore
   const listener = useMemo(
     () => <Listener type="on" event="move" handler={({ target: map }) => {
@@ -24,14 +25,16 @@ export const PointerMarker: FC = () => {
       const radians = degreesToRadians(degree);
       setScale(Math.cos(radians));
     }} />, []);
-  return (
-    <>
-      {listener}
-      {center && (
-        <Marker coordinates={center}>
-          <MapPointer scale={scale} isActive={isActive} isHidden={isHidden} />
-        </Marker>
-      )}
-    </>
-  );
+  return useMemo(() => {
+    return (
+      <>
+        {listener}
+        {center && (
+          <Marker coordinates={center}>
+            <MapPointer scale={scale} isActive={isActive} isHidden={isHidden} />
+          </Marker>
+        )}
+      </>
+    );
+  }, [center, scale, isActive, isHidden]);
 };
