@@ -11,7 +11,9 @@ import {
 } from 'interfaces/geodata.interface';
 
 const trimDescription = (description: string) => {
-  const words = description.split(/(?<=[\wа-я]{3}) /);
+  const words = description
+    .replace(/( [\wа-я]{1,3})( )/g, '$1\u00a0')
+    .split(' ');
   let text = '';
   while (words.length) {
     const word = words.shift()!;

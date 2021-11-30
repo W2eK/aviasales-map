@@ -1,6 +1,7 @@
 export const vibrate = (() => {
-  let couldVibrate = true;
+  let canVibrate = true;
   return (duration: number) => {
-    couldVibrate = couldVibrate && navigator.vibrate(duration);
+    canVibrate =
+      canVibrate && !!navigator.vibrate && navigator.vibrate(duration);
   };
 })();

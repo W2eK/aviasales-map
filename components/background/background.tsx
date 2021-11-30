@@ -61,6 +61,16 @@ const Overlay = styled.main`
   }
 `;
 
+const Contacts = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: var(--color-white);
+  font-size: 12px;
+  padding: 1rem;
+  opacity: 0.3;
+`;
+
 export const Background: FC = ({ children }) => {
   useEffect(() => {
     const resize = () => {
@@ -76,6 +86,16 @@ export const Background: FC = ({ children }) => {
       <Headline>Поиск дешёвых авиабилетов</Headline>
       <Backdrop />
       <Overlay>{children}</Overlay>
+      <Contacts>
+        author:{' '}
+        <a
+          href="https://github.com/W2eK"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          w2ek
+        </a>
+      </Contacts>
     </Wrapper>
   );
 };
